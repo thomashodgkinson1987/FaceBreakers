@@ -8,7 +8,6 @@ public class MainSceneController : Node2D
 
 		Sprite sprite = GetNode<Sprite>("");
 
-		sprite.FlipH = true;
 	}
 
 }
