@@ -7,6 +7,9 @@ public class MainSceneController : Node2D
 	{
 
 		Sprite sprite = GetNode<Sprite>("");
+		AnimatedSprite animatedSprite = GetNode<AnimatedSprite>("");
+
+		animatedSprite.Play("");
 
 	}
 
