@@ -12,7 +12,7 @@ public class MainSceneController : Node2D
 
 	public override void _Process(float delta)
 	{
-		node_sprite.Position += Vector2.Right * delta;
+		node_sprite.Position += Vector2.Right * 1f * delta;
 	}
 
 }
