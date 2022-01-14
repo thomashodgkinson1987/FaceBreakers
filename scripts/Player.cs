@@ -5,17 +5,31 @@ public class Player : Node2D
 
 	#region Nodes
 
-	private Sprite node_sprite;
+	private AnimatedSprite node_animatedSprite;
 	private Area2D node_area2D;
 	private CollisionShape2D node_collisionShape2D;
+	private Position2D node_position2D_projectile;
 
 	#endregion // Nodes
 
 
 
+	#region Signals
+
+	[Signal] public delegate void OnShootJustPressed(Player player);
+	[Signal] public delegate void OnShootPressed(Player player);
+	[Signal] public delegate void OnShootJustReleased(Player player);
+
+	#endregion // Signals
+
+
+
 	#region Properties
 
-	[Export] public float MoveSpeed { get; set; } = 16f;
+	[Export] public int HitPoints { get; set; } = 3;
+	[Export] public int MaxHitPoints { get; set; } = 3;
+
+	[Export] public float MoveSpeed { get; set; } = 96f;
 
 	public Vector2 Input_Direction { get; set; } = Vector2.Zero;
 
@@ -23,18 +37,29 @@ public class Player : Node2D
 	public bool IsInputPressed_Shoot { get; set; } = false;
 	public bool IsInputJustReleased_Shoot { get; set; } = false;
 
+	public Vector2 GlobalProjectileInstantiationPosition => node_position2D_projectile.GlobalPosition;
+
 	#endregion // Properties
+
+
+
+	#region Fields
+
+	#endregion // Fields
 
 
 
 	#region Godot methods
 
-	public override void _Ready()
+	public override void _EnterTree()
 	{
-		node_sprite = GetNode<Sprite>("Sprite");
+		node_animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
 		node_area2D = GetNode<Area2D>("Area2D");
 		node_collisionShape2D = node_area2D.GetNode<CollisionShape2D>("CollisionShape2D");
+		node_position2D_projectile = GetNode<Position2D>("Position2D_Projectile");
 	}
+
+	public override void _Ready() {  }
 
 	public override void _PhysicsProcess(float delta)
 	{
@@ -44,6 +69,7 @@ public class Player : Node2D
 	public override void _Process(float delta)
 	{
 		UpdateInput();
+		UpdateAnimation();
 	}
 
 	#endregion // Godot methods
@@ -71,7 +97,17 @@ public class Player : Node2D
 	{
 		if (IsInputJustPressed_Shoot)
 		{
-			GD.Print("Player shoot");
+			EmitSignal(nameof(OnShootJustPressed), this);
+		}
+
+		if (IsInputPressed_Shoot)
+		{
+			EmitSignal(nameof(OnShootPressed), this);
+		}
+
+		if (IsInputJustReleased_Shoot)
+		{
+			EmitSignal(nameof(OnShootJustReleased), this);
 		}
 	}
 
@@ -98,6 +134,26 @@ public class Player : Node2D
 		IsInputJustPressed_Shoot = Input.IsActionJustPressed("player_shoot");
 		IsInputPressed_Shoot = Input.IsActionPressed("player_shoot");
 		IsInputJustReleased_Shoot = Input.IsActionJustReleased("player_shoot");
+	}
+
+	private void UpdateAnimation()
+	{
+		if (Input_Direction.x == 0)
+		{
+			node_animatedSprite.Play("straight");
+		}
+		else if (Input_Direction.x == -1)
+		{
+			node_animatedSprite.Play("left");
+		}
+		else if (Input_Direction.x == 1)
+		{
+			node_animatedSprite.Play("right");
+		}
+		else
+		{
+			node_animatedSprite.Play("default");
+		}
 	}
 
 	#endregion // Private methods
