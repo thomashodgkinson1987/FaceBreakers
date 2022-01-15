@@ -23,6 +23,7 @@ __meta__ = {
 }
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="View"]
+modulate = Color( 0, 1, 0.929412, 1 )
 frames = ExtResource( 1 )
 __meta__ = {
 "_edit_lock_": true
