@@ -3,7 +3,7 @@
 [ext_resource path="res://scripts/Projectile/Projectile.cs" type="Script" id=1]
 [ext_resource path="res://sounds/player_shoot_0001.ogg" type="AudioStream" id=2]
 [ext_resource path="res://sounds/player_death_0001.ogg" type="AudioStream" id=3]
-[ext_resource path="res://sprites/projectile_atlas_0001.tres" type="Texture" id=4]
+[ext_resource path="res://texture_atlases/projectiles/projectile_atlas_0001.tres" type="Texture" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 1, 3 )

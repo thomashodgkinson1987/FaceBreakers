@@ -16,7 +16,7 @@ config/icon="res://icon.png"
 
 [audio]
 
-default_bus_layout="res://new_audiobuslayout.tres"
+default_bus_layout="res://audio_bus_layouts/audio_bus_layout.tres"
 
 [display]
 

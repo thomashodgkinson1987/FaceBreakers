@@ -1,5 +1,6 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
+[ext_resource path="res://packed_scenes/ui/GameHUD.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/SceneControllers/MainSceneController.cs" type="Script" id=2]
 [ext_resource path="res://icon.png" type="Texture" id=3]
 [ext_resource path="res://packed_scenes/actors/Player.tscn" type="PackedScene" id=4]
@@ -43,5 +44,9 @@ texture = ExtResource( 3 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 visible = false
 shape = SubResource( 1 )
+
+[node name="GameHUD" parent="." instance=ExtResource( 1 )]
+margin_right = 256.0
+margin_bottom = 256.0
 
 [editable path="Actors/Player"]
