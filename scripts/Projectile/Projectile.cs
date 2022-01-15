@@ -120,11 +120,6 @@ public class Projectile : Node2D
 		m_state.OnBodyEntered(this, body);
 	}
 
-	public void OnScreenExited()
-	{
-		SetState(new ProjectileState_GoneOffScreen());
-	}
-
 	#endregion // Public methods
 
 }

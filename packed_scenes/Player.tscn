@@ -5,7 +5,7 @@
 [ext_resource path="res://sounds/player_shoot_0001.ogg" type="AudioStream" id=3]
 [ext_resource path="res://sounds/player_death_0001.ogg" type="AudioStream" id=4]
 [ext_resource path="res://sounds/enemy_hit_0001.ogg" type="AudioStream" id=5]
-[ext_resource path="res://packed_scenes/projectiles/PlayerProectile.tscn" type="PackedScene" id=6]
+[ext_resource path="res://packed_scenes/projectiles/PlayerProjectile.tscn" type="PackedScene" id=6]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 8, 8 )
