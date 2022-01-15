@@ -3,13 +3,9 @@ using Godot;
 public class MainSceneController : Node2D
 {
 
-	#region Exports
-
-	#endregion // Exports
-
-
-
 	#region Nodes
+
+	private GameHUDController node_gameHUDController;
 
 	private Node2D node_actors;
 	private Node2D node_projectiles;
@@ -24,6 +20,8 @@ public class MainSceneController : Node2D
 
 	public override void _Ready()
 	{
+		node_gameHUDController = GetNode<GameHUDController>("GameHUD");
+
 		node_actors = GetNode<Node2D>("Actors");
 		node_projectiles = GetNode<Node2D>("Projectiles");
 
@@ -33,12 +31,6 @@ public class MainSceneController : Node2D
 	}
 
 	#endregion // Godot methods
-
-
-
-	#region Public methods
-
-	#endregion // Public methods
 
 
 
