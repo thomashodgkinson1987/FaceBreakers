@@ -2,7 +2,7 @@
 
 [ext_resource path="res://sounds/enemy_shoot_0001.ogg" type="AudioStream" id=1]
 [ext_resource path="res://sounds/enemy_death_0001.ogg" type="AudioStream" id=2]
-[ext_resource path="res://packed_scenes/Proectile.tscn" type="PackedScene" id=3]
+[ext_resource path="res://packed_scenes/projectiles/Proectile.tscn" type="PackedScene" id=3]
 
 [node name="EnemyProjectile" instance=ExtResource( 3 )]
 

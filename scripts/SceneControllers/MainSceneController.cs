@@ -5,8 +5,6 @@ public class MainSceneController : Node2D
 
 	#region Exports
 
-	[Export] public PackedScene PackedScene_PlayerProjectile { get; set; }
-
 	#endregion // Exports
 
 
@@ -14,7 +12,6 @@ public class MainSceneController : Node2D
 	#region Nodes
 
 	private Player node_player;
-
 	private Node2D node_projectiles;
 
 	#endregion // Nodes
@@ -38,11 +35,17 @@ public class MainSceneController : Node2D
 
 
 
+	#region Public methods
+
+	#endregion // Public methods
+
+
+
 	#region Private methods
 
-	private void OnPlayerShoot(Player player)
+	private void OnPlayerShoot(Player player, PackedScene packedScene_projectile)
 	{
-		Projectile projectile = PackedScene_PlayerProjectile.Instance() as Projectile;
+		Projectile projectile = packedScene_projectile.Instance() as Projectile;
 		node_projectiles.AddChild(projectile);
 		projectile.GlobalRotation = player.GlobalRotation;
 		projectile.GlobalPosition = player.GlobalProjectileInstantiationPosition;

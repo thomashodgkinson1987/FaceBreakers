@@ -16,15 +16,15 @@ public class Player : Node2D
 
 	#region Signals
 
-	[Signal] public delegate void OnShootJustPressed(Player player);
-	[Signal] public delegate void OnShootPressed(Player player);
-	[Signal] public delegate void OnShootJustReleased(Player player);
+	[Signal] public delegate void OnShootJustPressed(Player player, PackedScene packedScene_projectile);
 
 	#endregion // Signals
 
 
 
 	#region Properties
+
+	[Export] public PackedScene PackedScene_Projectile { get; set; }
 
 	[Export] public int HitPoints { get; set; } = 3;
 	[Export] public int MaxHitPoints { get; set; } = 3;
@@ -97,17 +97,7 @@ public class Player : Node2D
 	{
 		if (IsInputJustPressed_Shoot)
 		{
-			EmitSignal(nameof(OnShootJustPressed), this);
-		}
-
-		if (IsInputPressed_Shoot)
-		{
-			EmitSignal(nameof(OnShootPressed), this);
-		}
-
-		if (IsInputJustReleased_Shoot)
-		{
-			EmitSignal(nameof(OnShootJustReleased), this);
+			EmitSignal(nameof(OnShootJustPressed), this, PackedScene_Projectile);
 		}
 	}
 
