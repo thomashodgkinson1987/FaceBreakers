@@ -17,7 +17,10 @@ public class ProjectileState_Move : ProjectileState
 			projectile.LifetimeTimer += delta;
 			if (projectile.LifetimeTimer < projectile.Lifetime)
 			{
-				projectile.Translate(Vector2.Up * projectile.Speed * delta);
+				Vector2 translation = Vector2.Up;
+				translation = translation.Rotated(projectile.Rotation);
+				translation *= projectile.Speed * delta;
+				projectile.Translate(translation);
 			}
 			else
 			{

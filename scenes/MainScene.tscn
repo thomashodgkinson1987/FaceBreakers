@@ -10,8 +10,14 @@ extents = Vector2( 32, 32 )
 
 [node name="MainScene" type="Node2D"]
 script = ExtResource( 2 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Actors" type="Node2D" parent="."]
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Player" parent="Actors" instance=ExtResource( 1 )]
 position = Vector2( 64, 240 )
@@ -23,6 +29,9 @@ position = Vector2( 192, 240 )
 
 [node name="Projectiles" type="Node2D" parent="."]
 position = Vector2( -1, 0 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Area2D" type="Area2D" parent="."]
 position = Vector2( 128, 64 )

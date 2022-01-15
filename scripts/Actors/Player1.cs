@@ -112,7 +112,7 @@ public class Player1 : Node2D
 		if (IsInputJustPressed_Shoot)
 		{
 			Projectile projectile = PackedScene_Projectile.Instance() as Projectile;
-			projectile.GlobalRotation = GlobalRotation;
+			projectile.GlobalRotation = node_view.GlobalRotation;
 			projectile.GlobalPosition = node_position2D_projectile.GlobalPosition;
 			node_projectiles.AddChild(projectile);
 			EmitSignal(nameof(OnShootJustPressed), this, projectile);
