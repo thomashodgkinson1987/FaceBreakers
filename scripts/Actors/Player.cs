@@ -66,6 +66,19 @@ public class Player : Node2D
 
 	public override void _Process(float delta)
 	{
+		if (Input.IsActionPressed("rotate-left"))
+		{
+			Rotate(4 * delta);
+		}
+		else if (Input.IsActionPressed("rotate-right"))
+		{
+			Rotate(-4 * delta);
+		}
+		else if (Input.IsActionPressed("reset-rotation"))
+		{
+			Rotation = 0;
+		}
+
 		UpdateInput();
 		UpdateAnimation();
 	}
