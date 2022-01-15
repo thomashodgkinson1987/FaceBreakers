@@ -5,6 +5,9 @@ public class Projectile : Node2D
 
 	#region Nodes
 
+	private Node2D node_view;
+	private Node node_audioStreamPlayers;
+
 	private Sprite node_sprite;
 	private Area2D node_area2D;
 	private CollisionShape2D node_collisionShape2D;
@@ -17,6 +20,8 @@ public class Projectile : Node2D
 
 
 	#region Properties
+
+	public Node2D View => node_view;
 
 	[Export] public float Speed { get; set; } = 128f;
 	[Export] public int Damage { get; set; } = 1;
@@ -37,18 +42,18 @@ public class Projectile : Node2D
 
 	#region Godot methods
 
-	public override void _EnterTree()
-	{
-		node_sprite = GetNode<Sprite>("Sprite");
-		node_area2D = GetNode<Area2D>("Area2D");
-		node_collisionShape2D = node_area2D.GetNode<CollisionShape2D>("CollisionShape2D");
-
-		node_audioStreamPlayer_instantiate = GetNode<AudioStreamPlayer>("AudioStreamPlayer_Instantiate");
-		node_audioStreamPlayer_free = GetNode<AudioStreamPlayer>("AudioStreamPlayer_Free");
-	}
-
 	public override void _Ready()
 	{
+		node_view = GetNode<Node2D>("View");
+		node_audioStreamPlayers = GetNode<Node>("AudioStreamPlayers");
+
+		node_sprite = node_view.GetNode<Sprite>("Sprite");
+		node_area2D = node_view.GetNode<Area2D>("Area2D");
+		node_collisionShape2D = node_area2D.GetNode<CollisionShape2D>("CollisionShape2D");
+
+		node_audioStreamPlayer_instantiate = node_audioStreamPlayers.GetNode<AudioStreamPlayer>("AudioStreamPlayer_Instantiate");
+		node_audioStreamPlayer_free = node_audioStreamPlayers.GetNode<AudioStreamPlayer>("AudioStreamPlayer_Free");
+
 		SetState(new ProjectileState_Move());
 	}
 
