@@ -16,7 +16,7 @@ config/icon="res://icon.png"
 
 [audio]
 
-default_bus_layout="res://audio_bus_layouts/audio_bus_layout.tres"
+default_bus_layout="res://audio_bus_layouts/audio_bus_layout_0001.tres"
 
 [display]
 
@@ -24,7 +24,7 @@ window/size/width=256
 window/size/height=256
 window/size/test_width=768
 window/size/test_height=768
-window/stretch/mode="2d"
+window/stretch/mode="viewport"
 window/stretch/aspect="keep"
 
 [importer_defaults]

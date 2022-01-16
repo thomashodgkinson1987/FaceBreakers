@@ -51,15 +51,9 @@ public class Player : Node2D
 
 
 
-	#region Fields
-
-	#endregion // Fields
-
-
-
 	#region Godot methods
 
-	public override void _Ready()
+	public override void _EnterTree()
 	{
 		node_view = GetNode<Node2D>("View");
 		node_projectiles = GetNode<Node2D>("Projectiles");
@@ -82,19 +76,6 @@ public class Player : Node2D
 
 	public override void _Process(float delta)
 	{
-		if (Input.IsActionPressed("rotate-left"))
-		{
-			node_view.Rotate(4 * delta);
-		}
-		else if (Input.IsActionPressed("rotate-right"))
-		{
-			node_view.Rotate(-4 * delta);
-		}
-		else if (Input.IsActionPressed("reset-rotation"))
-		{
-			node_view.Rotation = 0;
-		}
-
 		UpdateInput();
 		UpdateAnimation();
 	}
@@ -113,11 +94,11 @@ public class Player : Node2D
 
 	private void HandleInput_Direction(float delta)
 	{
-		Vector2 position = node_view.Position;
+		Vector2 position = View.Position;
 
 		position += Input_Direction * MoveSpeed * delta;
 
-		node_view.Position = position;
+		View.Position = position;
 	}
 
 	private void HandleInput_Shoot()
@@ -127,7 +108,7 @@ public class Player : Node2D
 			Projectile projectile = PackedScene_Projectile.Instance() as Projectile;
 			node_projectiles.AddChild(projectile);
 			projectile.View.GlobalPosition = node_position2D_projectile.GlobalPosition;
-			projectile.View.GlobalRotation = node_view.GlobalRotation;
+			projectile.View.Rotation = View.Rotation;
 			EmitSignal(nameof(OnShootJustPressed), this, projectile);
 		}
 	}

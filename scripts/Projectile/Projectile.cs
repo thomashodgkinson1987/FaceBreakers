@@ -23,7 +23,7 @@ public class Projectile : Node2D
 
 	public Node2D View => node_view;
 
-	[Export] public float Speed { get; set; } = 128f;
+	[Export] public float MoveSpeed { get; set; } = 128f;
 	[Export] public int Damage { get; set; } = 1;
 	[Export] public float Lifetime { get; set; } = 8f;
 	public float LifetimeTimer { get; set; } = 0f;
@@ -42,7 +42,7 @@ public class Projectile : Node2D
 
 	#region Godot methods
 
-	public override void _Ready()
+	public override void _EnterTree()
 	{
 		node_view = GetNode<Node2D>("View");
 		node_audioStreamPlayers = GetNode<Node>("AudioStreamPlayers");
@@ -53,7 +53,10 @@ public class Projectile : Node2D
 
 		node_audioStreamPlayer_instantiate = node_audioStreamPlayers.GetNode<AudioStreamPlayer>("AudioStreamPlayer_Instantiate");
 		node_audioStreamPlayer_free = node_audioStreamPlayers.GetNode<AudioStreamPlayer>("AudioStreamPlayer_Free");
+	}
 
+	public override void _Ready()
+	{
 		SetState(new ProjectileState_Move());
 	}
 
