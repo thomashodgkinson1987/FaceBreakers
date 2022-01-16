@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://texture_atlases/ui/player_lives_icon_texture_atlas_0001.tres" type="Texture" id=1]
+[ext_resource path="res://texture_atlases/player_lives_icon_0001.tres" type="Texture" id=1]
 [ext_resource path="res://fonts/dynamic_fonts/dogicapixel_dynamic_font_0001.tres" type="DynamicFont" id=2]
 [ext_resource path="res://scripts/UIControllers/GameHUDController.cs" type="Script" id=3]
 
