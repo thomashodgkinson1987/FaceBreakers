@@ -28,12 +28,14 @@ __meta__ = {
 position = Vector2( 128, 240 )
 
 [node name="Projectiles" type="Node2D" parent="."]
-position = Vector2( -1, 0 )
 __meta__ = {
 "_edit_lock_": true
 }
 
 [node name="Shields" type="Node2D" parent="."]
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Shield" type="Area2D" parent="Shields"]
 position = Vector2( 64, 64 )
