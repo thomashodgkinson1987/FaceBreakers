@@ -24,7 +24,7 @@ public class Player : Node2D
 
 	#region Signals
 
-	[Signal] public delegate void OnShootJustPressed(Player player, Projectile projectile);
+	[Signal] public delegate void OnJustPressed_Shoot(Player player, Projectile projectile);
 
 	#endregion // Signals
 
@@ -109,7 +109,7 @@ public class Player : Node2D
 			node_projectiles.AddChild(projectile);
 			projectile.View.GlobalPosition = node_position2D_projectile.GlobalPosition;
 			projectile.View.Rotation = View.Rotation;
-			EmitSignal(nameof(OnShootJustPressed), this, projectile);
+			EmitSignal(nameof(OnJustPressed_Shoot), this, projectile);
 		}
 	}
 

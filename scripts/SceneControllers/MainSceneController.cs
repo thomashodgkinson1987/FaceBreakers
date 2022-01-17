@@ -27,7 +27,7 @@ public class MainSceneController : Node2D
 
 		node_player = node_actors.GetNode<Player>("Player");
 
-		node_player.Connect(nameof(Player.OnShootJustPressed), this, nameof(OnPlayerShoot));
+		node_player.Connect(nameof(Player.OnJustPressed_Shoot), this, nameof(OnShoot_Player));
 	}
 
 	#endregion // Godot methods
@@ -36,7 +36,7 @@ public class MainSceneController : Node2D
 
 	#region Private methods
 
-	private void OnPlayerShoot(Player player, Projectile projectile)
+	private void OnShoot_Player(Player player, Projectile projectile)
 	{
 		projectile.GetParent().RemoveChild(projectile);
 		node_projectiles.AddChild(projectile);
