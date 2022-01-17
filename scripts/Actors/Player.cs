@@ -3,162 +3,162 @@ using Godot;
 public class Player : Node2D
 {
 
-	#region Nodes
+    #region Nodes
 
-	private Node2D node_view;
-	private Node2D node_projectiles;
-	private Node node_audioStreamPlayers;
+    private Node2D node_view;
+    private Node2D node_projectiles;
+    private Node node_audioStreamPlayers;
 
-	private AnimatedSprite node_animatedSprite;
-	private Area2D node_area2D;
-	private CollisionShape2D node_collisionShape2D;
-	private Position2D node_position2D_projectile;
+    private AnimatedSprite node_animatedSprite;
+    private Area2D node_area2D;
+    private CollisionShape2D node_collisionShape2D;
+    private Position2D node_position2D_projectile;
 
-	private AudioStreamPlayer node_audioStreamPlayer_shoot;
-	private AudioStreamPlayer node_audioStreamPlayer_hit;
-	private AudioStreamPlayer node_audioStreamPlayer_die;
+    private AudioStreamPlayer node_audioStreamPlayer_shoot;
+    private AudioStreamPlayer node_audioStreamPlayer_hit;
+    private AudioStreamPlayer node_audioStreamPlayer_die;
 
-	#endregion // Nodes
-
-
-
-	#region Signals
-
-	[Signal] public delegate void OnJustPressed_Shoot(Player player, Projectile projectile);
-
-	#endregion // Signals
+    #endregion // Nodes
 
 
 
-	#region Properties
+    #region Signals
 
-	public Node2D View => node_view;
+    [Signal] public delegate void OnJustPressed_Shoot(Player player, Projectile projectile);
 
-	[Export] public PackedScene PackedScene_Projectile { get; set; }
-
-	[Export] public int HitPoints { get; set; } = 3;
-	[Export] public int MaxHitPoints { get; set; } = 3;
-
-	[Export] public float MoveSpeed { get; set; } = 96f;
-
-	public Vector2 Input_Direction { get; set; } = Vector2.Zero;
-
-	public bool IsInputJustPressed_Shoot { get; set; } = false;
-	public bool IsInputPressed_Shoot { get; set; } = false;
-	public bool IsInputJustReleased_Shoot { get; set; } = false;
-
-	#endregion // Properties
+    #endregion // Signals
 
 
 
-	#region Godot methods
+    #region Properties
 
-	public override void _EnterTree()
-	{
-		node_view = GetNode<Node2D>("View");
-		node_projectiles = GetNode<Node2D>("Projectiles");
-		node_audioStreamPlayers = GetNode<Node>("AudioStreamPlayers");
+    public Node2D View => node_view;
 
-		node_animatedSprite = node_view.GetNode<AnimatedSprite>("AnimatedSprite");
-		node_area2D = node_view.GetNode<Area2D>("Area2D");
-		node_collisionShape2D = node_area2D.GetNode<CollisionShape2D>("CollisionShape2D");
-		node_position2D_projectile = node_view.GetNode<Position2D>("Position2D_Projectile");
+    [Export] public PackedScene PackedScene_Projectile { get; set; }
 
-		node_audioStreamPlayer_shoot = node_audioStreamPlayers.GetNode<AudioStreamPlayer>("AudioStreamPlayer_Shoot");
-		node_audioStreamPlayer_hit = node_audioStreamPlayers.GetNode<AudioStreamPlayer>("AudioStreamPlayer_Hit");
-		node_audioStreamPlayer_die = node_audioStreamPlayers.GetNode<AudioStreamPlayer>("AudioStreamPlayer_Die");
-	}
+    [Export] public int HitPoints { get; set; } = 3;
+    [Export] public int MaxHitPoints { get; set; } = 3;
 
-	public override void _PhysicsProcess(float delta)
-	{
-		HandleInput(delta);
-	}
+    [Export] public float MoveSpeed { get; set; } = 96f;
 
-	public override void _Process(float delta)
-	{
-		UpdateInput();
-		UpdateAnimation();
-	}
+    public Vector2 Input_Direction { get; set; } = Vector2.Zero;
 
-	#endregion // Godot methods
+    public bool IsInputJustPressed_Shoot { get; set; } = false;
+    public bool IsInputPressed_Shoot { get; set; } = false;
+    public bool IsInputJustReleased_Shoot { get; set; } = false;
+
+    #endregion // Properties
 
 
 
-	#region Private methods
+    #region Godot methods
 
-	private void HandleInput(float delta)
-	{
-		HandleInput_Direction(delta);
-		HandleInput_Shoot();
-	}
+    public override void _EnterTree()
+    {
+        node_view = GetNode<Node2D>("View");
+        node_projectiles = GetNode<Node2D>("Projectiles");
+        node_audioStreamPlayers = GetNode<Node>("AudioStreamPlayers");
 
-	private void HandleInput_Direction(float delta)
-	{
-		Vector2 position = View.Position;
+        node_animatedSprite = node_view.GetNode<AnimatedSprite>("AnimatedSprite");
+        node_area2D = node_view.GetNode<Area2D>("Area2D");
+        node_collisionShape2D = node_area2D.GetNode<CollisionShape2D>("CollisionShape2D");
+        node_position2D_projectile = node_view.GetNode<Position2D>("Position2D_Projectile");
 
-		position += Input_Direction * MoveSpeed * delta;
+        node_audioStreamPlayer_shoot = node_audioStreamPlayers.GetNode<AudioStreamPlayer>("AudioStreamPlayer_Shoot");
+        node_audioStreamPlayer_hit = node_audioStreamPlayers.GetNode<AudioStreamPlayer>("AudioStreamPlayer_Hit");
+        node_audioStreamPlayer_die = node_audioStreamPlayers.GetNode<AudioStreamPlayer>("AudioStreamPlayer_Die");
+    }
 
-		View.Position = position;
-	}
+    public override void _PhysicsProcess(float delta)
+    {
+        HandleInput(delta);
+    }
 
-	private void HandleInput_Shoot()
-	{
-		if (IsInputJustPressed_Shoot)
-		{
-			Projectile projectile = PackedScene_Projectile.Instance() as Projectile;
-			node_projectiles.AddChild(projectile);
-			projectile.View.GlobalPosition = node_position2D_projectile.GlobalPosition;
-			projectile.View.Rotation = View.Rotation;
-			EmitSignal(nameof(OnJustPressed_Shoot), this, projectile);
-		}
-	}
+    public override void _Process(float delta)
+    {
+        UpdateInput();
+        UpdateAnimation();
+    }
 
-	private void UpdateInput()
-	{
-		UpdateInput_Direction();
-		UpdateInput_Shoot();
-	}
+    #endregion // Godot methods
 
-	private void UpdateInput_Direction()
-	{
-		Vector2 input_direction = Vector2.Zero;
 
-		if (Input.IsActionPressed("player_move_left")) input_direction.x -= 1;
-		if (Input.IsActionPressed("player_move_right")) input_direction.x += 1;
-		if (Input.IsActionPressed("player_move_up")) input_direction.y -= 1;
-		if (Input.IsActionPressed("player_move_down")) input_direction.y += 1;
 
-		Input_Direction = input_direction;
-	}
+    #region Private methods
 
-	private void UpdateInput_Shoot()
-	{
-		IsInputJustPressed_Shoot = Input.IsActionJustPressed("player_shoot");
-		IsInputPressed_Shoot = Input.IsActionPressed("player_shoot");
-		IsInputJustReleased_Shoot = Input.IsActionJustReleased("player_shoot");
-	}
+    private void HandleInput(float delta)
+    {
+        HandleInput_Direction(delta);
+        HandleInput_Shoot();
+    }
 
-	private void UpdateAnimation()
-	{
-		if (Input_Direction.x == 0)
-		{
-			node_animatedSprite.Play("straight");
-		}
-		else if (Input_Direction.x == -1)
-		{
-			node_animatedSprite.Play("left");
-		}
-		else if (Input_Direction.x == 1)
-		{
-			node_animatedSprite.Play("right");
-		}
-		else
-		{
-			node_animatedSprite.Play("default");
-		}
-	}
+    private void HandleInput_Direction(float delta)
+    {
+        Vector2 position = View.Position;
 
-	#endregion // Private methods
+        position += Input_Direction * MoveSpeed * delta;
+
+        View.Position = position;
+    }
+
+    private void HandleInput_Shoot()
+    {
+        if (IsInputJustPressed_Shoot)
+        {
+            Projectile projectile = PackedScene_Projectile.Instance() as Projectile;
+            node_projectiles.AddChild(projectile);
+            projectile.View.GlobalPosition = node_position2D_projectile.GlobalPosition;
+            projectile.View.Rotation = View.Rotation;
+            EmitSignal(nameof(OnJustPressed_Shoot), this, projectile);
+        }
+    }
+
+    private void UpdateInput()
+    {
+        UpdateInput_Direction();
+        UpdateInput_Shoot();
+    }
+
+    private void UpdateInput_Direction()
+    {
+        Vector2 input_direction = Vector2.Zero;
+
+        if (Input.IsActionPressed("player_move_left")) input_direction.x -= 1;
+        if (Input.IsActionPressed("player_move_right")) input_direction.x += 1;
+        if (Input.IsActionPressed("player_move_up")) input_direction.y -= 1;
+        if (Input.IsActionPressed("player_move_down")) input_direction.y += 1;
+
+        Input_Direction = input_direction;
+    }
+
+    private void UpdateInput_Shoot()
+    {
+        IsInputJustPressed_Shoot = Input.IsActionJustPressed("player_shoot");
+        IsInputPressed_Shoot = Input.IsActionPressed("player_shoot");
+        IsInputJustReleased_Shoot = Input.IsActionJustReleased("player_shoot");
+    }
+
+    private void UpdateAnimation()
+    {
+        if (Input_Direction.x == 0)
+        {
+            node_animatedSprite.Play("straight");
+        }
+        else if (Input_Direction.x == -1)
+        {
+            node_animatedSprite.Play("left");
+        }
+        else if (Input_Direction.x == 1)
+        {
+            node_animatedSprite.Play("right");
+        }
+        else
+        {
+            node_animatedSprite.Play("default");
+        }
+    }
+
+    #endregion // Private methods
 
 }
 
