@@ -3,7 +3,7 @@ using Godot;
 public class Projectile : Node2D
 {
 
-    #region Nodes
+    #region Nodes
 
     private Node2D node_view;
     private Node node_audioStreamPlayers;
@@ -15,11 +15,11 @@ public class Projectile : Node2D
     private AudioStreamPlayer node_audioStreamPlayer_instantiate;
     private AudioStreamPlayer node_audioStreamPlayer_free;
 
-    #endregion // Nodes
+    #endregion // Nodes
 
 
 
-    #region Properties
+    #region Properties
 
     public Node2D View => node_view;
 
@@ -28,19 +28,19 @@ public class Projectile : Node2D
     [Export] public float Lifetime { get; set; } = 8f;
     public float LifetimeTimer { get; set; } = 0f;
 
-    #endregion // Properties
+    #endregion // Properties
 
 
 
-    #region Fields
+    #region Fields
 
     private ProjectileState m_state = new ProjectileState_Default();
 
-    #endregion // Fields
+    #endregion // Fields
 
 
 
-    #region Godot methods
+    #region Godot methods
 
     public override void _EnterTree()
     {
@@ -70,11 +70,11 @@ public class Projectile : Node2D
         m_state.OnProcess(this, delta);
     }
 
-    #endregion // Godot methods
+    #endregion // Godot methods
 
 
 
-    #region Public methods
+    #region Public methods
 
     public void SetState(ProjectileState state)
     {
@@ -128,7 +128,7 @@ public class Projectile : Node2D
         m_state.OnBodyEntered(this, body);
     }
 
-    #endregion // Public methods
+    #endregion // Public methods
 
 }
 

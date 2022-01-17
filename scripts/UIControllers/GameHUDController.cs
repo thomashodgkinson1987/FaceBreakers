@@ -3,7 +3,7 @@ using Godot;
 public class GameHUDController : Control
 {
 
-    #region Nodes
+    #region Nodes
 
     private TextureRect node_textureRect_lives_icon;
     private Label node_label_lives_cross;
@@ -12,11 +12,11 @@ public class GameHUDController : Control
     private Label node_label_score_equals;
     private Label node_label_score_value;
 
-    #endregion // Nodes
+    #endregion // Nodes
 
 
 
-    #region Properties
+    #region Properties
 
     public int Lives
     {
@@ -29,11 +29,11 @@ public class GameHUDController : Control
         set => node_label_score_value.Text = value.ToString();
     }
 
-    #endregion // Properties
+    #endregion // Properties
 
 
 
-    #region Godot methods
+    #region Godot methods
 
     public override void _Ready()
     {
@@ -45,7 +45,7 @@ public class GameHUDController : Control
         node_label_score_value = GetNode<Label>("Label_Score_Value");
     }
 
-    #endregion // Godot methods
+    #endregion // Godot methods
 
 }
 

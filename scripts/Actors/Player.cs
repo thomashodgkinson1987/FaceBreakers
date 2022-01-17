@@ -3,7 +3,7 @@ using Godot;
 public class Player : Node2D
 {
 
-    #region Nodes
+    #region Nodes
 
     private Node2D node_view;
     private Node2D node_projectiles;
@@ -18,19 +18,19 @@ public class Player : Node2D
     private AudioStreamPlayer node_audioStreamPlayer_hit;
     private AudioStreamPlayer node_audioStreamPlayer_die;
 
-    #endregion // Nodes
+    #endregion // Nodes
 
 
 
-    #region Signals
+    #region Signals
 
     [Signal] public delegate void OnJustPressed_Shoot(Player player, Projectile projectile);
 
-    #endregion // Signals
+    #endregion // Signals
 
 
 
-    #region Properties
+    #region Properties
 
     public Node2D View => node_view;
 
@@ -47,11 +47,11 @@ public class Player : Node2D
     public bool IsInputPressed_Shoot { get; set; } = false;
     public bool IsInputJustReleased_Shoot { get; set; } = false;
 
-    #endregion // Properties
+    #endregion // Properties
 
 
 
-    #region Godot methods
+    #region Godot methods
 
     public override void _EnterTree()
     {
@@ -80,11 +80,11 @@ public class Player : Node2D
         UpdateAnimation();
     }
 
-    #endregion // Godot methods
+    #endregion // Godot methods
 
 
 
-    #region Private methods
+    #region Private methods
 
     private void HandleInput(float delta)
     {
@@ -158,7 +158,7 @@ public class Player : Node2D
         }
     }
 
-    #endregion // Private methods
+    #endregion // Private methods
 
 }
 

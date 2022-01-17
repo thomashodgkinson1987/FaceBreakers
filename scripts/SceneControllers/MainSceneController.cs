@@ -3,7 +3,7 @@ using Godot;
 public class MainSceneController : Node2D
 {
 
-    #region Nodes
+    #region Nodes
 
     private GameHUDController node_gameHUDController;
 
@@ -12,11 +12,11 @@ public class MainSceneController : Node2D
 
     private Player node_player;
 
-    #endregion // Nodes
+    #endregion // Nodes
 
 
 
-    #region Godot methods
+    #region Godot methods
 
     public override void _Ready()
     {
@@ -30,11 +30,11 @@ public class MainSceneController : Node2D
         node_player.Connect(nameof(Player.OnJustPressed_Shoot), this, nameof(OnShoot_Player));
     }
 
-    #endregion // Godot methods
+    #endregion // Godot methods
 
 
 
-    #region Private methods
+    #region Private methods
 
     private void OnShoot_Player(Player player, Projectile projectile)
     {
@@ -42,7 +42,7 @@ public class MainSceneController : Node2D
         node_projectiles.AddChild(projectile);
     }
 
-    #endregion // Private methods
+    #endregion // Private methods
 
 }
 
