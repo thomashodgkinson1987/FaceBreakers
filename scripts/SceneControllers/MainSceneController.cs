@@ -30,11 +30,6 @@ public class MainSceneController : Node2D
 		node_player.Connect(nameof(Player.OnJustPressed_Shoot), this, nameof(OnShoot_Player));
 	}
 
-	public override void _Process(float delta)
-	{
-		base._Process(delta);
-	}
-
 	#endregion // Godot methods
 
 

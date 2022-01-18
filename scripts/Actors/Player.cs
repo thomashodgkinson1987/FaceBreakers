@@ -47,8 +47,6 @@ public class Player : Node2D
 	public bool IsInputPressed_Shoot { get; set; } = false;
 	public bool IsInputJustReleased_Shoot { get; set; } = false;
 
-	public new Vector2 Position => View.Position;
-
 	#endregion // Properties
 
 
