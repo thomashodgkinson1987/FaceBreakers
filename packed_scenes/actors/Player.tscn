@@ -13,45 +13,25 @@ extents = Vector2( 8, 8 )
 [node name="Player" type="Node2D"]
 script = ExtResource( 2 )
 __meta__ = {
-"_edit_lock_": true
+"_edit_group_": true
 }
 PackedScene_Projectile = ExtResource( 6 )
 
-[node name="View" type="Node2D" parent="."]
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="AnimatedSprite" type="AnimatedSprite" parent="View"]
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 modulate = Color( 0, 1, 0.929412, 1 )
 frames = ExtResource( 1 )
-__meta__ = {
-"_edit_lock_": true
-}
 
-[node name="Area2D" type="Area2D" parent="View"]
+[node name="Area2D" type="Area2D" parent="."]
 collision_mask = 10
-__meta__ = {
-"_edit_lock_": true
-}
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="View/Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 visible = false
 shape = SubResource( 1 )
-__meta__ = {
-"_edit_lock_": true
-}
 
-[node name="Position2D_Projectile" type="Position2D" parent="View"]
+[node name="Position2D_Projectile" type="Position2D" parent="."]
 position = Vector2( 0, -8 )
 __meta__ = {
-"_edit_lock_": true,
 "_gizmo_extents_": 8.0
-}
-
-[node name="Projectiles" type="Node2D" parent="."]
-__meta__ = {
-"_edit_lock_": true
 }
 
 [node name="AudioStreamPlayers" type="Node" parent="."]
@@ -64,3 +44,5 @@ stream = ExtResource( 5 )
 
 [node name="AudioStreamPlayer_Die" type="AudioStreamPlayer" parent="AudioStreamPlayers"]
 stream = ExtResource( 4 )
+
+[node name="Projectiles" type="Node" parent="."]

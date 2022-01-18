@@ -5,18 +5,19 @@ public class Player : Node2D
 
 	#region Nodes
 
-	private Node2D node_view;
-	private Node2D node_projectiles;
-	private Node node_audioStreamPlayers;
-
 	private AnimatedSprite node_animatedSprite;
+
 	private Area2D node_area2D;
 	private CollisionShape2D node_collisionShape2D;
+
 	private Position2D node_position2D_projectile;
 
+	private Node node_audioStreamPlayers;
 	private AudioStreamPlayer node_audioStreamPlayer_shoot;
 	private AudioStreamPlayer node_audioStreamPlayer_hit;
 	private AudioStreamPlayer node_audioStreamPlayer_die;
+
+	private Node node_projectiles;
 
 	#endregion // Nodes
 
@@ -32,12 +33,7 @@ public class Player : Node2D
 
 	#region Properties
 
-	public Node2D View => node_view;
-
 	[Export] public PackedScene PackedScene_Projectile { get; set; }
-
-	[Export] public int HitPoints { get; set; } = 3;
-	[Export] public int MaxHitPoints { get; set; } = 3;
 
 	[Export] public float MoveSpeed { get; set; } = 96f;
 
@@ -55,18 +51,19 @@ public class Player : Node2D
 
 	public override void _EnterTree()
 	{
-		node_view = GetNode<Node2D>("View");
-		node_projectiles = GetNode<Node2D>("Projectiles");
-		node_audioStreamPlayers = GetNode<Node>("AudioStreamPlayers");
+		node_animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
 
-		node_animatedSprite = node_view.GetNode<AnimatedSprite>("AnimatedSprite");
-		node_area2D = node_view.GetNode<Area2D>("Area2D");
+		node_area2D = GetNode<Area2D>("Area2D");
 		node_collisionShape2D = node_area2D.GetNode<CollisionShape2D>("CollisionShape2D");
-		node_position2D_projectile = node_view.GetNode<Position2D>("Position2D_Projectile");
 
+		node_position2D_projectile = GetNode<Position2D>("Position2D_Projectile");
+
+		node_audioStreamPlayers = GetNode<Node>("AudioStreamPlayers");
 		node_audioStreamPlayer_shoot = node_audioStreamPlayers.GetNode<AudioStreamPlayer>("AudioStreamPlayer_Shoot");
 		node_audioStreamPlayer_hit = node_audioStreamPlayers.GetNode<AudioStreamPlayer>("AudioStreamPlayer_Hit");
 		node_audioStreamPlayer_die = node_audioStreamPlayers.GetNode<AudioStreamPlayer>("AudioStreamPlayer_Die");
+
+		node_projectiles = GetNode<Node>("Projectiles");
 	}
 
 	public override void _PhysicsProcess(float delta)
@@ -94,9 +91,9 @@ public class Player : Node2D
 
 	private void HandleInput_Direction(float delta)
 	{
-		Vector2 position = View.Position;
+		Vector2 position = Position;
 		position += Input_Direction * MoveSpeed * delta;
-		View.Position = position;
+		Position = position;
 	}
 
 	private void HandleInput_Shoot()
@@ -106,7 +103,7 @@ public class Player : Node2D
 			Projectile projectile = PackedScene_Projectile.Instance() as Projectile;
 			node_projectiles.AddChild(projectile);
 			projectile.View.GlobalPosition = node_position2D_projectile.GlobalPosition;
-			projectile.View.Rotation = View.Rotation;
+			projectile.View.Rotation = Rotation;
 			EmitSignal(nameof(OnJustPressed_Shoot), this, projectile);
 		}
 	}
