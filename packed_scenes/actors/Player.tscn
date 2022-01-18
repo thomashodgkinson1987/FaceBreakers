@@ -17,6 +17,17 @@ __meta__ = {
 }
 PackedScene_Projectile = ExtResource( 6 )
 
+[node name="AudioStreamPlayers" type="Node" parent="."]
+
+[node name="AudioStreamPlayer_Shoot" type="AudioStreamPlayer" parent="AudioStreamPlayers"]
+stream = ExtResource( 3 )
+
+[node name="AudioStreamPlayer_Hit" type="AudioStreamPlayer" parent="AudioStreamPlayers"]
+stream = ExtResource( 5 )
+
+[node name="AudioStreamPlayer_Die" type="AudioStreamPlayer" parent="AudioStreamPlayers"]
+stream = ExtResource( 4 )
+
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 modulate = Color( 0, 1, 0.929412, 1 )
 frames = ExtResource( 1 )
@@ -33,16 +44,5 @@ position = Vector2( 0, -8 )
 __meta__ = {
 "_gizmo_extents_": 8.0
 }
-
-[node name="AudioStreamPlayers" type="Node" parent="."]
-
-[node name="AudioStreamPlayer_Shoot" type="AudioStreamPlayer" parent="AudioStreamPlayers"]
-stream = ExtResource( 3 )
-
-[node name="AudioStreamPlayer_Hit" type="AudioStreamPlayer" parent="AudioStreamPlayers"]
-stream = ExtResource( 5 )
-
-[node name="AudioStreamPlayer_Die" type="AudioStreamPlayer" parent="AudioStreamPlayers"]
-stream = ExtResource( 4 )
 
 [node name="Projectiles" type="Node" parent="."]

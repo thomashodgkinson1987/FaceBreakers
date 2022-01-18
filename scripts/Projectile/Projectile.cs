@@ -74,7 +74,10 @@ public class Projectile : Node2D
 
 	public void SetState(ProjectileState state)
 	{
-		m_state.OnExit();
+		if (m_state != null)
+		{
+			m_state.OnExit();
+		}
 		m_state = state;
 		m_state.OnEnter();
 	}
@@ -127,6 +130,11 @@ public class Projectile : Node2D
 	public void OnBodyEntered(PhysicsBody2D body)
 	{
 		m_state.OnBodyEntered(body);
+	}
+
+	public void Destroy()
+	{
+		SetState(new ProjectileState_Destroy(this));
 	}
 
 	#endregion // Public methods

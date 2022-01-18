@@ -5,17 +5,17 @@ public class Player : Node2D
 
 	#region Nodes
 
+	private Node node_audioStreamPlayers;
+	private AudioStreamPlayer node_audioStreamPlayer_shoot;
+	private AudioStreamPlayer node_audioStreamPlayer_hit;
+	private AudioStreamPlayer node_audioStreamPlayer_die;
+
 	private AnimatedSprite node_animatedSprite;
 
 	private Area2D node_area2D;
 	private CollisionShape2D node_collisionShape2D;
 
 	private Position2D node_position2D_projectile;
-
-	private Node node_audioStreamPlayers;
-	private AudioStreamPlayer node_audioStreamPlayer_shoot;
-	private AudioStreamPlayer node_audioStreamPlayer_hit;
-	private AudioStreamPlayer node_audioStreamPlayer_die;
 
 	private Node node_projectiles;
 
@@ -26,6 +26,8 @@ public class Player : Node2D
 	#region Signals
 
 	[Signal] public delegate void OnJustPressed_Shoot(Player player, Projectile projectile);
+
+	[Signal] public delegate void OnTookDamage(Player player);
 
 	#endregion // Signals
 
@@ -51,17 +53,17 @@ public class Player : Node2D
 
 	public override void _EnterTree()
 	{
+		node_audioStreamPlayers = GetNode<Node>("AudioStreamPlayers");
+		node_audioStreamPlayer_shoot = node_audioStreamPlayers.GetNode<AudioStreamPlayer>("AudioStreamPlayer_Shoot");
+		node_audioStreamPlayer_hit = node_audioStreamPlayers.GetNode<AudioStreamPlayer>("AudioStreamPlayer_Hit");
+		node_audioStreamPlayer_die = node_audioStreamPlayers.GetNode<AudioStreamPlayer>("AudioStreamPlayer_Die");
+
 		node_animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
 
 		node_area2D = GetNode<Area2D>("Area2D");
 		node_collisionShape2D = node_area2D.GetNode<CollisionShape2D>("CollisionShape2D");
 
 		node_position2D_projectile = GetNode<Position2D>("Position2D_Projectile");
-
-		node_audioStreamPlayers = GetNode<Node>("AudioStreamPlayers");
-		node_audioStreamPlayer_shoot = node_audioStreamPlayers.GetNode<AudioStreamPlayer>("AudioStreamPlayer_Shoot");
-		node_audioStreamPlayer_hit = node_audioStreamPlayers.GetNode<AudioStreamPlayer>("AudioStreamPlayer_Hit");
-		node_audioStreamPlayer_die = node_audioStreamPlayers.GetNode<AudioStreamPlayer>("AudioStreamPlayer_Die");
 
 		node_projectiles = GetNode<Node>("Projectiles");
 	}
@@ -78,6 +80,46 @@ public class Player : Node2D
 	}
 
 	#endregion // Godot methods
+
+
+
+	#region Public methods
+
+	public void TakeDamage()
+	{
+		EmitSignal(nameof(OnTookDamage), this);
+	}
+
+	public void AddProjectile(Projectile projectile)
+	{
+		node_projectiles.AddChild(projectile);
+	}
+
+	public void RemoveProjectile(Projectile projectile)
+	{
+		node_projectiles.RemoveChild(projectile);
+	}
+
+	public void FreeAllProjectiles()
+	{
+		//TODO: find out how to cast a godot array to a type
+		//Godot.Collections.Array<Projectile> projectiles = node_projectiles.GetChildren();
+
+		int count = node_projectiles.GetChildCount();
+
+		for (int i = 0; i < count; i++)
+		{
+			Projectile projectile = node_projectiles.GetChild<Projectile>(i);
+			projectile.Destroy();
+		}
+
+		//foreach (Node projectile in node_projectiles.GetChildren())
+		//{
+		//	projectile.Destory();
+		//}
+	}
+
+	#endregion // Public methods
 
 
 

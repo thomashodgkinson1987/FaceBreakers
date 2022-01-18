@@ -6,28 +6,64 @@ public class MainSceneController : Node2D
 	#region Nodes
 
 	private GameHUDController node_gameHUDController;
-
-	private Node2D node_actors;
-	private Node2D node_projectiles;
-
 	private Player node_player;
 
 	#endregion // Nodes
 
 
 
+	#region Fields
+
+	private int _lives = 3;
+	private int _score = 0;
+
+	#endregion // Fields
+
+
+
+	#region Properties
+
+	public int Lives
+	{
+		get => _lives;
+		set
+		{
+			_lives = value;
+			node_gameHUDController.Lives = value;
+		}
+	}
+
+	public int Score
+	{
+		get => _score;
+		set
+		{
+			_score = value;
+			node_gameHUDController.Score = value;
+		}
+	}
+
+	#endregion // Properties
+
+
+
 	#region Godot methods
+
+	public override void _EnterTree()
+	{
+		node_player = GetNode<Player>("Player");
+		node_gameHUDController = GetNode<GameHUDController>("GameHUD");
+	}
 
 	public override void _Ready()
 	{
-		node_gameHUDController = GetNode<GameHUDController>("GameHUD");
+		Lives = 3;
+		Score = 0;
+	}
 
-		node_actors = GetNode<Node2D>("Actors");
-		node_projectiles = GetNode<Node2D>("Projectiles");
+	public override void _Process(float delta)
+	{
 
-		node_player = node_actors.GetNode<Player>("Player");
-
-		node_player.Connect(nameof(Player.OnJustPressed_Shoot), this, nameof(OnShoot_Player));
 	}
 
 	#endregion // Godot methods
@@ -36,10 +72,16 @@ public class MainSceneController : Node2D
 
 	#region Private methods
 
-	private void OnShoot_Player(Player player, Projectile projectile)
+	private void OnTookDamage_Player(Player player)
 	{
-		projectile.GetParent().RemoveChild(projectile);
-		node_projectiles.AddChild(projectile);
+		if (Lives == 0)
+		{
+			GetTree().ReloadCurrentScene();
+		}
+		else
+		{
+			Lives -= 1;
+		}
 	}
 
 	#endregion // Private methods

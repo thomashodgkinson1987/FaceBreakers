@@ -15,6 +15,14 @@ __meta__ = {
 }
 Lifetime = 2.0
 
+[node name="AudioStreamPlayers" type="Node" parent="."]
+
+[node name="AudioStreamPlayer_Instantiate" type="AudioStreamPlayer" parent="AudioStreamPlayers"]
+stream = ExtResource( 2 )
+
+[node name="AudioStreamPlayer_Free" type="AudioStreamPlayer" parent="AudioStreamPlayers"]
+stream = ExtResource( 3 )
+
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 4 )
 
@@ -25,14 +33,6 @@ collision_mask = 3
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 visible = false
 shape = SubResource( 1 )
-
-[node name="AudioStreamPlayers" type="Node" parent="."]
-
-[node name="AudioStreamPlayer_Instantiate" type="AudioStreamPlayer" parent="AudioStreamPlayers"]
-stream = ExtResource( 2 )
-
-[node name="AudioStreamPlayer_Free" type="AudioStreamPlayer" parent="AudioStreamPlayers"]
-stream = ExtResource( 3 )
 
 [connection signal="area_entered" from="Area2D" to="." method="OnAreaEntered"]
 [connection signal="body_entered" from="Area2D" to="." method="OnBodyEntered"]
