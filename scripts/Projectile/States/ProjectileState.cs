@@ -3,16 +3,37 @@ using Godot;
 public abstract class ProjectileState
 {
 
-	public ProjectileState() { }
+	#region Fields
 
-	public abstract void OnEnter(Projectile projectile);
-	public abstract void OnExit(Projectile projectile);
+	protected readonly Projectile m_projectile;
 
-	public abstract void OnPhysicsProcess(Projectile projectile, float delta);
-	public abstract void OnProcess(Projectile projectile, float delta);
+	#endregion // Fields
 
-	public abstract void OnAreaEntered(Projectile projectile, Area2D area);
-	public abstract void OnBodyEntered(Projectile projectile, PhysicsBody2D body);
+
+
+	#region Constructors
+
+	public ProjectileState(Projectile projectile) => m_projectile = projectile;
+
+	#endregion // Constructors
+
+
+
+	#region Public methods
+
+	public abstract void OnEnter();
+
+	public abstract void OnExit();
+
+	public abstract void OnPhysicsProcess(float delta);
+
+	public abstract void OnProcess(float delta);
+
+	public abstract void OnAreaEntered(Area2D area);
+
+	public abstract void OnBodyEntered(PhysicsBody2D body);
+
+	#endregion // Public methods
 
 }
 

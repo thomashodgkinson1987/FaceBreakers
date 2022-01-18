@@ -102,8 +102,8 @@ public class Player : Node2D
 		{
 			Projectile projectile = PackedScene_Projectile.Instance() as Projectile;
 			node_projectiles.AddChild(projectile);
-			projectile.View.GlobalPosition = node_position2D_projectile.GlobalPosition;
-			projectile.View.Rotation = Rotation;
+			projectile.GlobalPosition = node_position2D_projectile.GlobalPosition;
+			projectile.Rotation = Rotation;
 			EmitSignal(nameof(OnJustPressed_Shoot), this, projectile);
 		}
 	}

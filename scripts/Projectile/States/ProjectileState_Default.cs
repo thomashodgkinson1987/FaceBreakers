@@ -3,16 +3,29 @@ using Godot;
 public class ProjectileState_Default : ProjectileState
 {
 
-	public ProjectileState_Default() { }
+	#region Constructors
 
-	public override void OnEnter(Projectile projectile) { }
-	public override void OnExit(Projectile projectile) { }
+	public ProjectileState_Default(Projectile projectile) : base(projectile) { }
 
-	public override void OnPhysicsProcess(Projectile projectile, float delta) { }
-	public override void OnProcess(Projectile projectile, float delta) { }
+	#endregion // Constructors
 
-	public override void OnAreaEntered(Projectile projectile, Area2D area) { }
-	public override void OnBodyEntered(Projectile projectile, PhysicsBody2D body) { }
+
+
+	#region Public methods
+
+	public override void OnEnter() { }
+
+	public override void OnExit() { }
+
+	public override void OnPhysicsProcess(float delta) { }
+
+	public override void OnProcess(float delta) { }
+
+	public override void OnAreaEntered(Area2D area) { }
+
+	public override void OnBodyEntered(PhysicsBody2D body) { }
+
+	#endregion // Public methods
 
 }
 

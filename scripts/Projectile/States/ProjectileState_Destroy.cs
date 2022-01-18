@@ -3,27 +3,40 @@ using Godot;
 public class ProjectileState_Destroy : ProjectileState
 {
 
-	public ProjectileState_Destroy() { }
+	#region Constructors
 
-	public override void OnEnter(Projectile projectile)
+	public ProjectileState_Destroy(Projectile projectile) : base(projectile) { }
+
+	#endregion // Constructors
+
+
+
+	#region Public methods
+
+	public override void OnEnter()
 	{
-		projectile.PlaySound_Free();
-		projectile.HideSprite();
-		projectile.CallDeferred(nameof(projectile.DisableCollision));
+		m_projectile.PlaySound_Free();
+		m_projectile.HideSprite();
+		m_projectile.CallDeferred(nameof(m_projectile.DisableCollision));
 	}
-	public override void OnExit(Projectile projectile) { }
 
-	public override void OnPhysicsProcess(Projectile projectile, float delta) { }
-	public override void OnProcess(Projectile projectile, float delta)
+	public override void OnExit() { }
+
+	public override void OnPhysicsProcess(float delta) { }
+
+	public override void OnProcess(float delta)
 	{
-		if (!projectile.IsPlaying_Instantiate() && !projectile.IsPlaying_Free())
+		if (!m_projectile.IsPlaying_Instantiate() && !m_projectile.IsPlaying_Free())
 		{
-			projectile.QueueFree();
+			m_projectile.QueueFree();
 		}
 	}
 
-	public override void OnAreaEntered(Projectile projectile, Area2D area) { }
-	public override void OnBodyEntered(Projectile projectile, PhysicsBody2D body) { }
+	public override void OnAreaEntered(Area2D area) { }
+
+	public override void OnBodyEntered(PhysicsBody2D body) { }
+
+	#endregion // Public methods
 
 }
 
