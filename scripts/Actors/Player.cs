@@ -133,9 +133,6 @@ public class Player : Node2D
 
 	private void HandleInput_Direction(float delta)
 	{
-		//Vector2 position = Position;
-		//position += Input_Direction * MoveSpeed * delta;
-		//Position = position;
 		Translate(Input_Direction * MoveSpeed * delta);
 	}
 
