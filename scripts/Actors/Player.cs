@@ -12,7 +12,7 @@ public class Player : Node2D
 
 	private AnimatedSprite node_animatedSprite;
 
-	private Area2D node_area2D;
+	private KinematicBody2D node_kinematicBody2D;
 	private CollisionShape2D node_collisionShape2D;
 
 	private Position2D node_position2D_projectile;
@@ -60,8 +60,8 @@ public class Player : Node2D
 
 		node_animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
 
-		node_area2D = GetNode<Area2D>("Area2D");
-		node_collisionShape2D = node_area2D.GetNode<CollisionShape2D>("CollisionShape2D");
+		node_kinematicBody2D = GetNode<KinematicBody2D>("KinematicBody2D");
+		node_collisionShape2D = node_kinematicBody2D.GetNode<CollisionShape2D>("CollisionShape2D");
 
 		node_position2D_projectile = GetNode<Position2D>("Position2D_Projectile");
 
