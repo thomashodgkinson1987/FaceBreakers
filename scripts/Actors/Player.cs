@@ -27,8 +27,6 @@ public class Player : Node2D
 
 	[Signal] public delegate void OnJustPressed_Shoot(Player player, Projectile projectile);
 
-	[Signal] public delegate void OnTookDamage(Player player);
-
 	#endregion // Signals
 
 
@@ -82,46 +80,6 @@ public class Player : Node2D
 	}
 
 	#endregion // Godot methods
-
-
-
-	#region Public methods
-
-	public void TakeDamage()
-	{
-		EmitSignal(nameof(OnTookDamage), this);
-	}
-
-	public void AddProjectile(Projectile projectile)
-	{
-		node_projectiles.AddChild(projectile);
-	}
-
-	public void RemoveProjectile(Projectile projectile)
-	{
-		node_projectiles.RemoveChild(projectile);
-	}
-
-	public void FreeAllProjectiles()
-	{
-		//TODO: find out how to cast a godot array to a type
-		//Godot.Collections.Array<Projectile> projectiles = node_projectiles.GetChildren();
-
-		int count = node_projectiles.GetChildCount();
-
-		for (int i = 0; i < count; i++)
-		{
-			Projectile projectile = node_projectiles.GetChild<Projectile>(i);
-			projectile.Destroy();
-		}
-
-		//foreach (Node projectile in node_projectiles.GetChildren())
-		//{
-		//	projectile.Destory();
-		//}
-	}
-
-	#endregion // Public methods
 
 
 

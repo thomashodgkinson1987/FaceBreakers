@@ -61,30 +61,7 @@ public class MainSceneController : Node2D
 		Score = 0;
 	}
 
-	public override void _Process(float delta)
-	{
-
-	}
-
 	#endregion // Godot methods
-
-
-
-	#region Private methods
-
-	private void OnTookDamage_Player(Player player)
-	{
-		if (Lives == 0)
-		{
-			GetTree().ReloadCurrentScene();
-		}
-		else
-		{
-			Lives -= 1;
-		}
-	}
-
-	#endregion // Private methods
 
 }
 
