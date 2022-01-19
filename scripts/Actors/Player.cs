@@ -135,34 +135,14 @@ public class Player : Node2D
 
 	private void HandleInput_Direction(float delta)
 	{
-		//Translate(Input_Direction * MoveSpeed * delta);
-		
 		Vector2 position = Position;
 		Vector2 velocity = Velocity;
 
-		velocity = (Input_Direction * MoveSpeed * delta);
+		velocity = Input_Direction * MoveSpeed;
+		velocity = node_kinematicBody2D.MoveAndSlide(velocity, Vector2.Zero);
+		position = node_kinematicBody2D.GlobalPosition;
 
-		KinematicCollision2D collision = node_kinematicBody2D.MoveAndCollide(velocity, true, true, true);
-
-		if (collision != null)
-		{
-			GD.Print("Collision not null");
-			if (collision.Collider != null)
-			{
-				GD.Print("Collider not null");
-
-				velocity = collision.ColliderVelocity;
-				position += collision.Travel;
-			}
-			else
-			{
-				position += velocity;
-			}
-		}
-		else
-		{
-			position += velocity;
-		}
+		node_kinematicBody2D.Position = Vector2.Zero;
 
 		Velocity = velocity;
 		Position = position;
