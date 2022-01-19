@@ -36,7 +36,7 @@ public class Player : Node2D
 	[Export] public PackedScene PackedScene_Projectile { get; set; }
 
 	[Export] public float MoveSpeed { get; set; } = 96f;
-	
+
 	[Export] public Vector2 Velocity { get; set; } = Vector2.Zero;
 
 	public Vector2 Input_Direction { get; set; } = Vector2.Zero;
