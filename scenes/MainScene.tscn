@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://packed_scenes/ui/GameHUD.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/SceneControllers/MainSceneController.cs" type="Script" id=2]
@@ -6,7 +6,10 @@
 [ext_resource path="res://packed_scenes/actors/Player.tscn" type="PackedScene" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 8, 8 )
+extents = Vector2( 8, 128 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 128, 8 )
 
 [node name="MainScene" type="Node2D"]
 script = ExtResource( 2 )
@@ -21,21 +24,76 @@ position = Vector2( 128, 240 )
 margin_right = 256.0
 margin_bottom = 256.0
 
-[node name="Solids" type="Node2D" parent="."]
+[node name="Walls" type="Node2D" parent="."]
 
-[node name="Solid" type="Node2D" parent="Solids"]
-position = Vector2( 128, 128 )
+[node name="LeftWall" type="Node2D" parent="Walls"]
+position = Vector2( -8, 128 )
 __meta__ = {
 "_edit_group_": true
 }
 
-[node name="Sprite" type="Sprite" parent="Solids/Solid"]
+[node name="Sprite" type="Sprite" parent="Walls/LeftWall"]
+scale = Vector2( 1, 16 )
 texture = ExtResource( 3 )
 
-[node name="StaticBody2D" type="StaticBody2D" parent="Solids/Solid"]
+[node name="StaticBody2D" type="StaticBody2D" parent="Walls/LeftWall"]
 collision_layer = 16
 collision_mask = 15
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Solids/Solid/StaticBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/LeftWall/StaticBody2D"]
 visible = false
 shape = SubResource( 1 )
+
+[node name="RightWall" type="Node2D" parent="Walls"]
+position = Vector2( 264, 128 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="Walls/RightWall"]
+scale = Vector2( 1, 16 )
+texture = ExtResource( 3 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Walls/RightWall"]
+collision_layer = 16
+collision_mask = 15
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/RightWall/StaticBody2D"]
+visible = false
+shape = SubResource( 1 )
+
+[node name="TopWall" type="Node2D" parent="Walls"]
+position = Vector2( 128, -8 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="Walls/TopWall"]
+scale = Vector2( 16, 1 )
+texture = ExtResource( 3 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Walls/TopWall"]
+collision_layer = 16
+collision_mask = 15
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/TopWall/StaticBody2D"]
+visible = false
+shape = SubResource( 2 )
+
+[node name="BottomWall" type="Node2D" parent="Walls"]
+position = Vector2( 128, 264 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="Walls/BottomWall"]
+scale = Vector2( 16, 1 )
+texture = ExtResource( 3 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Walls/BottomWall"]
+collision_layer = 16
+collision_mask = 15
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/BottomWall/StaticBody2D"]
+visible = false
+shape = SubResource( 2 )
