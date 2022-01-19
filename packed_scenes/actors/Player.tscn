@@ -40,6 +40,7 @@ visible = false
 shape = SubResource( 1 )
 
 [node name="Position2D_Projectile" type="Position2D" parent="."]
+visible = false
 position = Vector2( 0, -8 )
 __meta__ = {
 "_gizmo_extents_": 8.0

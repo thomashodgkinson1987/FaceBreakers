@@ -38,6 +38,8 @@ public class Player : Node2D
 	[Export] public PackedScene PackedScene_Projectile { get; set; }
 
 	[Export] public float MoveSpeed { get; set; } = 96f;
+	
+	[Export] public Vector2 Velocity { get; set; } = Vector2.Zero;
 
 	public Vector2 Input_Direction { get; set; } = Vector2.Zero;
 
@@ -133,7 +135,37 @@ public class Player : Node2D
 
 	private void HandleInput_Direction(float delta)
 	{
-		Translate(Input_Direction * MoveSpeed * delta);
+		//Translate(Input_Direction * MoveSpeed * delta);
+		
+		Vector2 position = Position;
+		Vector2 velocity = Velocity;
+
+		velocity = (Input_Direction * MoveSpeed * delta);
+
+		KinematicCollision2D collision = node_kinematicBody2D.MoveAndCollide(velocity, true, true, true);
+
+		if (collision != null)
+		{
+			GD.Print("Collision not null");
+			if (collision.Collider != null)
+			{
+				GD.Print("Collider not null");
+
+				velocity = collision.ColliderVelocity;
+				position += collision.Travel;
+			}
+			else
+			{
+				position += velocity;
+			}
+		}
+		else
+		{
+			position += velocity;
+		}
+
+		Velocity = velocity;
+		Position = position;
 	}
 
 	private void HandleInput_Shoot()

@@ -154,6 +154,7 @@ player_shoot={
 2d_physics/layer_2="Enemy"
 2d_physics/layer_3="PlayerProjectile"
 2d_physics/layer_4="EnemyProjectile"
+2d_physics/layer_5="Solid"
 
 [physics]
 
