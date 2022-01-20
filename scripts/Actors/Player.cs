@@ -6,6 +6,7 @@ public class Player : Node2D
 
 	#region Enums
 
+	public enum EState { Null, Init, Move, Hit, Destroy }
 	public enum ESound { Shoot, Hit, Die }
 
 	#endregion // Enums
@@ -37,20 +38,18 @@ public class Player : Node2D
 	[Export] public PackedScene PackedScene_Projectile { get; set; }
 
 	[Export] public float Speed { get; set; } = 96f;
-
 	[Export] public Vector2 Velocity { get; set; } = Vector2.Zero;
 
-	public Vector2 Input_Direction { get; set; } = Vector2.Zero;
-
-	public bool IsInputJustPressed_Shoot { get; set; } = false;
-	public bool IsInputPressed_Shoot { get; set; } = false;
-	public bool IsInputJustReleased_Shoot { get; set; } = false;
+	public PlayerInputController InputController { get; private set; }
 
 	#endregion // Properties
 
 
 
 	#region Fields
+
+	private Dictionary<EState, IPlayerState> m_states;
+	private IPlayerState m_state;
 
 	private Dictionary<ESound, AudioStreamPlayer> m_sounds;
 
@@ -79,21 +78,32 @@ public class Player : Node2D
 
 	public override void _Ready()
 	{
+		m_states = new Dictionary<EState, IPlayerState>();
+		m_states.Add(EState.Null, new PlayerState_Null(this));
+		m_states.Add(EState.Init, new PlayerState_Init(this));
+		m_states.Add(EState.Move, new PlayerState_Move(this));
+		m_states.Add(EState.Hit, new PlayerState_Hit(this));
+
+		m_state = m_states[EState.Null];
+
 		m_sounds = new Dictionary<ESound, AudioStreamPlayer>();
 		m_sounds.Add(ESound.Shoot, node_audioStreamPlayer_shoot);
 		m_sounds.Add(ESound.Hit, node_audioStreamPlayer_hit);
 		m_sounds.Add(ESound.Die, node_audioStreamPlayer_die);
+
+		InputController = new PlayerInputController();
+
+		Set_State(EState.Init);
 	}
 
 	public override void _PhysicsProcess(float delta)
 	{
-		HandleInput(delta);
+		m_state.OnPhysicsProcess(delta);
 	}
 
 	public override void _Process(float delta)
 	{
-		UpdateInput();
-		UpdateAnimation();
+		m_state.OnProcess(delta);
 	}
 
 	#endregion // Godot methods
@@ -102,29 +112,35 @@ public class Player : Node2D
 
 	#region Public methods
 
+	public void Set_State(EState state)
+	{
+		m_state.OnExit();
+		m_state = m_states[state];
+		m_state.OnEnter();
+	}
+
+	public void Set_Animation(string animationName) => node_animatedSprite.Play(animationName);
+
 	public void Play_Sound(ESound sound) => m_sounds[sound].Play();
 	public bool Get_SoundPlaying(ESound sound) => m_sounds[sound].Playing;
 
-	#endregion // Public methods
+	public bool Get_Visible() => Visible;
+	public void Set_Visible(bool visible) => Visible = visible;
+	public void Toggle_Visible() => Visible = !Visible;
 
+	public bool Get_CollisionEnabled() => !node_collisionShape2D.Disabled;
+	public void Set_CollisionEnabled(bool enabled) => node_collisionShape2D.Disabled = !enabled;
+	public void Toggle_CollisionEnabled() => node_collisionShape2D.Disabled = !node_collisionShape2D.Disabled;
 
+	public void OnAreaEntered(Area2D area) => m_state.OnAreaEntered(area);
+	public void OnBodyEntered(PhysicsBody2D body) => m_state.OnBodyEntered(body);
 
-	#region Private methods
+	public void Destroy() => Set_State(EState.Destroy);
 
-	private void HandleInput(float delta)
+	public void Move()
 	{
-		HandleInput_Direction(delta);
-		HandleInput_Shoot();
-	}
-
-	private void HandleInput_Direction(float delta)
-	{
-		Vector2 position = Position;
-		Vector2 velocity = Velocity;
-
-		velocity = Input_Direction * Speed;
-		velocity = node_kinematicBody2D.MoveAndSlide(velocity, Vector2.Zero);
-		position = node_kinematicBody2D.GlobalPosition;
+		Vector2 velocity = node_kinematicBody2D.MoveAndSlide(Velocity, Vector2.Zero);
+		Vector2 position = node_kinematicBody2D.GlobalPosition;
 
 		node_kinematicBody2D.Position = Vector2.Zero;
 
@@ -132,63 +148,34 @@ public class Player : Node2D
 		Position = position;
 	}
 
-	private void HandleInput_Shoot()
+	public void ShootProjectile()
 	{
-		if (IsInputJustPressed_Shoot)
+		//TODO: make a pool for this
+		Projectile projectile = PackedScene_Projectile.Instance() as Projectile;
+		node_projectiles.AddChild(projectile);
+		projectile.GlobalPosition = node_position2D_projectile.GlobalPosition;
+		projectile.Rotation = Rotation;
+
+		Play_Sound(ESound.Shoot);
+	}
+
+	public void FreeAllProjectiles()
+	{
+		foreach(Projectile projectile in node_projectiles.GetChildren())
 		{
-			Projectile projectile = PackedScene_Projectile.Instance() as Projectile;
-			node_projectiles.AddChild(projectile);
-			projectile.GlobalPosition = node_position2D_projectile.GlobalPosition;
-			projectile.Rotation = Rotation;
+			projectile.QueueFree();
 		}
 	}
 
-	private void UpdateInput()
+	public void DestroyAllProjectiles()
 	{
-		UpdateInput_Direction();
-		UpdateInput_Shoot();
-	}
-
-	private void UpdateInput_Direction()
-	{
-		Vector2 input_direction = Vector2.Zero;
-
-		if (Input.IsActionPressed("player_move_left")) input_direction.x -= 1;
-		if (Input.IsActionPressed("player_move_right")) input_direction.x += 1;
-		if (Input.IsActionPressed("player_move_up")) input_direction.y -= 1;
-		if (Input.IsActionPressed("player_move_down")) input_direction.y += 1;
-
-		Input_Direction = input_direction;
-	}
-
-	private void UpdateInput_Shoot()
-	{
-		IsInputJustPressed_Shoot = Input.IsActionJustPressed("player_shoot");
-		IsInputPressed_Shoot = Input.IsActionPressed("player_shoot");
-		IsInputJustReleased_Shoot = Input.IsActionJustReleased("player_shoot");
-	}
-
-	private void UpdateAnimation()
-	{
-		if (Input_Direction.x == 0)
+		foreach(Projectile projectile in node_projectiles.GetChildren())
 		{
-			node_animatedSprite.Play("straight");
-		}
-		else if (Input_Direction.x == -1)
-		{
-			node_animatedSprite.Play("left");
-		}
-		else if (Input_Direction.x == 1)
-		{
-			node_animatedSprite.Play("right");
-		}
-		else
-		{
-			node_animatedSprite.Play("default");
+			projectile.Destroy();
 		}
 	}
 
-	#endregion // Private methods
+	#endregion // Public methods
 
 }
 

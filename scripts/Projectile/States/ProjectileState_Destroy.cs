@@ -25,7 +25,7 @@ public class ProjectileState_Destroy : ProjectileState
 	public override void OnEnter()
 	{
 		m_projectile.Play_Sound(Projectile.ESound.Free);
-		m_projectile.Set_SpriteVisible(false);
+		m_projectile.Set_Visible(false);
 		m_projectile.Set_CollisionEnabled(false);
 	}
 

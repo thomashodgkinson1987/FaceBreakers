@@ -41,8 +41,8 @@ public class Projectile : Node2D
 	#region Fields
 
 	private Dictionary<ESound, AudioStreamPlayer> m_sounds;
-
 	private Dictionary<EState, IProjectileState> m_states;
+
 	private IProjectileState m_state;
 
 	#endregion // Fields
@@ -106,9 +106,9 @@ public class Projectile : Node2D
 	public void Play_Sound(ESound sound) => m_sounds[sound].Play();
 	public bool Get_SoundPlaying(ESound sound) => m_sounds[sound].Playing;
 
-	public bool Get_SpriteVisible() => node_sprite.Visible;
-	public void Set_SpriteVisible(bool visible) => node_sprite.Visible = visible;
-	public void Toggle_SpriteVisible() => node_sprite.Visible = !node_sprite.Visible;
+	public bool Get_Visible() => Visible;
+	public void Set_Visible(bool visible) => Visible = visible;
+	public void Toggle_Visible() => Visible = !Visible;
 
 	public bool Get_CollisionEnabled() => !node_collisionShape2D.Disabled;
 	public void Set_CollisionEnabled(bool enabled) => node_collisionShape2D.Disabled = !enabled;
