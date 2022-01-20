@@ -3,6 +3,15 @@ using Godot;
 public class ProjectileState_Destroy : ProjectileState
 {
 
+	#region Fields
+
+	private bool m_wasDestroyConditionMet = false;
+	private bool m_isDestroyConditionMet = false;
+
+	#endregion // Fields
+
+
+
 	#region Constructors
 
 	public ProjectileState_Destroy(Projectile projectile) : base(projectile) { }
@@ -17,7 +26,7 @@ public class ProjectileState_Destroy : ProjectileState
 	{
 		m_projectile.Play_Sound(Projectile.ESound.Free);
 		m_projectile.Set_SpriteVisible(false);
-		m_projectile.CallDeferred(nameof(Projectile.Set_CollisionEnabled), false);
+		m_projectile.Set_CollisionEnabled(false);
 	}
 
 	public override void OnExit() { }
@@ -26,9 +35,19 @@ public class ProjectileState_Destroy : ProjectileState
 
 	public override void OnProcess(float delta)
 	{
-		if (!m_projectile.Get_SoundPlaying(Projectile.ESound.Init) && !m_projectile.Get_SoundPlaying(Projectile.ESound.Free))
+		if (!m_isDestroyConditionMet)
 		{
-			m_projectile.CallDeferred(nameof(m_projectile.QueueFree));
+			if (!m_projectile.Get_SoundPlaying(Projectile.ESound.Init) && !m_projectile.Get_SoundPlaying(Projectile.ESound.Free))
+			{
+				m_isDestroyConditionMet = true;
+			}
+		}
+
+		if (m_isDestroyConditionMet && !m_wasDestroyConditionMet)
+		{
+			m_wasDestroyConditionMet = true;
+
+			m_projectile.Destroy();
 		}
 	}
 

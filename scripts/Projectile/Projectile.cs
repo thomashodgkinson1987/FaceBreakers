@@ -7,7 +7,6 @@ public class Projectile : Node2D
 	#region Enums
 
 	public enum ESound { Init, Free }
-
 	public enum EState { Null, Init, Move, Destroy }
 
 	#endregion // Enums
@@ -118,7 +117,7 @@ public class Projectile : Node2D
 	public void OnAreaEntered(Area2D area) => m_state.OnAreaEntered(area);
 	public void OnBodyEntered(PhysicsBody2D body) => m_state.OnBodyEntered(body);
 
-	public void Destroy() =>Set_State(EState.Destroy);
+	public void Destroy() => QueueFree();
 
 	#endregion // Public methods
 

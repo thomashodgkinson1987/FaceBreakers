@@ -3,6 +3,15 @@ using Godot;
 public class ProjectileState_Move : ProjectileState
 {
 
+	#region Fields
+
+	private bool m_wasDestroyConditionMet = false;
+	private bool m_isDestroyConditionMet = false;
+
+	#endregion // Fields
+
+
+
 	#region Constructors
 
 	public ProjectileState_Move(Projectile projectile) : base(projectile) { }
@@ -19,19 +28,29 @@ public class ProjectileState_Move : ProjectileState
 
 	public override void OnPhysicsProcess(float delta)
 	{
-		if (m_projectile.LifetimeTimer < m_projectile.Lifetime)
+		if (!m_isDestroyConditionMet)
 		{
-			m_projectile.LifetimeTimer += delta;
 			if (m_projectile.LifetimeTimer < m_projectile.Lifetime)
 			{
-				Vector2 translation = (Vector2.Up).Rotated(m_projectile.Rotation);
-				translation *= m_projectile.Speed * delta;
-				m_projectile.Translate(translation);
+				m_projectile.LifetimeTimer += delta;
+				if (m_projectile.LifetimeTimer < m_projectile.Lifetime)
+				{
+					Vector2 translation = (Vector2.Up).Rotated(m_projectile.Rotation);
+					translation *= m_projectile.Speed * delta;
+					m_projectile.Translate(translation);
+				}
+				else
+				{
+					m_isDestroyConditionMet = true;
+				}
 			}
-			else
-			{
-				m_projectile.Set_State(Projectile.EState.Destroy);
-			}
+		}
+		
+		if (m_isDestroyConditionMet && !m_wasDestroyConditionMet)
+		{
+			m_wasDestroyConditionMet = true;
+
+			m_projectile.Set_State(Projectile.EState.Destroy);
 		}
 	}
 
@@ -39,12 +58,12 @@ public class ProjectileState_Move : ProjectileState
 
 	public override void OnAreaEntered(Area2D area)
 	{
-		m_projectile.Set_State(Projectile.EState.Destroy);
+		m_isDestroyConditionMet = true;
 	}
 
 	public override void OnBodyEntered(PhysicsBody2D body)
 	{
-		m_projectile.Set_State(Projectile.EState.Destroy);
+		m_isDestroyConditionMet = true;
 	}
 
 	#endregion // Public methods
