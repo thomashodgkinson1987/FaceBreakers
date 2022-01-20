@@ -30,7 +30,7 @@ public class ProjectileState_Move : ProjectileState
 			}
 			else
 			{
-				m_projectile.SetState(Projectile.EState.Destroy);
+				m_projectile.Set_State(Projectile.EState.Destroy);
 			}
 		}
 	}
@@ -39,12 +39,12 @@ public class ProjectileState_Move : ProjectileState
 
 	public override void OnAreaEntered(Area2D area)
 	{
-		m_projectile.SetState(Projectile.EState.Destroy);
+		m_projectile.Set_State(Projectile.EState.Destroy);
 	}
 
 	public override void OnBodyEntered(PhysicsBody2D body)
 	{
-		m_projectile.SetState(Projectile.EState.Destroy);
+		m_projectile.Set_State(Projectile.EState.Destroy);
 	}
 
 	#endregion // Public methods

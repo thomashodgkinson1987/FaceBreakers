@@ -15,8 +15,8 @@ public class ProjectileState_Init : ProjectileState
 
 	public override void OnEnter()
 	{
-		m_projectile.PlaySound(Projectile.ESound.Init);
-		m_projectile.SetState(Projectile.EState.Move);
+		m_projectile.Play_Sound(Projectile.ESound.Init);
+		m_projectile.Set_State(Projectile.EState.Move);
 	}
 
 	public override void OnExit() { }

@@ -41,6 +41,8 @@ public class Projectile : Node2D
 
 	#region Fields
 
+	private Dictionary<ESound, AudioStreamPlayer> m_sounds;
+
 	private Dictionary<EState, IProjectileState> m_states;
 	private IProjectileState m_state;
 
@@ -64,8 +66,11 @@ public class Projectile : Node2D
 
 	public override void _Ready()
 	{
-		m_states = new Dictionary<EState, IProjectileState>();
+		m_sounds = new Dictionary<ESound, AudioStreamPlayer>();
+		m_sounds.Add(ESound.Init, node_audioStreamPlayer_init);
+		m_sounds.Add(ESound.Free, node_audioStreamPlayer_free);
 
+		m_states = new Dictionary<EState, IProjectileState>();
 		m_states.Add(EState.Null, new ProjectileState_Null(this));
 		m_states.Add(EState.Init, new ProjectileState_Init(this));
 		m_states.Add(EState.Move, new ProjectileState_Move(this));
@@ -73,7 +78,7 @@ public class Projectile : Node2D
 
 		m_state = m_states[EState.Null];
 
-		SetState(EState.Init);
+		Set_State(EState.Init);
 	}
 
 	public override void _PhysicsProcess(float delta)
@@ -92,40 +97,15 @@ public class Projectile : Node2D
 
 	#region Public methods
 
-	public void SetState(EState state)
+	public void Set_State(EState state)
 	{
 		m_state.OnExit();
 		m_state = m_states[state];
 		m_state.OnEnter();
 	}
 
-	public void PlaySound(ESound sound)
-	{
-		switch (sound)
-		{
-			case ESound.Init:
-				node_audioStreamPlayer_init.Play();
-				break;
-			case ESound.Free:
-				node_audioStreamPlayer_free.Play();
-				break;
-			default:
-				break;
-		}
-	}
-
-	public bool IsPlaying(ESound sound)
-	{
-		switch (sound)
-		{
-			case ESound.Init:
-				return node_audioStreamPlayer_init.Playing;
-			case ESound.Free:
-				return node_audioStreamPlayer_free.Playing;
-			default:
-				return false;
-		}
-	}
+	public void Play_Sound(ESound sound) => m_sounds[sound].Play();
+	public bool Get_SoundPlaying(ESound sound) => m_sounds[sound].Playing;
 
 	public bool Get_SpriteVisible() => node_sprite.Visible;
 	public void Set_SpriteVisible(bool visible) => node_sprite.Visible = visible;
@@ -138,7 +118,7 @@ public class Projectile : Node2D
 	public void OnAreaEntered(Area2D area) => m_state.OnAreaEntered(area);
 	public void OnBodyEntered(PhysicsBody2D body) => m_state.OnBodyEntered(body);
 
-	public void Destroy() =>SetState(EState.Destroy);
+	public void Destroy() =>Set_State(EState.Destroy);
 
 	#endregion // Public methods
 
