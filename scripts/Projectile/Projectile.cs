@@ -31,7 +31,7 @@ public class Projectile : Node2D
 
 	#region Properties
 
-	[Export] public float MoveSpeed { get; set; } = 128f;
+	[Export] public float Speed { get; set; } = 128f;
 	[Export] public float Lifetime { get; set; } = 8f;
 	public float LifetimeTimer { get; set; } = 0f;
 
@@ -41,8 +41,7 @@ public class Projectile : Node2D
 
 	#region Fields
 
-	private Dictionary<EState, IProjectileState> m_states = new Dictionary<EState, IProjectileState>();
-
+	private Dictionary<EState, IProjectileState> m_states;
 	private IProjectileState m_state;
 
 	#endregion // Fields
@@ -65,6 +64,8 @@ public class Projectile : Node2D
 
 	public override void _Ready()
 	{
+		m_states = new Dictionary<EState, IProjectileState>();
+
 		m_states.Add(EState.Null, new ProjectileState_Null(this));
 		m_states.Add(EState.Init, new ProjectileState_Init(this));
 		m_states.Add(EState.Move, new ProjectileState_Move(this));
