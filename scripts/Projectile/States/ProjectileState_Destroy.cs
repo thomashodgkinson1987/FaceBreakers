@@ -17,7 +17,7 @@ public class ProjectileState_Destroy : ProjectileState
 	{
 		m_projectile.PlaySound(Projectile.ESound.Free);
 		m_projectile.Set_SpriteVisible(false);
-		m_projectile.Set_CollisionEnabled(false);
+		m_projectile.CallDeferred(nameof(Projectile.Set_CollisionEnabled), false);
 	}
 
 	public override void OnExit() { }
@@ -28,7 +28,7 @@ public class ProjectileState_Destroy : ProjectileState
 	{
 		if (!m_projectile.IsPlaying(Projectile.ESound.Init) && !m_projectile.IsPlaying(Projectile.ESound.Free))
 		{
-			m_projectile.QueueFree();
+			m_projectile.CallDeferred(nameof(m_projectile.QueueFree));
 		}
 	}
 
