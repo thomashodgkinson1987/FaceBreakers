@@ -8,10 +8,6 @@ public class Projectile : Node2D
 
 	public enum ESound { Init, Free }
 
-	public enum ESpriteVisibilityState { Visible, Invisible }
-
-	public enum ECollisionState { Enable, Disable }
-
 	public enum EState { Null, Init, Move, Destroy }
 
 	#endregion // Enums
@@ -130,62 +126,18 @@ public class Projectile : Node2D
 		}
 	}
 
-	public void SetSpriteVisibilityState(ESpriteVisibilityState visibilityState)
-	{
-		switch (visibilityState)
-		{
-			case ESpriteVisibilityState.Visible:
-				node_sprite.Visible = true;
-				break;
-			case ESpriteVisibilityState.Invisible:
-				node_sprite.Visible = false;
-				break;
-			default:
-				node_sprite.Visible = true;
-				break;
-		}
-	}
+	public bool Get_SpriteVisible() => node_sprite.Visible;
+	public void Set_SpriteVisible(bool visible) => node_sprite.Visible = visible;
+	public void Toggle_SpriteVisible() => node_sprite.Visible = !node_sprite.Visible;
 
-	public void ToggleSpriteVisibilityState()
-	{
-		node_sprite.Visible = !node_sprite.Visible;
-	}
+	public bool Get_CollisionEnabled() => !node_collisionShape2D.Disabled;
+	public void Set_CollisionEnabled(bool enabled) => node_collisionShape2D.Disabled = !enabled;
+	public void Toggle_CollisionEnabled() => node_collisionShape2D.Disabled = !node_collisionShape2D.Disabled;
 
-	public void SetCollisionState(ECollisionState collisionState)
-	{
-		switch (collisionState)
-		{
-			case ECollisionState.Enable:
-				node_collisionShape2D.Disabled = false;
-				break;
-			case ECollisionState.Disable:
-				node_collisionShape2D.Disabled = true;
-				break;
-			default:
-				node_collisionShape2D.Disabled = false;
-				break;
-		}
-	}
+	public void OnAreaEntered(Area2D area) => m_state.OnAreaEntered(area);
+	public void OnBodyEntered(PhysicsBody2D body) => m_state.OnBodyEntered(body);
 
-	public void ToggleCollisionState()
-	{
-		node_collisionShape2D.Disabled = !node_collisionShape2D.Disabled;
-	}
-
-	public void OnAreaEntered(Area2D area)
-	{
-		m_state.OnAreaEntered(area);
-	}
-
-	public void OnBodyEntered(PhysicsBody2D body)
-	{
-		m_state.OnBodyEntered(body);
-	}
-
-	public void Destroy()
-	{
-		SetState(EState.Destroy);
-	}
+	public void Destroy() =>SetState(EState.Destroy);
 
 	#endregion // Public methods
 
