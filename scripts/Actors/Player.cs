@@ -1,7 +1,16 @@
+using System.Collections.Generic;
 using Godot;
 
 public class Player : Node2D
 {
+
+	#region Enums
+
+	public enum ESound { Shoot, Hit, Die }
+
+	#endregion // Enums
+
+
 
 	#region Nodes
 
@@ -27,7 +36,7 @@ public class Player : Node2D
 
 	[Export] public PackedScene PackedScene_Projectile { get; set; }
 
-	[Export] public float MoveSpeed { get; set; } = 96f;
+	[Export] public float Speed { get; set; } = 96f;
 
 	[Export] public Vector2 Velocity { get; set; } = Vector2.Zero;
 
@@ -38,6 +47,14 @@ public class Player : Node2D
 	public bool IsInputJustReleased_Shoot { get; set; } = false;
 
 	#endregion // Properties
+
+
+
+	#region Fields
+
+	private Dictionary<ESound, AudioStreamPlayer> m_sounds;
+
+	#endregion // Fields
 
 
 
@@ -60,6 +77,14 @@ public class Player : Node2D
 		node_projectiles = GetNode<Node>("Projectiles");
 	}
 
+	public override void _Ready()
+	{
+		m_sounds = new Dictionary<ESound, AudioStreamPlayer>();
+		m_sounds.Add(ESound.Shoot, node_audioStreamPlayer_shoot);
+		m_sounds.Add(ESound.Hit, node_audioStreamPlayer_hit);
+		m_sounds.Add(ESound.Die, node_audioStreamPlayer_die);
+	}
+
 	public override void _PhysicsProcess(float delta)
 	{
 		HandleInput(delta);
@@ -72,6 +97,15 @@ public class Player : Node2D
 	}
 
 	#endregion // Godot methods
+
+
+
+	#region Public methods
+
+	public void Play_Sound(ESound sound) => m_sounds[sound].Play();
+	public bool Get_SoundPlaying(ESound sound) => m_sounds[sound].Playing;
+
+	#endregion // Public methods
 
 
 
@@ -88,7 +122,7 @@ public class Player : Node2D
 		Vector2 position = Position;
 		Vector2 velocity = Velocity;
 
-		velocity = Input_Direction * MoveSpeed;
+		velocity = Input_Direction * Speed;
 		velocity = node_kinematicBody2D.MoveAndSlide(velocity, Vector2.Zero);
 		position = node_kinematicBody2D.GlobalPosition;
 

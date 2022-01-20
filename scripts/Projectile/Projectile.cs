@@ -15,14 +15,14 @@ public class Projectile : Node2D
 
 	#region Nodes
 
+	private Node node_audioStreamPlayers;
+	private AudioStreamPlayer node_audioStreamPlayer_init;
+	private AudioStreamPlayer node_audioStreamPlayer_free;
+
 	private Sprite node_sprite;
 
 	private Area2D node_area2D;
 	private CollisionShape2D node_collisionShape2D;
-
-	private Node node_audioStreamPlayers;
-	private AudioStreamPlayer node_audioStreamPlayer_init;
-	private AudioStreamPlayer node_audioStreamPlayer_free;
 
 	#endregion // Nodes
 
