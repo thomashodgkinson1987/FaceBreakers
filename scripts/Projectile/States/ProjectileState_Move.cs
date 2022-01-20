@@ -1,11 +1,11 @@
 using Godot;
 
-public class ProjectileState_Moving : ProjectileState
+public class ProjectileState_Move : ProjectileState
 {
 
 	#region Constructors
 
-	public ProjectileState_Moving(Projectile projectile) : base(projectile) { }
+	public ProjectileState_Move(Projectile projectile) : base(projectile) { }
 
 	#endregion // Constructors
 
@@ -13,9 +13,9 @@ public class ProjectileState_Moving : ProjectileState
 
 	#region Public methods
 
-	public override void OnEnter() {  }
+	public override void OnEnter() { }
 
-	public override void OnExit() {  }
+	public override void OnExit() { }
 
 	public override void OnPhysicsProcess(float delta)
 	{
@@ -30,7 +30,7 @@ public class ProjectileState_Moving : ProjectileState
 			}
 			else
 			{
-				m_projectile.SetState(Projectile.EStateName.Destroying);
+				m_projectile.SetState(Projectile.EState.Destroy);
 			}
 		}
 	}
@@ -39,12 +39,12 @@ public class ProjectileState_Moving : ProjectileState
 
 	public override void OnAreaEntered(Area2D area)
 	{
-		m_projectile.SetState(Projectile.EStateName.Destroying);
+		m_projectile.SetState(Projectile.EState.Destroy);
 	}
 
 	public override void OnBodyEntered(PhysicsBody2D body)
 	{
-		m_projectile.SetState(Projectile.EStateName.Destroying);
+		m_projectile.SetState(Projectile.EState.Destroy);
 	}
 
 	#endregion // Public methods

@@ -1,11 +1,11 @@
 using Godot;
 
-public class ProjectileState_Destroying : ProjectileState
+public class ProjectileState_Destroy : ProjectileState
 {
 
 	#region Constructors
 
-	public ProjectileState_Destroying(Projectile projectile) : base(projectile) { }
+	public ProjectileState_Destroy(Projectile projectile) : base(projectile) { }
 
 	#endregion // Constructors
 
@@ -15,9 +15,9 @@ public class ProjectileState_Destroying : ProjectileState
 
 	public override void OnEnter()
 	{
-		m_projectile.PlaySound_Free();
-		m_projectile.HideSprite();
-		m_projectile.DisableCollision();
+		m_projectile.PlaySound(Projectile.ESound.Free);
+		m_projectile.SetSpriteVisibilityState(Projectile.ESpriteVisibilityState.Invisible);
+		m_projectile.SetCollisionState(Projectile.ECollisionState.Disable);
 	}
 
 	public override void OnExit() { }
@@ -26,7 +26,7 @@ public class ProjectileState_Destroying : ProjectileState
 
 	public override void OnProcess(float delta)
 	{
-		if (!m_projectile.IsPlaying_Instantiate() && !m_projectile.IsPlaying_Free())
+		if (!m_projectile.IsPlaying(Projectile.ESound.Init) && !m_projectile.IsPlaying(Projectile.ESound.Free))
 		{
 			m_projectile.QueueFree();
 		}
