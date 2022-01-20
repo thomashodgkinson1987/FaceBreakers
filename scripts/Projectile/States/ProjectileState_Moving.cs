@@ -1,11 +1,11 @@
 using Godot;
 
-public class ProjectileState_Move : ProjectileState
+public class ProjectileState_Moving : ProjectileState
 {
 
 	#region Constructors
 
-	public ProjectileState_Move(Projectile projectile) : base(projectile) { }
+	public ProjectileState_Moving(Projectile projectile) : base(projectile) { }
 
 	#endregion // Constructors
 
@@ -13,12 +13,9 @@ public class ProjectileState_Move : ProjectileState
 
 	#region Public methods
 
-	public override void OnEnter()
-	{
-		m_projectile.PlaySound_Instantiate();
-	}
+	public override void OnEnter() {  }
 
-	public override void OnExit() { }
+	public override void OnExit() {  }
 
 	public override void OnPhysicsProcess(float delta)
 	{
@@ -33,8 +30,7 @@ public class ProjectileState_Move : ProjectileState
 			}
 			else
 			{
-				//TODO: Find better way of managing states (FSM)
-				m_projectile.SetState(new ProjectileState_Destroy(m_projectile));
+				m_projectile.SetState(Projectile.EStateName.Destroying);
 			}
 		}
 	}
@@ -43,14 +39,12 @@ public class ProjectileState_Move : ProjectileState
 
 	public override void OnAreaEntered(Area2D area)
 	{
-		//TODO Find better way of managing states (FSM)
-		m_projectile.SetState(new ProjectileState_Destroy(m_projectile));
+		m_projectile.SetState(Projectile.EStateName.Destroying);
 	}
 
 	public override void OnBodyEntered(PhysicsBody2D body)
 	{
-		//TODO Find better way of managing states (FSM)
-		m_projectile.SetState(new ProjectileState_Destroy(m_projectile));
+		m_projectile.SetState(Projectile.EStateName.Destroying);
 	}
 
 	#endregion // Public methods

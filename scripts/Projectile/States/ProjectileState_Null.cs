@@ -1,11 +1,11 @@
 using Godot;
 
-public class ProjectileState_Default : ProjectileState
+public class ProjectileState_Null : ProjectileState
 {
 
 	#region Constructors
 
-	public ProjectileState_Default(Projectile projectile) : base(projectile) { }
+	public ProjectileState_Null(Projectile projectile) : base(projectile) { }
 
 	#endregion // Constructors
 

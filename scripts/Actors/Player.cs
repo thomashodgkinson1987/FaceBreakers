@@ -23,14 +23,6 @@ public class Player : Node2D
 
 
 
-	#region Signals
-
-	[Signal] public delegate void OnJustPressed_Shoot(Player player, Projectile projectile);
-
-	#endregion // Signals
-
-
-
 	#region Properties
 
 	[Export] public PackedScene PackedScene_Projectile { get; set; }
@@ -114,7 +106,6 @@ public class Player : Node2D
 			node_projectiles.AddChild(projectile);
 			projectile.GlobalPosition = node_position2D_projectile.GlobalPosition;
 			projectile.Rotation = Rotation;
-			EmitSignal(nameof(OnJustPressed_Shoot), this, projectile);
 		}
 	}
 

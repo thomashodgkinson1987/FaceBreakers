@@ -51,8 +51,8 @@ public class MainSceneController : Node2D
 
 	public override void _EnterTree()
 	{
-		node_player = GetNode<Player>("Player");
 		node_gameHUDController = GetNode<GameHUDController>("GameHUD");
+		node_player = GetNode<Player>("Player");
 	}
 
 	public override void _Ready()

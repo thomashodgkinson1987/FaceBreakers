@@ -1,11 +1,11 @@
 using Godot;
 
-public class ProjectileState_Destroy : ProjectileState
+public class ProjectileState_Destroying : ProjectileState
 {
 
 	#region Constructors
 
-	public ProjectileState_Destroy(Projectile projectile) : base(projectile) { }
+	public ProjectileState_Destroying(Projectile projectile) : base(projectile) { }
 
 	#endregion // Constructors
 
@@ -17,7 +17,7 @@ public class ProjectileState_Destroy : ProjectileState
 	{
 		m_projectile.PlaySound_Free();
 		m_projectile.HideSprite();
-		m_projectile.CallDeferred(nameof(m_projectile.DisableCollision));
+		m_projectile.DisableCollision();
 	}
 
 	public override void OnExit() { }

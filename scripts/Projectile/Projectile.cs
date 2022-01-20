@@ -1,7 +1,16 @@
+using System.Collections.Generic;
 using Godot;
 
 public class Projectile : Node2D
 {
+
+	#region Enums
+
+	public enum EStateName { Null, Init, Moving, Destroying }
+
+	#endregion // Enums
+
+
 
 	#region Nodes
 
@@ -31,6 +40,8 @@ public class Projectile : Node2D
 
 	#region Fields
 
+	private Dictionary<EStateName, ProjectileState> m_states = new Dictionary<EStateName, ProjectileState>();
+
 	private ProjectileState m_state;
 
 	#endregion // Fields
@@ -53,7 +64,14 @@ public class Projectile : Node2D
 
 	public override void _Ready()
 	{
-		SetState(new ProjectileState_Move(this));
+		m_states.Add(EStateName.Null, new ProjectileState_Null(this));
+		m_states.Add(EStateName.Init, new ProjectileState_Init(this));
+		m_states.Add(EStateName.Moving, new ProjectileState_Moving(this));
+		m_states.Add(EStateName.Destroying, new ProjectileState_Destroying(this));
+
+		m_state = m_states[EStateName.Null];
+
+		SetState(EStateName.Init);
 	}
 
 	public override void _PhysicsProcess(float delta)
@@ -72,13 +90,10 @@ public class Projectile : Node2D
 
 	#region Public methods
 
-	public void SetState(ProjectileState state)
+	public void SetState(EStateName stateName)
 	{
-		if (m_state != null)
-		{
-			m_state.OnExit();
-		}
-		m_state = state;
+		m_state.OnExit();
+		m_state = m_states[stateName];
 		m_state.OnEnter();
 	}
 
@@ -134,7 +149,7 @@ public class Projectile : Node2D
 
 	public void Destroy()
 	{
-		SetState(new ProjectileState_Destroy(this));
+		SetState(EStateName.Destroying);
 	}
 
 	#endregion // Public methods
