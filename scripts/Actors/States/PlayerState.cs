@@ -1,6 +1,6 @@
 using Godot;
 
-public abstract class PlayerState : IPlayerState
+public abstract class PlayerState
 {
 
 	#region Fields

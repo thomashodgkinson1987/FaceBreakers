@@ -1,6 +1,6 @@
 using Godot;
 
-public abstract class ProjectileState : IProjectileState
+public abstract class ProjectileState
 {
 
 	#region Fields

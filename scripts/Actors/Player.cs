@@ -48,8 +48,8 @@ public class Player : Node2D
 
 	#region Fields
 
-	private Dictionary<EState, IPlayerState> m_states;
-	private IPlayerState m_state;
+	private Dictionary<EState, PlayerState> m_states;
+	private PlayerState m_state;
 
 	private Dictionary<ESound, AudioStreamPlayer> m_sounds;
 
@@ -78,7 +78,7 @@ public class Player : Node2D
 
 	public override void _Ready()
 	{
-		m_states = new Dictionary<EState, IPlayerState>();
+		m_states = new Dictionary<EState, PlayerState>();
 		m_states.Add(EState.Null, new PlayerState_Null(this));
 		m_states.Add(EState.Init, new PlayerState_Init(this));
 		m_states.Add(EState.Move, new PlayerState_Move(this));

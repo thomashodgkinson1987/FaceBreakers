@@ -41,9 +41,9 @@ public class Projectile : Node2D
 	#region Fields
 
 	private Dictionary<ESound, AudioStreamPlayer> m_sounds;
-	private Dictionary<EState, IProjectileState> m_states;
+	private Dictionary<EState, ProjectileState> m_states;
 
-	private IProjectileState m_state;
+	private ProjectileState m_state;
 
 	#endregion // Fields
 
@@ -69,7 +69,7 @@ public class Projectile : Node2D
 		m_sounds.Add(ESound.Init, node_audioStreamPlayer_init);
 		m_sounds.Add(ESound.Free, node_audioStreamPlayer_free);
 
-		m_states = new Dictionary<EState, IProjectileState>();
+		m_states = new Dictionary<EState, ProjectileState>();
 		m_states.Add(EState.Null, new ProjectileState_Null(this));
 		m_states.Add(EState.Init, new ProjectileState_Init(this));
 		m_states.Add(EState.Move, new ProjectileState_Move(this));
