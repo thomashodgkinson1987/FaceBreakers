@@ -112,6 +112,8 @@ public class Player : Node2D
 
 	#region Public methods
 
+	public void Reset() => Set_State(Player.EState.Init);
+
 	public void Set_State(EState state)
 	{
 		m_state.OnExit();
@@ -122,6 +124,8 @@ public class Player : Node2D
 	public void Set_Animation(string animationName) => node_animatedSprite.Play(animationName);
 
 	public void Play_Sound(ESound sound) => m_sounds[sound].Play();
+	public void Stop_Sound(ESound sound) => m_sounds[sound].Stop();
+
 	public bool Get_SoundPlaying(ESound sound) => m_sounds[sound].Playing;
 
 	public bool Get_Visible() => Visible;
@@ -157,6 +161,14 @@ public class Player : Node2D
 		projectile.Rotation = Rotation;
 
 		Play_Sound(ESound.Shoot);
+	}
+
+	public void StopAllSounds()
+	{
+		foreach(KeyValuePair<ESound, AudioStreamPlayer> kvp in m_sounds)
+		{
+			Stop_Sound(kvp.Key);
+		}
 	}
 
 	public void FreeAllProjectiles()

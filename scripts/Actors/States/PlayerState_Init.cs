@@ -17,6 +17,7 @@ public class PlayerState_Init : PlayerState
 	{
 		m_player.Velocity = Vector2.Zero;
 		m_player.InputController.Reset();
+		m_player.StopAllSounds();
 		m_player.FreeAllProjectiles();
 		m_player.Set_Visible(true);
 		m_player.Set_CollisionEnabled(true);
