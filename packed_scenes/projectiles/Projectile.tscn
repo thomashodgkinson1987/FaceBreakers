@@ -28,7 +28,7 @@ texture = ExtResource( 4 )
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 12
-collision_mask = 3
+collision_mask = 208
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 visible = false
