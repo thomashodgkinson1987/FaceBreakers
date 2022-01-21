@@ -1,11 +1,11 @@
 using Godot;
 
-public class PlayerState_Hit : PlayerState
+public class PlayerState_Die : PlayerState
 {
 
 	#region Constructors
 
-	public PlayerState_Hit(Player player) : base(player) { }
+	public PlayerState_Die(Player player) : base(player) { }
 
 	#endregion // Constructors
 
@@ -13,7 +13,10 @@ public class PlayerState_Hit : PlayerState
 
 	#region Public methods
 
-	public override void OnEnter() { }
+	public override void OnEnter()
+	{
+		m_player.Set_State(Player.EState.Free);
+	}
 
 	public override void OnExit() { }
 

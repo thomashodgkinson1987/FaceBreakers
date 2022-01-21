@@ -6,8 +6,8 @@ public class Projectile : Node2D
 
 	#region Enums
 
-	public enum ESound { Init, Free }
-	public enum EState { Null, Init, Move, Destroy }
+	public enum EState { Null, Init, Move, Die, Free }
+	public enum ESound { Init, Die }
 
 	#endregion // Enums
 
@@ -17,7 +17,7 @@ public class Projectile : Node2D
 
 	private Node node_audioStreamPlayers;
 	private AudioStreamPlayer node_audioStreamPlayer_init;
-	private AudioStreamPlayer node_audioStreamPlayer_free;
+	private AudioStreamPlayer node_audioStreamPlayer_die;
 
 	private Sprite node_sprite;
 
@@ -40,10 +40,11 @@ public class Projectile : Node2D
 
 	#region Fields
 
-	private Dictionary<ESound, AudioStreamPlayer> m_sounds;
 	private Dictionary<EState, ProjectileState> m_states;
-
 	private ProjectileState m_state;
+
+	private Dictionary<ESound, AudioStreamPlayer> m_sounds;
+
 
 	#endregion // Fields
 
@@ -60,22 +61,23 @@ public class Projectile : Node2D
 
 		node_audioStreamPlayers = GetNode<Node>("AudioStreamPlayers");
 		node_audioStreamPlayer_init = node_audioStreamPlayers.GetNode<AudioStreamPlayer>("AudioStreamPlayer_Init");
-		node_audioStreamPlayer_free = node_audioStreamPlayers.GetNode<AudioStreamPlayer>("AudioStreamPlayer_Free");
+		node_audioStreamPlayer_die = node_audioStreamPlayers.GetNode<AudioStreamPlayer>("AudioStreamPlayer_Die");
 	}
 
 	public override void _Ready()
 	{
-		m_sounds = new Dictionary<ESound, AudioStreamPlayer>();
-		m_sounds.Add(ESound.Init, node_audioStreamPlayer_init);
-		m_sounds.Add(ESound.Free, node_audioStreamPlayer_free);
-
 		m_states = new Dictionary<EState, ProjectileState>();
 		m_states.Add(EState.Null, new ProjectileState_Null(this));
 		m_states.Add(EState.Init, new ProjectileState_Init(this));
 		m_states.Add(EState.Move, new ProjectileState_Move(this));
-		m_states.Add(EState.Destroy, new ProjectileState_Destroy(this));
+		m_states.Add(EState.Die, new ProjectileState_Die(this));
+		m_states.Add(EState.Free, new ProjectileState_Free(this));
 
 		m_state = m_states[EState.Null];
+
+		m_sounds = new Dictionary<ESound, AudioStreamPlayer>();
+		m_sounds.Add(ESound.Init, node_audioStreamPlayer_init);
+		m_sounds.Add(ESound.Die, node_audioStreamPlayer_die);
 
 		Set_State(EState.Init);
 	}
@@ -116,8 +118,6 @@ public class Projectile : Node2D
 
 	public void OnAreaEntered(Area2D area) => m_state.OnAreaEntered(area);
 	public void OnBodyEntered(PhysicsBody2D body) => m_state.OnBodyEntered(body);
-
-	public void Destroy() => QueueFree();
 
 	#endregion // Public methods
 

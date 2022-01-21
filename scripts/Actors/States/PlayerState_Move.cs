@@ -59,7 +59,7 @@ public class PlayerState_Move : PlayerState
 		{
 			m_wasHit = true;
 
-			m_player.Set_State(Player.EState.Hit);
+			m_player.Set_State(Player.EState.Die);
 		}
 	}
 

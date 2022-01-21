@@ -1,11 +1,11 @@
 using Godot;
 
-public class PlayerState_Destroy : PlayerState
+public class PlayerState_Free : PlayerState
 {
 
 	#region Constructors
 
-	public PlayerState_Destroy(Player player) : base(player) { }
+	public PlayerState_Free(Player player) : base(player) { }
 
 	#endregion // Constructors
 

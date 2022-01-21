@@ -5,8 +5,8 @@ public class ProjectileState_Move : ProjectileState
 
 	#region Fields
 
-	private bool m_wasDestroyConditionMet = false;
-	private bool m_isDestroyConditionMet = false;
+	private bool m_wasDieConditionMet = false;
+	private bool m_isDieConditionMet = false;
 
 	#endregion // Fields
 
@@ -28,7 +28,7 @@ public class ProjectileState_Move : ProjectileState
 
 	public override void OnPhysicsProcess(float delta)
 	{
-		if (!m_isDestroyConditionMet)
+		if (!m_isDieConditionMet)
 		{
 			if (m_projectile.LifetimeTimer < m_projectile.Lifetime)
 			{
@@ -41,16 +41,16 @@ public class ProjectileState_Move : ProjectileState
 				}
 				else
 				{
-					m_isDestroyConditionMet = true;
+					m_isDieConditionMet = true;
 				}
 			}
 		}
 		
-		if (m_isDestroyConditionMet && !m_wasDestroyConditionMet)
+		if (m_isDieConditionMet && !m_wasDieConditionMet)
 		{
-			m_wasDestroyConditionMet = true;
+			m_wasDieConditionMet = true;
 
-			m_projectile.Set_State(Projectile.EState.Destroy);
+			m_projectile.Set_State(Projectile.EState.Die);
 		}
 	}
 
@@ -58,12 +58,12 @@ public class ProjectileState_Move : ProjectileState
 
 	public override void OnAreaEntered(Area2D area)
 	{
-		m_isDestroyConditionMet = true;
+		m_isDieConditionMet = true;
 	}
 
 	public override void OnBodyEntered(PhysicsBody2D body)
 	{
-		m_isDestroyConditionMet = true;
+		m_isDieConditionMet = true;
 	}
 
 	#endregion // Public methods
