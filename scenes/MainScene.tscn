@@ -177,7 +177,7 @@ position = Vector2( 224, 32 )
 position = Vector2( 128, 240 )
 
 [node name="PlayerSpawnPosition" type="Position2D" parent="."]
-position = Vector2( 128, 240 )
+position = Vector2( 126, 239 )
 __meta__ = {
 "_gizmo_extents_": 8.0
 }
