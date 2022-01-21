@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://texture_atlases/red_projectile_0001.tres" type="Texture" id=1]
-[ext_resource path="res://packed_scenes/projectiles/Projectile.tscn" type="PackedScene" id=3]
+[ext_resource path="res://packed_scenes/actors/projectiles/Projectile.tscn" type="PackedScene" id=3]
 
 [node name="EnemyProjectile" instance=ExtResource( 3 )]
 

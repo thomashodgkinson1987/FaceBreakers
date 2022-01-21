@@ -1,0 +1,55 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scripts/Actors/Enemies/PinkHead/PinkHead.cs" type="Script" id=1]
+[ext_resource path="res://texture_atlases/pink_head_0001.tres" type="Texture" id=2]
+[ext_resource path="res://packed_scenes/actors/projectiles/EnemyProjectile.tscn" type="PackedScene" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 5.5, 7 )
+
+[sub_resource type="CapsuleShape2D" id=2]
+radius = 5.5
+height = 3.0
+
+[node name="PinkHead" type="Node2D"]
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
+ProjectilePackedScene = ExtResource( 3 )
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( -0.5, 0 )
+texture = ExtResource( 2 )
+
+[node name="Body" type="KinematicBody2D" parent="."]
+collision_layer = 2
+collision_mask = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Body"]
+visible = false
+shape = SubResource( 1 )
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 128
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+visible = false
+shape = SubResource( 2 )
+
+[node name="ProjectileSpawnPosition" type="Position2D" parent="."]
+position = Vector2( 0, 4.5 )
+rotation = 3.14159
+__meta__ = {
+"_gizmo_extents_": 8.0
+}
+
+[node name="ProjectileSpawnTimer" type="Timer" parent="."]
+process_mode = 0
+autostart = true
+
+[node name="Projectiles" type="Node" parent="."]
+
+[connection signal="area_entered" from="Hitbox" to="." method="OnAreaEnteredHitbox"]
+[connection signal="body_entered" from="Hitbox" to="." method="OnBodyEnteredHitbox"]

@@ -6,12 +6,13 @@ public class MainSceneController : Node2D
 	#region Nodes
 
 	private GameHUDController node_gameHUDController;
-	private Player node_player;
-	private Position2D node_playerSpawnPosition;
 
-	private Node2D node_enemyProjectiles;
-	private Position2D node_enemyProjectileSpawnPosition;
-	private Timer node_enemyProjectileSpawnTimer;
+	private Node2D node_actors;
+	private Node2D node_enemies;
+
+	private Player node_player;
+
+	private Position2D node_playerSpawnPosition;
 
 	#endregion // Nodes
 
@@ -23,6 +24,8 @@ public class MainSceneController : Node2D
 
 	private int _lives = 3;
 	private int _score = 0;
+
+	private int m_enemiesLeft = 0;
 
 	#endregion // Fields
 
@@ -60,12 +63,12 @@ public class MainSceneController : Node2D
 	{
 		node_gameHUDController = GetNode<GameHUDController>("GameHUD");
 
-		node_player = GetNode<Player>("Player");
-		node_playerSpawnPosition = GetNode<Position2D>("PlayerSpawnPosition");
+		node_actors = GetNode<Node2D>("Actors");
+		node_enemies = node_actors.GetNode<Node2D>("Enemies");
 
-		node_enemyProjectiles = GetNode<Node2D>("EnemyProjectiles");
-		node_enemyProjectileSpawnPosition = GetNode<Position2D>("EnemyProjectileSpawnPosition");
-		node_enemyProjectileSpawnTimer = GetNode<Timer>("EnemyProjectileSpawnTimer");
+		node_player = node_actors.GetNode<Player>("Player");
+
+		node_playerSpawnPosition = GetNode<Position2D>("PlayerSpawnPosition");
 	}
 
 	public override void _Ready()
@@ -74,32 +77,19 @@ public class MainSceneController : Node2D
 		Score = 0;
 
 		node_player.Connect(nameof(Player.OnHit), this, nameof(OnPlayerHit));
+
+		foreach(PinkHead pinkHead in node_enemies.GetChildren())
+		{
+			pinkHead.Connect(nameof(PinkHead.OnHit), this, nameof(OnEnemyHit));
+			m_enemiesLeft++;
+		}
 	}
 
 	#endregion // Godot methods
 
 
 
-	#region Public methods
-
-	public void FireEnemyProjectile()
-	{
-		Projectile projectile = m_enemyProjectilePackedScene.Instance<Projectile>();
-		node_enemyProjectiles.AddChild(projectile);
-		projectile.GlobalPosition = node_enemyProjectileSpawnPosition.GlobalPosition;
-		projectile.Rotation = node_enemyProjectileSpawnPosition.Rotation;
-	}
-
-	#endregion // Public methods
-
-
-
 	#region Private methods
-
-	private void OnEnemyProjectileSpawnTimerTimeout()
-	{
-		FireEnemyProjectile();
-	}
 
 	private void OnPlayerHit()
 	{
@@ -118,6 +108,11 @@ public class MainSceneController : Node2D
 	private void OnEnemyHit()
 	{
 		Score += 100;
+		m_enemiesLeft--;
+		if (m_enemiesLeft <= 0)
+		{
+			GetTree().ReloadCurrentScene();
+		}
 	}
 
 	#endregion // Private methods

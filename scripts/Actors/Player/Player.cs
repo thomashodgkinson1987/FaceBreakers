@@ -62,11 +62,10 @@ public class Player : Node2D
 	#region Fields
 
 	private Dictionary<EState, PlayerState> m_states;
-	private PlayerState m_state;
-
 	private Dictionary<ESound, AudioStreamPlayer> m_sounds;
-
 	private Dictionary<EAnimation, string> m_animations;
+	
+	private PlayerState m_state;
 
 	#endregion // Fields
 
