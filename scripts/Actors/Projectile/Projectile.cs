@@ -15,14 +15,14 @@ public class Projectile : Node2D
 
 	#region Nodes
 
-	private Node node_audioStreamPlayers;
-	private AudioStreamPlayer node_audioStreamPlayer_init;
-	private AudioStreamPlayer node_audioStreamPlayer_die;
+	private Node node_sounds;
+	private AudioStreamPlayer node_sounds_init;
+	private AudioStreamPlayer node_sounds_die;
 
 	private Sprite node_sprite;
 
-	private Area2D node_area2D;
-	private CollisionShape2D node_collisionShape2D;
+	private Area2D node_hitbox;
+	private CollisionShape2D node_hitbox_collisionShape;
 
 	#endregion // Nodes
 
@@ -31,6 +31,8 @@ public class Projectile : Node2D
 	#region Properties
 
 	[Export] public float Speed { get; set; } = 128f;
+	public Vector2 Velocity { get; set; } = Vector2.Zero;
+
 	[Export] public float Lifetime { get; set; } = 8f;
 	public float LifetimeTimer { get; set; } = 0f;
 
@@ -41,10 +43,9 @@ public class Projectile : Node2D
 	#region Fields
 
 	private Dictionary<EState, ProjectileState> m_states;
-	private ProjectileState m_state;
-
 	private Dictionary<ESound, AudioStreamPlayer> m_sounds;
 
+	private ProjectileState m_state;
 
 	#endregion // Fields
 
@@ -56,12 +57,12 @@ public class Projectile : Node2D
 	{
 		node_sprite = GetNode<Sprite>("Sprite");
 
-		node_area2D = GetNode<Area2D>("Area2D");
-		node_collisionShape2D = node_area2D.GetNode<CollisionShape2D>("CollisionShape2D");
+		node_sounds = GetNode<Node>("Sounds");
+		node_sounds_init = node_sounds.GetNode<AudioStreamPlayer>("Init");
+		node_sounds_die = node_sounds.GetNode<AudioStreamPlayer>("Die");
 
-		node_audioStreamPlayers = GetNode<Node>("AudioStreamPlayers");
-		node_audioStreamPlayer_init = node_audioStreamPlayers.GetNode<AudioStreamPlayer>("AudioStreamPlayer_Init");
-		node_audioStreamPlayer_die = node_audioStreamPlayers.GetNode<AudioStreamPlayer>("AudioStreamPlayer_Die");
+		node_hitbox = GetNode<Area2D>("Hitbox");
+		node_hitbox_collisionShape = node_hitbox.GetNode<CollisionShape2D>("CollisionShape2D");
 	}
 
 	public override void _Ready()
@@ -73,11 +74,11 @@ public class Projectile : Node2D
 		m_states.Add(EState.Die, new ProjectileState_Die(this));
 		m_states.Add(EState.Free, new ProjectileState_Free(this));
 
-		m_state = m_states[EState.Null];
-
 		m_sounds = new Dictionary<ESound, AudioStreamPlayer>();
-		m_sounds.Add(ESound.Init, node_audioStreamPlayer_init);
-		m_sounds.Add(ESound.Die, node_audioStreamPlayer_die);
+		m_sounds.Add(ESound.Init, node_sounds_init);
+		m_sounds.Add(ESound.Die, node_sounds_die);
+
+		m_state = m_states[EState.Null];
 
 		Set_State(EState.Init);
 	}
@@ -106,20 +107,41 @@ public class Projectile : Node2D
 	}
 
 	public void Play_Sound(ESound sound) => m_sounds[sound].Play();
-	public bool Get_SoundPlaying(ESound sound) => m_sounds[sound].Playing;
+	public void Stop_Sound(ESound sound) => m_sounds[sound].Stop();
+	public void Stop_Sound_All()
+	{
+		foreach (KeyValuePair<ESound, AudioStreamPlayer> kvp in m_sounds)
+		{
+			kvp.Value.Stop();
+		}
+	}
+
+	public bool Get_Sound_Playing(ESound sound) => m_sounds[sound].Playing;
 
 	public bool Get_Visible() => Visible;
 	public void Set_Visible(bool visible) => Visible = visible;
 	public void Toggle_Visible() => Visible = !Visible;
 
-	public bool Get_CollisionEnabled() => !node_collisionShape2D.Disabled;
-	public void Set_CollisionEnabled(bool enabled) => node_collisionShape2D.Disabled = !enabled;
-	public void Toggle_CollisionEnabled() => node_collisionShape2D.Disabled = !node_collisionShape2D.Disabled;
+	public void Set_CollisionEnabled(bool enabled)
+	{
+		node_hitbox_collisionShape.Disabled = !enabled;
+	}
 
-	public void OnAreaEntered(Area2D area) => m_state.OnAreaEntered(area);
-	public void OnBodyEntered(PhysicsBody2D body) => m_state.OnBodyEntered(body);
+	public void Move(float delta)
+	{
+		Translate(Velocity * delta);
+	}
 
 	#endregion // Public methods
+
+
+
+	#region Private methods
+
+	private void OnAreaEnteredHitbox(Area2D area) => m_state.OnAreaEnteredHitbox(area);
+	private void OnBodyEnteredHitbox(PhysicsBody2D body) => m_state.OnBodyEnteredHitbox(body);
+
+	#endregion // Private methods
 
 }
 

@@ -73,12 +73,13 @@ public class MainSceneController : Node2D
 
 	public override void _Ready()
 	{
-		Lives = 3;
-		Score = 0;
+		node_gameHUDController.Lives = _lives;
+		node_gameHUDController.Score = _score;
 
+		node_player.Lives = _lives;
 		node_player.Connect(nameof(Player.OnHit), this, nameof(OnPlayerHit));
 
-		foreach(PinkHead pinkHead in node_enemies.GetChildren())
+		foreach (PinkHead pinkHead in node_enemies.GetChildren())
 		{
 			pinkHead.Connect(nameof(PinkHead.OnHit), this, nameof(OnEnemyHit));
 			m_enemiesLeft++;
@@ -96,7 +97,6 @@ public class MainSceneController : Node2D
 		if (Lives > 0)
 		{
 			Lives -= 1;
-			node_player.Set_State(Player.EState.Init);
 			node_player.Position = node_playerSpawnPosition.Position;
 		}
 		else

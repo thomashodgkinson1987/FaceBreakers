@@ -22,26 +22,26 @@ public class PlayerInputController
 
 	#region Properties
 
-	private float _directionX = 0;
-	private float _directionY = 0;
+	private int _directionX = 0;
+	private int _directionY = 0;
 
-	public float DirectionX
+	public int DirectionX
 	{
 		get => _directionX;
 		set
 		{
-			if (value < -0.5f) _directionX = -1f;
-			else if (value > 0.5f) _directionX = 1f;
+			if (value < 0) _directionX = -1;
+			else if (value > 0) _directionX = 1;
 			else _directionX = 0;
 		}
 	}
-	public float DirectionY
+	public int DirectionY
 	{
 		get => _directionY;
 		set
 		{
-			if (value < -0.5f) _directionY = -1f;
-			else if (value > 0.5f) _directionY = 1f;
+			if (value < 0) _directionY = -1;
+			else if (value > 0) _directionY = 1;
 			else _directionY = 0;
 		}
 	}
@@ -50,8 +50,8 @@ public class PlayerInputController
 		get => new Vector2(DirectionX, DirectionY);
 		set
 		{
-			DirectionX = value.x;
-			DirectionY = value.y;
+			DirectionX = (int)value.x;
+			DirectionY = (int)value.y;
 		}
 	}
 

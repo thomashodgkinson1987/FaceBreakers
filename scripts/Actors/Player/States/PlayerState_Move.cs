@@ -7,7 +7,6 @@ public class PlayerState_Move : PlayerState
 
 	private bool m_isHit = false;
 	private bool m_wasHit = false;
-
 	private bool m_isShootQueued = false;
 
 	#endregion // Fields
@@ -24,17 +23,12 @@ public class PlayerState_Move : PlayerState
 
 	#region PlayerState methods
 
-	public override void OnEnter()
-	{
-		m_player.InputController.Reset();
-		m_player.Set_Animation(Player.EAnimation.Straight);
-	}
+	public override void OnEnter() { }
 
 	public override void OnExit()
 	{
 		m_wasHit = false;
 		m_isHit = false;
-
 		m_isShootQueued = false;
 	}
 
@@ -42,23 +36,25 @@ public class PlayerState_Move : PlayerState
 	{
 		if (!m_isHit)
 		{
-			m_player.Velocity = m_player.InputController.Direction * m_player.Speed;
-			m_player.Move();
-		}
+			Vector2 direction = m_player.InputController.Direction;
+			float speed = m_player.Speed;
+			Vector2 velocity = direction * speed;
+			m_player.Velocity = velocity;
+			m_player.Move(delta);
 
-		if (!m_isHit)
-		{
-			if (m_isShootQueued)
+			if (!m_isHit)
 			{
-				m_isShootQueued = false;
-				m_player.ShootProjectile();
+				if (m_isShootQueued)
+				{
+					m_isShootQueued = false;
+					m_player.ShootProjectile();
+				}
 			}
 		}
 
 		if (m_isHit && !m_wasHit)
 		{
 			m_wasHit = true;
-
 			m_player.Set_State(Player.EState.Hit);
 		}
 	}
@@ -69,26 +65,20 @@ public class PlayerState_Move : PlayerState
 		{
 			m_player.InputController.Poll();
 
-			if (m_player.InputController.IsJustPressed_Shoot)
-			{
-				m_isShootQueued = true;
-			}
+			m_isShootQueued = m_player.InputController.IsJustPressed_Shoot;
+			int directionX = m_player.InputController.DirectionX;
 
-			if (m_player.InputController.DirectionX == 0)
+			if (directionX == 0)
 			{
 				m_player.Set_Animation(Player.EAnimation.Straight);
 			}
-			else if (m_player.InputController.DirectionX == -1)
+			else if (directionX == -1)
 			{
 				m_player.Set_Animation(Player.EAnimation.Left);
 			}
-			else if (m_player.InputController.DirectionX == 1)
+			else if (directionX == 1)
 			{
 				m_player.Set_Animation(Player.EAnimation.Right);
-			}
-			else
-			{
-				m_player.Set_Animation(Player.EAnimation.Default);
 			}
 		}
 	}

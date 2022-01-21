@@ -15,7 +15,19 @@ public class PlayerState_Hit : PlayerState
 
 	public override void OnEnter()
 	{
-		m_player.EmitSignal(nameof(Player.OnHit));
+		m_player.SetProjectileStates(Projectile.EState.Die);
+
+		if (m_player.Lives > 0)
+		{
+			m_player.Lives -= 1;
+			m_player.EmitSignal(nameof(Player.OnHit));
+			m_player.Set_State(Player.EState.Move);
+		}
+		else
+		{
+			m_player.EmitSignal(nameof(Player.OnHit));
+			m_player.Set_State(Player.EState.Die);
+		}
 	}
 
 	public override void OnExit() { }

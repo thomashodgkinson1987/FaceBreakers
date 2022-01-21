@@ -5,8 +5,11 @@ public class ProjectileState_Move : ProjectileState
 
 	#region Fields
 
-	private bool m_wasDieConditionMet = false;
-	private bool m_isDieConditionMet = false;
+	private bool m_wasHit = false;
+	private bool m_isHit = false;
+
+	private bool m_wasTimeout = false;
+	private bool m_isTimeout = false;
 
 	#endregion // Fields
 
@@ -22,48 +25,63 @@ public class ProjectileState_Move : ProjectileState
 
 	#region Public methods
 
-	public override void OnEnter() { }
+	public override void OnEnter()
+	{
+		Vector2 direction = (Vector2.Up).Rotated(m_projectile.Rotation);
+		m_projectile.Velocity = direction * m_projectile.Speed;
+	}
 
-	public override void OnExit() { }
+	public override void OnExit()
+	{
+		m_wasHit = false;
+		m_isHit = false;
+
+		m_wasTimeout = false;
+		m_isTimeout = false;
+
+		m_projectile.LifetimeTimer = 0f;
+	}
 
 	public override void OnPhysicsProcess(float delta)
 	{
-		if (!m_isDieConditionMet)
+		if (!m_isTimeout)
 		{
 			if (m_projectile.LifetimeTimer < m_projectile.Lifetime)
 			{
 				m_projectile.LifetimeTimer += delta;
 				if (m_projectile.LifetimeTimer < m_projectile.Lifetime)
 				{
-					Vector2 translation = (Vector2.Up).Rotated(m_projectile.Rotation);
-					translation *= m_projectile.Speed * delta;
-					m_projectile.Translate(translation);
+					m_projectile.Move(delta);
 				}
 				else
 				{
-					m_projectile.Set_State(Projectile.EState.Free);
+					m_isTimeout = true;
 				}
 			}
 		}
-		
-		if (m_isDieConditionMet && !m_wasDieConditionMet)
-		{
-			m_wasDieConditionMet = true;
 
+		if (m_isTimeout && !m_wasTimeout)
+		{
+			m_wasTimeout = true;
+			m_projectile.Set_State(Projectile.EState.Free);
+		}
+		else if (m_isHit && !m_wasHit)
+		{
+			m_wasHit = true;
 			m_projectile.Set_State(Projectile.EState.Die);
 		}
 	}
 
 	public override void OnProcess(float delta) { }
 
-	public override void OnAreaEntered(Area2D area)
+	public override void OnAreaEnteredHitbox(Area2D area)
 	{
-		m_isDieConditionMet = true;
+		m_isHit = true;
 	}
 
-	public override void OnBodyEntered(PhysicsBody2D body)
+	public override void OnBodyEnteredHitbox(PhysicsBody2D body)
 	{
-		m_isDieConditionMet = true;
+		m_isHit = true;
 	}
 
 	#endregion // Public methods

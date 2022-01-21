@@ -15,10 +15,11 @@ public class PlayerState_Init : PlayerState
 
 	public override void OnEnter()
 	{
+		m_player.Lives = 3;
 		m_player.Velocity = Vector2.Zero;
 		m_player.InputController.Reset();
-		m_player.StopAllSounds();
-		m_player.FreeAllProjectiles();
+		m_player.Stop_Sound_All();
+		m_player.SetProjectileStates(Projectile.EState.Free);
 		m_player.Set_Visible(true);
 		m_player.Set_CollisionEnabled(true);
 		m_player.Set_Animation(Player.EAnimation.Default);

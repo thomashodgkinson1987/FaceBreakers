@@ -5,8 +5,8 @@ public class ProjectileState_Die : ProjectileState
 
 	#region Fields
 
-	private bool m_wasFreeConditionMet = false;
-	private bool m_isFreeConditionMet = false;
+	private bool m_wasFree = false;
+	private bool m_isFree = false;
 
 	#endregion // Fields
 
@@ -24,36 +24,41 @@ public class ProjectileState_Die : ProjectileState
 
 	public override void OnEnter()
 	{
+		m_projectile.Velocity = Vector2.Zero;
+		m_projectile.Stop_Sound_All();
 		m_projectile.Play_Sound(Projectile.ESound.Die);
 		m_projectile.Set_Visible(false);
 		m_projectile.Set_CollisionEnabled(false);
 	}
 
-	public override void OnExit() { }
-
-	public override void OnPhysicsProcess(float delta) { }
-
-	public override void OnProcess(float delta)
+	public override void OnExit()
 	{
-		if (!m_isFreeConditionMet)
+		m_wasFree = false;
+		m_isFree = false;
+	}
+
+	public override void OnPhysicsProcess(float delta)
+	{
+		if (!m_isFree)
 		{
-			if (!m_projectile.Get_SoundPlaying(Projectile.ESound.Init) && !m_projectile.Get_SoundPlaying(Projectile.ESound.Die))
+			if (!m_projectile.Get_Sound_Playing(Projectile.ESound.Die))
 			{
-				m_isFreeConditionMet = true;
+				m_isFree = true;
 			}
 		}
 
-		if (m_isFreeConditionMet && !m_wasFreeConditionMet)
+		if (m_isFree && !m_wasFree)
 		{
-			m_wasFreeConditionMet = true;
-
+			m_wasFree = true;
 			m_projectile.Set_State(Projectile.EState.Free);
 		}
 	}
 
-	public override void OnAreaEntered(Area2D area) { }
+	public override void OnProcess(float delta) { }
 
-	public override void OnBodyEntered(PhysicsBody2D body) { }
+	public override void OnAreaEnteredHitbox(Area2D area) { }
+
+	public override void OnBodyEnteredHitbox(PhysicsBody2D body) { }
 
 	#endregion // Public methods
 

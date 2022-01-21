@@ -7,11 +7,11 @@
 [ext_resource path="res://sounds/enemy_hit_0001.ogg" type="AudioStream" id=5]
 [ext_resource path="res://packed_scenes/actors/projectiles/PlayerProjectile.tscn" type="PackedScene" id=6]
 
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 8, 8 )
-
 [sub_resource type="CircleShape2D" id=2]
 radius = 8.0
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 8, 8 )
 
 [node name="Player" type="Node2D"]
 script = ExtResource( 2 )
@@ -20,44 +20,58 @@ __meta__ = {
 }
 PackedScene_Projectile = ExtResource( 6 )
 
-[node name="AudioStreamPlayers" type="Node" parent="."]
+[node name="Sounds" type="Node" parent="."]
 
-[node name="AudioStreamPlayer_Shoot" type="AudioStreamPlayer" parent="AudioStreamPlayers"]
+[node name="Shoot" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource( 3 )
 
-[node name="AudioStreamPlayer_Hit" type="AudioStreamPlayer" parent="AudioStreamPlayers"]
+[node name="Hit" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource( 5 )
 
-[node name="AudioStreamPlayer_Die" type="AudioStreamPlayer" parent="AudioStreamPlayers"]
+[node name="Die" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource( 4 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-modulate = Color( 0, 1, 0.929412, 1 )
 frames = ExtResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
 
-[node name="KinematicBody2D_Body" type="KinematicBody2D" parent="."]
-collision_mask = 16
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 96
+__meta__ = {
+"_edit_lock_": true
+}
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="KinematicBody2D_Body"]
-visible = false
-shape = SubResource( 1 )
-
-[node name="Area2D_Hitbox" type="Area2D" parent="."]
-collision_layer = 64
-collision_mask = 10
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D_Hitbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
 visible = false
 shape = SubResource( 2 )
+__meta__ = {
+"_edit_lock_": true
+}
 
-[node name="Position2D_Projectile" type="Position2D" parent="."]
+[node name="Body" type="KinematicBody2D" parent="."]
+collision_mask = 8
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Body"]
 visible = false
+shape = SubResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="ProjectileSpawnPosition" type="Position2D" parent="."]
 position = Vector2( 0, -8 )
 __meta__ = {
+"_edit_lock_": true,
 "_gizmo_extents_": 8.0
 }
 
 [node name="Projectiles" type="Node" parent="."]
 
-[connection signal="area_entered" from="Area2D_Hitbox" to="." method="OnAreaEnteredHitbox"]
-[connection signal="body_entered" from="Area2D_Hitbox" to="." method="OnBodyEnteredHitbox"]
+[connection signal="area_entered" from="Hitbox" to="." method="OnAreaEnteredHitbox"]
+[connection signal="body_entered" from="Hitbox" to="." method="OnBodyEnteredHitbox"]

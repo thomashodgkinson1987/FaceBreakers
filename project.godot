@@ -149,13 +149,12 @@ player_shoot={
 
 [layer_names]
 
-2d_physics/layer_1="Player"
-2d_physics/layer_2="Enemy"
-2d_physics/layer_3="PlayerProjectile"
-2d_physics/layer_4="EnemyProjectile"
-2d_physics/layer_5="Solid"
-2d_physics/layer_7="PlayerHitBox"
-2d_physics/layer_8="EnemyHitBox"
+2d_physics/layer_1="PlayerBody"
+2d_physics/layer_2="PlayerHitbox"
+2d_physics/layer_3="PlayerProjectileHitbox"
+2d_physics/layer_4="PlayerBoundary"
+2d_physics/layer_6="EnemyHitbox"
+2d_physics/layer_7="EnemyProjectileHitbox"
 
 [physics]
 

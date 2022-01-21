@@ -20,10 +20,129 @@ __meta__ = {
 }
 m_enemyProjectilePackedScene = ExtResource( 5 )
 
-[node name="Actors" type="Node2D" parent="."]
+[node name="Walls" type="Node2D" parent="."]
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
 
-[node name="Player" parent="Actors" instance=ExtResource( 4 )]
-position = Vector2( 128, 240 )
+[node name="LeftWall" type="Node2D" parent="Walls"]
+position = Vector2( -8, 128 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
+
+[node name="Sprite" type="Sprite" parent="Walls/LeftWall"]
+scale = Vector2( 16, 256 )
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Walls/LeftWall"]
+collision_layer = 8
+collision_mask = 0
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/LeftWall/StaticBody2D"]
+visible = false
+shape = SubResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="RightWall" type="Node2D" parent="Walls"]
+position = Vector2( 264, 128 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
+
+[node name="Sprite" type="Sprite" parent="Walls/RightWall"]
+scale = Vector2( 16, 256 )
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Walls/RightWall"]
+collision_layer = 8
+collision_mask = 0
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/RightWall/StaticBody2D"]
+visible = false
+shape = SubResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="TopWall" type="Node2D" parent="Walls"]
+position = Vector2( 128, -8 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
+
+[node name="Sprite" type="Sprite" parent="Walls/TopWall"]
+scale = Vector2( 256, 16 )
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Walls/TopWall"]
+collision_layer = 8
+collision_mask = 0
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/TopWall/StaticBody2D"]
+visible = false
+shape = SubResource( 2 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="BottomWall" type="Node2D" parent="Walls"]
+position = Vector2( 128, 264 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
+
+[node name="Sprite" type="Sprite" parent="Walls/BottomWall"]
+scale = Vector2( 256, 16 )
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Walls/BottomWall"]
+collision_layer = 8
+collision_mask = 0
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/BottomWall/StaticBody2D"]
+visible = false
+shape = SubResource( 2 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Actors" type="Node2D" parent="."]
 
 [node name="Enemies" type="Node2D" parent="Actors"]
 
@@ -48,6 +167,9 @@ position = Vector2( 192, 64 )
 [node name="PinkHead7" parent="Actors/Enemies" instance=ExtResource( 6 )]
 position = Vector2( 224, 32 )
 
+[node name="Player" parent="Actors" instance=ExtResource( 4 )]
+position = Vector2( 128, 240 )
+
 [node name="PlayerSpawnPosition" type="Position2D" parent="."]
 position = Vector2( 128, 240 )
 __meta__ = {
@@ -57,77 +179,3 @@ __meta__ = {
 [node name="GameHUD" parent="." instance=ExtResource( 1 )]
 margin_right = 256.0
 margin_bottom = 256.0
-
-[node name="Walls" type="Node2D" parent="."]
-
-[node name="LeftWall" type="Node2D" parent="Walls"]
-position = Vector2( -8, 128 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="Sprite" type="Sprite" parent="Walls/LeftWall"]
-scale = Vector2( 16, 256 )
-texture = ExtResource( 3 )
-
-[node name="StaticBody2D" type="StaticBody2D" parent="Walls/LeftWall"]
-collision_layer = 16
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/LeftWall/StaticBody2D"]
-visible = false
-shape = SubResource( 1 )
-
-[node name="RightWall" type="Node2D" parent="Walls"]
-position = Vector2( 264, 128 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="Sprite" type="Sprite" parent="Walls/RightWall"]
-scale = Vector2( 16, 256 )
-texture = ExtResource( 3 )
-
-[node name="StaticBody2D" type="StaticBody2D" parent="Walls/RightWall"]
-collision_layer = 16
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/RightWall/StaticBody2D"]
-visible = false
-shape = SubResource( 1 )
-
-[node name="TopWall" type="Node2D" parent="Walls"]
-position = Vector2( 128, -8 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="Sprite" type="Sprite" parent="Walls/TopWall"]
-scale = Vector2( 256, 16 )
-texture = ExtResource( 3 )
-
-[node name="StaticBody2D" type="StaticBody2D" parent="Walls/TopWall"]
-collision_layer = 16
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/TopWall/StaticBody2D"]
-visible = false
-shape = SubResource( 2 )
-
-[node name="BottomWall" type="Node2D" parent="Walls"]
-position = Vector2( 128, 264 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="Sprite" type="Sprite" parent="Walls/BottomWall"]
-scale = Vector2( 256, 16 )
-texture = ExtResource( 3 )
-
-[node name="StaticBody2D" type="StaticBody2D" parent="Walls/BottomWall"]
-collision_layer = 16
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/BottomWall/StaticBody2D"]
-visible = false
-shape = SubResource( 2 )

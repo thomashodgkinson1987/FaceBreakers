@@ -7,11 +7,8 @@ public class PinkHead : Node2D
 
 	private Sprite node_sprite;
 
-	private KinematicBody2D node_body;
-	private CollisionShape2D node_bodyShape;
-
 	private Area2D node_hitbox;
-	private CollisionShape2D node_hitboxShape;
+	private CollisionShape2D node_hitbox_collisionShape;
 
 	private Position2D node_projectileSpawnPosition;
 	private Timer node_projectileSpawnTimer;
@@ -43,6 +40,9 @@ public class PinkHead : Node2D
 	private bool m_wasHit = false;
 	private bool m_isHit = false;
 
+	private Vector2 m_originalPosition = Vector2.Zero;
+	private float m_timer = 0f;
+
 	#endregion // Fields
 
 
@@ -53,11 +53,8 @@ public class PinkHead : Node2D
 	{
 		node_sprite = GetNode<Sprite>("Sprite");
 
-		node_body = GetNode<KinematicBody2D>("Body");
-		node_bodyShape = node_body.GetNode<CollisionShape2D>("CollisionShape2D");
-
 		node_hitbox = GetNode<Area2D>("Hitbox");
-		node_hitboxShape = node_hitbox.GetNode<CollisionShape2D>("CollisionShape2D");
+		node_hitbox_collisionShape = node_hitbox.GetNode<CollisionShape2D>("CollisionShape2D");
 
 		node_projectileSpawnPosition = GetNode<Position2D>("ProjectileSpawnPosition");
 		node_projectileSpawnTimer = GetNode<Timer>("ProjectileSpawnTimer");
@@ -72,26 +69,19 @@ public class PinkHead : Node2D
 		m_originalPosition = Position;
 	}
 
-	private float m_timer = 0f;
-	private Vector2 m_originalPosition;
-
 	public override void _PhysicsProcess(float delta)
 	{
 		if (!m_isHit)
 		{
 			m_timer += delta;
-
 			Vector2 position = Position;
-
 			position.x = m_originalPosition.x + (Mathf.Sin(m_timer * 2) * 10f);
-
 			Position = position;
 		}
 
 		if (m_isHit && !m_wasHit)
 		{
 			m_wasHit = true;
-
 			EmitSignal(nameof(OnHit));
 			QueueFree();
 		}
@@ -106,9 +96,9 @@ public class PinkHead : Node2D
 	private void SpawnProjectile()
 	{
 		Projectile projectile = ProjectilePackedScene.Instance<Projectile>();
+		projectile.Rotation = node_projectileSpawnPosition.Rotation;
 		node_projectiles.AddChild(projectile);
 		projectile.GlobalPosition = node_projectileSpawnPosition.GlobalPosition;
-		projectile.Rotation = node_projectileSpawnPosition.Rotation;
 	}
 
 	private void OnAreaEnteredHitbox(Area2D area)

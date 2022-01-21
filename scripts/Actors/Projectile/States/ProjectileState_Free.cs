@@ -15,6 +15,8 @@ public class ProjectileState_Free : ProjectileState
 
 	public override void OnEnter()
 	{
+		m_projectile.Set_Visible(false);
+		m_projectile.Set_CollisionEnabled(false);
 		m_projectile.QueueFree();
 	}
 
@@ -24,9 +26,9 @@ public class ProjectileState_Free : ProjectileState
 
 	public override void OnProcess(float delta) { }
 
-	public override void OnAreaEntered(Area2D area) { }
+	public override void OnAreaEnteredHitbox(Area2D area) { }
 
-	public override void OnBodyEntered(PhysicsBody2D body) { }
+	public override void OnBodyEnteredHitbox(PhysicsBody2D body) { }
 
 	#endregion // Public methods
 

@@ -29,9 +29,9 @@ public abstract class ProjectileState
 
 	public abstract void OnProcess(float delta);
 
-	public abstract void OnAreaEntered(Area2D area);
+	public abstract void OnAreaEnteredHitbox(Area2D area);
 
-	public abstract void OnBodyEntered(PhysicsBody2D body);
+	public abstract void OnBodyEnteredHitbox(PhysicsBody2D body);
 
 	#endregion // Public methods
 
