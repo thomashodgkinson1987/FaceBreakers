@@ -27,7 +27,7 @@ public class PlayerState_Move : PlayerState
 	public override void OnEnter()
 	{
 		m_player.InputController.Reset();
-		m_player.Set_Animation("straight");
+		m_player.Set_Animation(Player.EAnimation.Straight);
 	}
 
 	public override void OnExit()
@@ -76,29 +76,29 @@ public class PlayerState_Move : PlayerState
 
 			if (m_player.InputController.DirectionX == 0)
 			{
-				m_player.Set_Animation("straight");
+				m_player.Set_Animation(Player.EAnimation.Straight);
 			}
 			else if (m_player.InputController.DirectionX == -1)
 			{
-				m_player.Set_Animation("left");
+				m_player.Set_Animation(Player.EAnimation.Left);
 			}
 			else if (m_player.InputController.DirectionX == 1)
 			{
-				m_player.Set_Animation("right");
+				m_player.Set_Animation(Player.EAnimation.Right);
 			}
 			else
 			{
-				m_player.Set_Animation("default");
+				m_player.Set_Animation(Player.EAnimation.Default);
 			}
 		}
 	}
 
-	public override void OnAreaEntered(Area2D area)
+	public override void OnAreaEnteredHitbox(Area2D area)
 	{
 		m_isHit = true;
 	}
 
-	public override void OnBodyEntered(PhysicsBody2D body)
+	public override void OnBodyEnteredHitbox(PhysicsBody2D body)
 	{
 		m_isHit = true;
 	}

@@ -8,6 +8,7 @@ public class Player : Node2D
 
 	public enum EState { Null, Init, Move, Die, Free }
 	public enum ESound { Shoot, Hit, Die }
+	public enum EAnimation { Default, Straight, Left, Right }
 
 	#endregion // Enums
 
@@ -22,8 +23,11 @@ public class Player : Node2D
 
 	private AnimatedSprite node_animatedSprite;
 
-	private KinematicBody2D node_kinematicBody2D;
-	private CollisionShape2D node_collisionShape2D;
+	private KinematicBody2D node_kinematicBody2D_body;
+	private CollisionShape2D node_collisionShape2D_body;
+
+	private Area2D node_area2D_hitbox;
+	private CollisionShape2D node_collisionShape2D_hitbox;
 
 	private Position2D node_position2D_projectile;
 
@@ -54,6 +58,8 @@ public class Player : Node2D
 
 	private Dictionary<ESound, AudioStreamPlayer> m_sounds;
 
+	private Dictionary<EAnimation, string> m_animations;
+
 	#endregion // Fields
 
 
@@ -69,8 +75,11 @@ public class Player : Node2D
 
 		node_animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
 
-		node_kinematicBody2D = GetNode<KinematicBody2D>("KinematicBody2D");
-		node_collisionShape2D = node_kinematicBody2D.GetNode<CollisionShape2D>("CollisionShape2D");
+		node_kinematicBody2D_body = GetNode<KinematicBody2D>("KinematicBody2D_Body");
+		node_collisionShape2D_body = node_kinematicBody2D_body.GetNode<CollisionShape2D>("CollisionShape2D");
+
+		node_area2D_hitbox = GetNode<Area2D>("Area2D_Hitbox");
+		node_collisionShape2D_hitbox = node_area2D_hitbox.GetNode<CollisionShape2D>("CollisionShape2D");
 
 		node_position2D_projectile = GetNode<Position2D>("Position2D_Projectile");
 
@@ -92,6 +101,12 @@ public class Player : Node2D
 		m_sounds.Add(ESound.Shoot, node_audioStreamPlayer_shoot);
 		m_sounds.Add(ESound.Hit, node_audioStreamPlayer_hit);
 		m_sounds.Add(ESound.Die, node_audioStreamPlayer_die);
+
+		m_animations = new Dictionary<EAnimation, string>();
+		m_animations.Add(EAnimation.Default, "default");
+		m_animations.Add(EAnimation.Straight, "straight");
+		m_animations.Add(EAnimation.Left, "left");
+		m_animations.Add(EAnimation.Right, "right");
 
 		InputController = new PlayerInputController();
 
@@ -121,7 +136,7 @@ public class Player : Node2D
 		m_state.OnEnter();
 	}
 
-	public void Set_Animation(string animationName) => node_animatedSprite.Play(animationName);
+	public void Set_Animation(EAnimation animation) => node_animatedSprite.Play(m_animations[animation]);
 
 	public void Play_Sound(ESound sound) => m_sounds[sound].Play();
 	public void Stop_Sound(ESound sound) => m_sounds[sound].Stop();
@@ -132,22 +147,28 @@ public class Player : Node2D
 	public void Set_Visible(bool visible) => Visible = visible;
 	public void Toggle_Visible() => Visible = !Visible;
 
-	public bool Get_CollisionEnabled() => !node_collisionShape2D.Disabled;
-	public void Set_CollisionEnabled(bool enabled) => node_collisionShape2D.Disabled = !enabled;
-	public void Toggle_CollisionEnabled() => node_collisionShape2D.Disabled = !node_collisionShape2D.Disabled;
+	public void Set_CollisionEnabled(bool enabled)
+	{
+		node_collisionShape2D_body.Disabled = !enabled;
+		node_collisionShape2D_hitbox.Disabled = !enabled;
+	}
 
-	public void OnAreaEntered(Area2D area) => m_state.OnAreaEntered(area);
-	public void OnBodyEntered(PhysicsBody2D body) => m_state.OnBodyEntered(body);
+	public bool Get_CollisionEnabled_Body() => !node_collisionShape2D_body.Disabled;
+	public void Set_CollisionEnabled_Body(bool enabled) => node_collisionShape2D_body.Disabled = !enabled;
+	public void Toggle_CollisionEnabled_Body() => node_collisionShape2D_body.Disabled = !node_collisionShape2D_body.Disabled;
+
+	public bool Get_CollisionEnabled_Hitbox() => !node_collisionShape2D_hitbox.Disabled;
+	public void Set_CollisionEnabled_Hitbox(bool enabled) => node_collisionShape2D_hitbox.Disabled = !enabled;
+	public void Toggle_CollisionEnabled_Hitbox() => node_collisionShape2D_hitbox.Disabled = !node_collisionShape2D_hitbox.Disabled;
+	
+	public void OnAreaEnteredHitbox(Area2D area) => m_state.OnAreaEnteredHitbox(area);
+	public void OnBodyEnteredHitbox(PhysicsBody2D body) => m_state.OnBodyEnteredHitbox(body);
 
 	public void Move()
 	{
-		Vector2 velocity = node_kinematicBody2D.MoveAndSlide(Velocity, Vector2.Zero);
-		Vector2 position = node_kinematicBody2D.GlobalPosition;
-
-		node_kinematicBody2D.Position = Vector2.Zero;
-
-		Velocity = velocity;
-		Position = position;
+		Velocity = node_kinematicBody2D_body.MoveAndSlide(Velocity, Vector2.Zero);
+		Position = node_kinematicBody2D_body.GlobalPosition;
+		node_kinematicBody2D_body.Position = Vector2.Zero;
 	}
 
 	public void ShootProjectile()
@@ -155,7 +176,7 @@ public class Player : Node2D
 		//TODO: make a pool for this
 		Projectile projectile = PackedScene_Projectile.Instance() as Projectile;
 		node_projectiles.AddChild(projectile);
-		projectile.GlobalPosition = node_position2D_projectile.GlobalPosition;
+		projectile.Position = node_position2D_projectile.GlobalPosition;
 		projectile.Rotation = Rotation;
 
 		Play_Sound(ESound.Shoot);

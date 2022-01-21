@@ -21,9 +21,9 @@ public class PlayerState_Null : PlayerState
 
 	public override void OnProcess(float delta) { }
 
-	public override void OnAreaEntered(Area2D area) { }
+	public override void OnAreaEnteredHitbox(Area2D area) { }
 
-	public override void OnBodyEntered(PhysicsBody2D body) { }
+	public override void OnBodyEnteredHitbox(PhysicsBody2D body) { }
 
 	#endregion // Public methods
 

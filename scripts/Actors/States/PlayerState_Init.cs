@@ -21,7 +21,7 @@ public class PlayerState_Init : PlayerState
 		m_player.FreeAllProjectiles();
 		m_player.Set_Visible(true);
 		m_player.Set_CollisionEnabled(true);
-		m_player.Set_Animation("default");
+		m_player.Set_Animation(Player.EAnimation.Default);
 		m_player.Set_State(Player.EState.Move);
 	}
 
@@ -31,9 +31,9 @@ public class PlayerState_Init : PlayerState
 
 	public override void OnProcess(float delta) { }
 
-	public override void OnAreaEntered(Area2D area) { }
+	public override void OnAreaEnteredHitbox(Area2D area) { }
 
-	public override void OnBodyEntered(PhysicsBody2D body) { }
+	public override void OnBodyEnteredHitbox(PhysicsBody2D body) { }
 
 	#endregion // Public methods
 

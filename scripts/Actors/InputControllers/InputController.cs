@@ -1,8 +1,25 @@
+using System.Collections.Generic;
 using Godot;
 
 public class PlayerInputController
 {
-	
+
+	#region Enums
+
+	public enum EButton { Left, Right, Up, Down, Shoot }
+
+	#endregion // Enums
+
+
+
+	#region Fields
+
+	private Dictionary<EButton, string> m_buttons;
+
+	#endregion // Fields
+
+
+
 	#region Properties
 
 	private float _directionX = 0;
@@ -46,7 +63,15 @@ public class PlayerInputController
 
 	#region Constructors
 
-	public PlayerInputController() { }
+	public PlayerInputController()
+	{
+		m_buttons = new Dictionary<EButton, string>();
+		m_buttons.Add(EButton.Left, "player_move_left");
+		m_buttons.Add(EButton.Right, "player_move_right");
+		m_buttons.Add(EButton.Up, "player_move_up");
+		m_buttons.Add(EButton.Down, "player_move_down");
+		m_buttons.Add(EButton.Shoot, "player_shoot");
+	}
 
 	#endregion // Constructors
 
@@ -67,12 +92,12 @@ public class PlayerInputController
 		_directionX = 0;
 		_directionY = 0;
 
-		if (Input.IsActionPressed("player_move_left")) _directionX -= 1;
-		if (Input.IsActionPressed("player_move_right")) _directionX += 1;
-		if (Input.IsActionPressed("player_move_up")) _directionY -= 1;
-		if (Input.IsActionPressed("player_move_down")) _directionY += 1;
+		if (Input.IsActionPressed(m_buttons[EButton.Left])) _directionX -= 1;
+		if (Input.IsActionPressed(m_buttons[EButton.Right])) _directionX += 1;
+		if (Input.IsActionPressed(m_buttons[EButton.Up])) _directionY -= 1;
+		if (Input.IsActionPressed(m_buttons[EButton.Down])) _directionY += 1;
 
-		IsJustPressed_Shoot = Input.IsActionJustPressed("player_shoot");
+		IsJustPressed_Shoot = Input.IsActionJustPressed(m_buttons[EButton.Shoot]);
 	}
 
 	#endregion // Public methods

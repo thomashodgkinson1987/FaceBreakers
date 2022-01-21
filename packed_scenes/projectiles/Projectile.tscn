@@ -20,7 +20,7 @@ Lifetime = 2.0
 [node name="AudioStreamPlayer_Init" type="AudioStreamPlayer" parent="AudioStreamPlayers"]
 stream = ExtResource( 2 )
 
-[node name="AudioStreamPlayer_Free" type="AudioStreamPlayer" parent="AudioStreamPlayers"]
+[node name="AudioStreamPlayer_Die" type="AudioStreamPlayer" parent="AudioStreamPlayers"]
 stream = ExtResource( 3 )
 
 [node name="Sprite" type="Sprite" parent="."]
