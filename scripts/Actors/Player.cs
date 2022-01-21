@@ -6,7 +6,7 @@ public class Player : Node2D
 
 	#region Enums
 
-	public enum EState { Null, Init, Move, Die, Free }
+	public enum EState { Null, Init, Move, Hit, Die, Free }
 	public enum ESound { Shoot, Hit, Die }
 	public enum EAnimation { Default, Straight, Left, Right }
 
@@ -34,6 +34,14 @@ public class Player : Node2D
 	private Node node_projectiles;
 
 	#endregion // Nodes
+
+
+
+	#region Signals
+
+	[Signal] public delegate void OnHit();
+
+	#endregion // Signals
 
 
 
@@ -92,6 +100,7 @@ public class Player : Node2D
 		m_states.Add(EState.Null, new PlayerState_Null(this));
 		m_states.Add(EState.Init, new PlayerState_Init(this));
 		m_states.Add(EState.Move, new PlayerState_Move(this));
+		m_states.Add(EState.Hit, new PlayerState_Hit(this));
 		m_states.Add(EState.Die, new PlayerState_Die(this));
 		m_states.Add(EState.Free, new PlayerState_Free(this));
 

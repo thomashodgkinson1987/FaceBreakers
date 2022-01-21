@@ -7,6 +7,7 @@ public class MainSceneController : Node2D
 
 	private GameHUDController node_gameHUDController;
 	private Player node_player;
+	private Position2D node_playerSpawnPosition;
 
 	private Node2D node_enemyProjectiles;
 	private Position2D node_enemyProjectileSpawnPosition;
@@ -58,7 +59,10 @@ public class MainSceneController : Node2D
 	public override void _EnterTree()
 	{
 		node_gameHUDController = GetNode<GameHUDController>("GameHUD");
+
 		node_player = GetNode<Player>("Player");
+		node_playerSpawnPosition = GetNode<Position2D>("PlayerSpawnPosition");
+
 		node_enemyProjectiles = GetNode<Node2D>("EnemyProjectiles");
 		node_enemyProjectileSpawnPosition = GetNode<Position2D>("EnemyProjectileSpawnPosition");
 		node_enemyProjectileSpawnTimer = GetNode<Timer>("EnemyProjectileSpawnTimer");
@@ -68,6 +72,8 @@ public class MainSceneController : Node2D
 	{
 		Lives = 3;
 		Score = 0;
+
+		node_player.Connect(nameof(Player.OnHit), this, nameof(OnPlayerHit));
 	}
 
 	#endregion // Godot methods
@@ -93,6 +99,25 @@ public class MainSceneController : Node2D
 	private void OnEnemyProjectileSpawnTimerTimeout()
 	{
 		FireEnemyProjectile();
+	}
+
+	private void OnPlayerHit()
+	{
+		if (Lives > 0)
+		{
+			Lives -= 1;
+			node_player.Set_State(Player.EState.Init);
+			node_player.Position = node_playerSpawnPosition.Position;
+		}
+		else
+		{
+			GetTree().ReloadCurrentScene();
+		}
+	}
+
+	private void OnEnemyHit()
+	{
+		Score += 100;
 	}
 
 	#endregion // Private methods
