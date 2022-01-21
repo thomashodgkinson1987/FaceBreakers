@@ -41,7 +41,7 @@ public class ProjectileState_Move : ProjectileState
 				}
 				else
 				{
-					m_isDieConditionMet = true;
+					m_projectile.Set_State(Projectile.EState.Free);
 				}
 			}
 		}

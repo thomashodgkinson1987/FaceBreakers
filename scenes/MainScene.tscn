@@ -28,13 +28,25 @@ position = Vector2( 128, 240 )
 [node name="Enemies" type="Node2D" parent="Actors"]
 
 [node name="PinkHead" parent="Actors/Enemies" instance=ExtResource( 6 )]
-position = Vector2( 64, 64 )
+position = Vector2( 32, 32 )
 
 [node name="PinkHead2" parent="Actors/Enemies" instance=ExtResource( 6 )]
-position = Vector2( 128, 64 )
+position = Vector2( 64, 64 )
 
 [node name="PinkHead3" parent="Actors/Enemies" instance=ExtResource( 6 )]
+position = Vector2( 96, 32 )
+
+[node name="PinkHead4" parent="Actors/Enemies" instance=ExtResource( 6 )]
+position = Vector2( 128, 64 )
+
+[node name="PinkHead5" parent="Actors/Enemies" instance=ExtResource( 6 )]
+position = Vector2( 160, 32 )
+
+[node name="PinkHead6" parent="Actors/Enemies" instance=ExtResource( 6 )]
 position = Vector2( 192, 64 )
+
+[node name="PinkHead7" parent="Actors/Enemies" instance=ExtResource( 6 )]
+position = Vector2( 224, 32 )
 
 [node name="PlayerSpawnPosition" type="Position2D" parent="."]
 position = Vector2( 128, 240 )
@@ -60,7 +72,7 @@ texture = ExtResource( 3 )
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Walls/LeftWall"]
 collision_layer = 16
-collision_mask = 15
+collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/LeftWall/StaticBody2D"]
 visible = false
@@ -78,7 +90,7 @@ texture = ExtResource( 3 )
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Walls/RightWall"]
 collision_layer = 16
-collision_mask = 15
+collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/RightWall/StaticBody2D"]
 visible = false
@@ -96,7 +108,7 @@ texture = ExtResource( 3 )
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Walls/TopWall"]
 collision_layer = 16
-collision_mask = 15
+collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/TopWall/StaticBody2D"]
 visible = false
@@ -114,7 +126,7 @@ texture = ExtResource( 3 )
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Walls/BottomWall"]
 collision_layer = 16
-collision_mask = 15
+collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/BottomWall/StaticBody2D"]
 visible = false

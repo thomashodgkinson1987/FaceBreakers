@@ -68,10 +68,26 @@ public class PinkHead : Node2D
 	public override void _Ready()
 	{
 		node_projectileSpawnTimer.Connect("timeout", this, nameof(SpawnProjectile));
+
+		m_originalPosition = Position;
 	}
+
+	private float m_timer = 0f;
+	private Vector2 m_originalPosition;
 
 	public override void _PhysicsProcess(float delta)
 	{
+		if (!m_isHit)
+		{
+			m_timer += delta;
+
+			Vector2 position = Position;
+
+			position.x = m_originalPosition.x + (Mathf.Sin(m_timer * 2) * 10f);
+
+			Position = position;
+		}
+
 		if (m_isHit && !m_wasHit)
 		{
 			m_wasHit = true;
