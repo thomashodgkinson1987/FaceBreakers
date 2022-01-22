@@ -2,10 +2,9 @@
 
 [sub_resource type="Gradient" id=1]
 offsets = PoolRealArray( 0, 0.25, 0.5, 1 )
-colors = PoolColorArray( 1, 1, 1, 0, 0.470588, 0, 1, 1, 0, 0.772549, 1, 1, 1, 1, 1, 0 )
+colors = PoolColorArray( 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0 )
 
-[node name="Explosion_0001" type="CPUParticles2D"]
-emitting = false
+[node name="Explosion_0002" type="CPUParticles2D"]
 amount = 64
 lifetime = 2.0
 one_shot = true

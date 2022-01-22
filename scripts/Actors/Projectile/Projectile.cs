@@ -118,9 +118,9 @@ public class Projectile : Node2D
 
 	public bool Get_Sound_Playing(ESound sound) => m_sounds[sound].Playing;
 
-	public bool Get_Visible() => Visible;
-	public void Set_Visible(bool visible) => Visible = visible;
-	public void Toggle_Visible() => Visible = !Visible;
+	public bool Get_Visible() => node_sprite.Visible;
+	public void Set_Visible(bool visible) => node_sprite.Visible = visible;
+	public void Toggle_Visible() => node_sprite.Visible = !node_sprite.Visible;
 
 	public void Set_CollisionEnabled(bool enabled)
 	{

@@ -15,7 +15,7 @@ public class MainSceneController : Node2D
 
 	private Position2D node_playerSpawnPosition;
 
-	private Node2D node_tileMapLayer;
+	private Node2D node_background;
 
 	#endregion // Nodes
 
@@ -25,7 +25,7 @@ public class MainSceneController : Node2D
 
 	private int m_enemiesLeft = 0;
 
-	private List<Node2D> m_groups;
+	private List<Node2D> m_backgroundGroups;
 
 	#endregion // Fields
 
@@ -74,7 +74,7 @@ public class MainSceneController : Node2D
 
 		node_playerSpawnPosition = GetNode<Position2D>("PlayerSpawnPosition");
 
-		node_tileMapLayer = GetNode<Node2D>("TileMapLayer");
+		node_background = GetNode<Node2D>("Background");
 	}
 
 	public override void _Ready()
@@ -90,31 +90,31 @@ public class MainSceneController : Node2D
 			m_enemiesLeft++;
 		}
 
-		m_groups = new List<Node2D>();
-		foreach(Node2D node in node_tileMapLayer.GetChildren())
+		m_backgroundGroups = new List<Node2D>();
+		foreach(Node2D node in node_background.GetChildren())
 		{
-			m_groups.Add(node);
+			m_backgroundGroups.Add(node);
 		}
 	}
 
 	public override void _PhysicsProcess(float delta)
 	{
-		Node2D group1 = m_groups[0];
-		Node2D group2 = m_groups[1];
-		Node2D group3 = m_groups[2];
-		Node2D group4 = m_groups[3];
+		Node2D group1 = m_backgroundGroups[0];
+		Node2D group2 = m_backgroundGroups[1];
+		Node2D group3 = m_backgroundGroups[2];
+		Node2D group4 = m_backgroundGroups[3];
 
 		float posX = node_player.Position.x;
 		posX -= 128;
 
 		float xMod = -posX / 128;
-		float xSpeed = 64 * xMod;
+		float xSpeed = 16 * xMod;
 
-		float ySpeed = 64f;
+		float ySpeed = 32f;
 
-		for(int i = 0; i < m_groups.Count; i++)
+		for(int i = 0; i < m_backgroundGroups.Count; i++)
 		{
-			Node2D node = m_groups[i];
+			Node2D node = m_backgroundGroups[i];
 
 			float x = node.Position.x + (xSpeed * delta);
 			float y = node.Position.y + (ySpeed * delta);
