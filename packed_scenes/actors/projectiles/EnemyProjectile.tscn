@@ -4,6 +4,8 @@
 [ext_resource path="res://packed_scenes/actors/projectiles/Projectile.tscn" type="PackedScene" id=3]
 
 [node name="EnemyProjectile" instance=ExtResource( 3 )]
+Speed = 192.0
+Lifetime = 4.0
 
 [node name="Sprite" parent="." index="1"]
 texture = ExtResource( 1 )
