@@ -20,11 +20,6 @@ public class MainSceneController : Node2D
 
 	#region Fields
 
-	[Export] private PackedScene m_enemyProjectilePackedScene;
-
-	private int _lives = 3;
-	private int _score = 0;
-
 	private int m_enemiesLeft = 0;
 
 	#endregion // Fields
@@ -32,6 +27,8 @@ public class MainSceneController : Node2D
 
 
 	#region Properties
+
+	private int _lives = 3;
 
 	public int Lives
 	{
@@ -42,6 +39,8 @@ public class MainSceneController : Node2D
 			node_gameHUDController.Lives = value;
 		}
 	}
+
+	private int _score = 0;
 
 	public int Score
 	{
@@ -76,7 +75,6 @@ public class MainSceneController : Node2D
 		node_gameHUDController.Lives = _lives;
 		node_gameHUDController.Score = _score;
 
-		node_player.Lives = _lives;
 		node_player.Connect(nameof(Player.OnHit), this, nameof(OnPlayerHit));
 
 		foreach (PinkHead pinkHead in node_enemies.GetChildren())

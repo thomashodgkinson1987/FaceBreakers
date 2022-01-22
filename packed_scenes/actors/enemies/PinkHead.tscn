@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scripts/Actors/Enemies/PinkHead/PinkHead.cs" type="Script" id=1]
 [ext_resource path="res://texture_atlases/pink_head_0001.tres" type="Texture" id=2]
 [ext_resource path="res://packed_scenes/actors/projectiles/EnemyProjectile.tscn" type="PackedScene" id=3]
+[ext_resource path="res://packed_scenes/Explosion_0001.tscn" type="PackedScene" id=4]
 
 [sub_resource type="CapsuleShape2D" id=2]
 radius = 5.5
@@ -21,6 +22,8 @@ texture = ExtResource( 2 )
 __meta__ = {
 "_edit_lock_": true
 }
+
+[node name="ExplosionParticles" parent="." instance=ExtResource( 4 )]
 
 [node name="Hitbox" type="Area2D" parent="."]
 collision_layer = 32

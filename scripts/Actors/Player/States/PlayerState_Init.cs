@@ -15,7 +15,6 @@ public class PlayerState_Init : PlayerState
 
 	public override void OnEnter()
 	{
-		m_player.Lives = 3;
 		m_player.Velocity = Vector2.Zero;
 		m_player.InputController.Reset();
 		m_player.Stop_Sound_All();

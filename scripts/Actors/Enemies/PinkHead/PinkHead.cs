@@ -7,6 +7,8 @@ public class PinkHead : Node2D
 
 	private Sprite node_sprite;
 
+	private CPUParticles2D node_explosionParticles;
+
 	private Area2D node_hitbox;
 	private CollisionShape2D node_hitbox_collisionShape;
 
@@ -40,6 +42,9 @@ public class PinkHead : Node2D
 	private bool m_wasHit = false;
 	private bool m_isHit = false;
 
+	private bool m_wasFinishedEmitting = false;
+	private bool m_isFinishedEmitting = false;
+
 	private Vector2 m_originalPosition = Vector2.Zero;
 	private float m_timer = 0f;
 
@@ -52,6 +57,8 @@ public class PinkHead : Node2D
 	public override void _EnterTree()
 	{
 		node_sprite = GetNode<Sprite>("Sprite");
+
+		node_explosionParticles = GetNode<CPUParticles2D>("ExplosionParticles");
 
 		node_hitbox = GetNode<Area2D>("Hitbox");
 		node_hitbox_collisionShape = node_hitbox.GetNode<CollisionShape2D>("CollisionShape2D");
@@ -82,6 +89,24 @@ public class PinkHead : Node2D
 		if (m_isHit && !m_wasHit)
 		{
 			m_wasHit = true;
+			node_sprite.Visible = false;
+			node_hitbox_collisionShape.Disabled = true;
+			node_explosionParticles.Restart();
+			node_explosionParticles.Emitting = true;
+			node_projectileSpawnTimer.Stop();
+		}
+
+		if (m_isHit && !m_wasFinishedEmitting)
+		{
+			if (!node_explosionParticles.Emitting && node_projectiles.GetChildCount() == 0)
+			{
+				m_isFinishedEmitting = true;
+			}
+		}
+
+		if (m_isFinishedEmitting && !m_wasFinishedEmitting)
+		{
+			m_wasFinishedEmitting = true;
 			EmitSignal(nameof(OnHit));
 			QueueFree();
 		}

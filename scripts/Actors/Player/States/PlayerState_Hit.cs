@@ -3,6 +3,15 @@ using Godot;
 public class PlayerState_Hit : PlayerState
 {
 
+	#region Fields
+
+	private bool m_wasFinishedEmitting = false;
+	private bool m_isFinishedEmitting = false;
+
+	#endregion // Fields
+
+
+
 	#region Constructors
 
 	public PlayerState_Hit(Player player) : base(player) { }
@@ -15,24 +24,34 @@ public class PlayerState_Hit : PlayerState
 
 	public override void OnEnter()
 	{
-		m_player.SetProjectileStates(Projectile.EState.Die);
-
-		if (m_player.Lives > 0)
-		{
-			m_player.Lives -= 1;
-			m_player.EmitSignal(nameof(Player.OnHit));
-			m_player.Set_State(Player.EState.Move);
-		}
-		else
-		{
-			m_player.EmitSignal(nameof(Player.OnHit));
-			m_player.Set_State(Player.EState.Die);
-		}
+		m_player.Set_Visible(false);
+		m_player.Set_CollisionEnabled(false);
+		m_player.Set_Emitting(true);
 	}
 
-	public override void OnExit() { }
+	public override void OnExit()
+	{
+		m_wasFinishedEmitting = false;
+		m_isFinishedEmitting = false;
+	}
 
-	public override void OnPhysicsProcess(float delta) { }
+	public override void OnPhysicsProcess(float delta)
+	{
+		if (!m_isFinishedEmitting)
+		{
+			if (!m_player.Get_Emitting())
+			{
+				m_isFinishedEmitting = true;
+			}
+		}
+
+		if (m_isFinishedEmitting && !m_wasFinishedEmitting)
+		{
+			m_wasFinishedEmitting = true;
+			m_player.EmitSignal(nameof(Player.OnHit));
+			m_player.Set_State(Player.EState.Init);
+		}
+	}
 
 	public override void OnProcess(float delta) { }
 
