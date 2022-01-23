@@ -5,13 +5,15 @@ public class PinkHead : Node2D
 
 	#region Nodes
 
-	private Sprite node_sprite;
+	private AnimatedSprite node_animatedSprite;
 
 	private Area2D node_hitbox;
 	private CollisionShape2D node_hitbox_collisionShape;
 
 	private Position2D node_projectileSpawnPosition;
 	private Timer node_projectileSpawnTimer;
+
+	private Timer node_resetAnimationTimer;
 
 	private Node node_projectiles;
 
@@ -59,13 +61,15 @@ public class PinkHead : Node2D
 
 	public override void _EnterTree()
 	{
-		node_sprite = GetNode<Sprite>("Sprite");
+		node_animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
 
 		node_hitbox = GetNode<Area2D>("Hitbox");
 		node_hitbox_collisionShape = node_hitbox.GetNode<CollisionShape2D>("CollisionShape2D");
 
 		node_projectileSpawnPosition = GetNode<Position2D>("ProjectileSpawnPosition");
 		node_projectileSpawnTimer = GetNode<Timer>("ProjectileSpawnTimer");
+
+		node_resetAnimationTimer = GetNode<Timer>("ResetAnimationTimer");
 
 		node_projectiles = GetNode<Node>("Projectiles");
 	}
@@ -75,10 +79,10 @@ public class PinkHead : Node2D
 		m_rng = new RandomNumberGenerator();
 		m_rng.Randomize();
 
-		node_projectileSpawnTimer.Connect("timeout", this, nameof(OnFireTimerTimeout));
-
 		float waitTime = m_rng.RandfRange(MinFireWaitTime, MaxFireWaitTime);
 		node_projectileSpawnTimer.Start(waitTime);
+
+		node_animatedSprite.Play("idle");
 	}
 
 	public override void _PhysicsProcess(float delta)
@@ -86,7 +90,7 @@ public class PinkHead : Node2D
 		if (m_isHit && !m_wasHit)
 		{
 			m_wasHit = true;
-			node_sprite.Visible = false;
+			node_animatedSprite.Visible = false;
 			node_hitbox_collisionShape.Disabled = true;
 			node_projectileSpawnTimer.Stop();
 			m_dieParticles = PackedScene_DieParticles.Instance<CPUParticles2D>();
@@ -118,7 +122,7 @@ public class PinkHead : Node2D
 
 	#region Private methods
 
-	private void OnFireTimerTimeout()
+	private void OnProjectileSpawnTimerTimeout()
 	{
 		Projectile projectile = ProjectilePackedScene.Instance<Projectile>();
 		projectile.Rotation = node_projectileSpawnPosition.Rotation;
@@ -128,6 +132,14 @@ public class PinkHead : Node2D
 		m_rng.Randomize();
 		float waitTime = m_rng.RandfRange(MinFireWaitTime, MaxFireWaitTime);
 		node_projectileSpawnTimer.Start(waitTime);
+
+		node_animatedSprite.Play("fire");
+		node_resetAnimationTimer.Start();
+	}
+
+	private void OnResetAnimationTimerTimeout()
+	{
+		node_animatedSprite.Play("idle");
 	}
 
 	private void OnAreaEnteredHitbox(Area2D area)
