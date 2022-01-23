@@ -14,17 +14,14 @@ public class MainSceneController : Node2D
 
 	private Position2D node_playerSpawnPosition;
 
+	private Position2D node_alienSpawnPosition_left;
+	private Position2D node_alienSpawnPosition_right;
+
+	private Timer node_alienSpawnTimer;
+
 	private Node2D node_background;
 
 	#endregion // Nodes
-
-
-
-	#region Fields
-
-	private int m_enemiesLeft = 0;
-
-	#endregion // Fields
 
 
 
@@ -58,6 +55,17 @@ public class MainSceneController : Node2D
 
 
 
+	#region Fields
+
+	[Export] private PackedScene m_packedScene_redAlien;
+	[Export] private PackedScene m_packedScene_purpleAlien;
+
+	private int m_enemiesLeft = 0;
+
+	#endregion // Fields
+
+
+
 	#region Godot methods
 
 	public override void _EnterTree()
@@ -70,6 +78,11 @@ public class MainSceneController : Node2D
 		node_player = node_actors.GetNode<Player>("Player");
 
 		node_playerSpawnPosition = GetNode<Position2D>("PlayerSpawnPosition");
+
+		node_alienSpawnPosition_left = GetNode<Position2D>("AlienSpawnPositionLeft");
+		node_alienSpawnPosition_right = GetNode<Position2D>("AlienSpawnPositionRight");
+
+		node_alienSpawnTimer = GetNode<Timer>("AlienSpawnTimer");
 
 		node_background = GetNode<Node2D>("Background");
 	}
@@ -88,12 +101,12 @@ public class MainSceneController : Node2D
 			
 			if (pinkHead != null)
 			{
-				pinkHead.Connect(nameof(PinkHead.OnHit), this, nameof(OnEnemyHit));
+				pinkHead.Connect(nameof(PinkHead.OnHit), this, nameof(OnPinkHeadHit));
 				m_enemiesLeft++;
 			}
 			else if (greyHead != null)
 			{
-				pinkHead.Connect(nameof(PinkHead.OnHit), this, nameof(OnEnemyHit));
+				greyHead.Connect(nameof(GreyHead.OnHit), this, nameof(OnGreyHeadHit));
 				m_enemiesLeft++;
 			}
 		}
@@ -137,7 +150,7 @@ public class MainSceneController : Node2D
 		}
 	}
 
-	private void OnEnemyHit()
+	private void OnPinkHeadHit()
 	{
 		Score += 100;
 		m_enemiesLeft--;
@@ -145,6 +158,36 @@ public class MainSceneController : Node2D
 		{
 			GetTree().ReloadCurrentScene();
 		}
+	}
+
+	private void OnGreyHeadHit()
+	{
+		Score += 250;
+		m_enemiesLeft--;
+		if (m_enemiesLeft <= 0)
+		{
+			GetTree().ReloadCurrentScene();
+		}
+	}
+
+	private void OnRedAlienHit()
+	{
+		Score += 500;
+	}
+
+	private void OnAlienSpawnTimerTimeout()
+	{
+		RandomNumberGenerator rng = new RandomNumberGenerator();
+		rng.Randomize();
+		bool left = rng.RandiRange(0, 1) == 0 ? false : true;
+
+		RedAlien alien = m_packedScene_redAlien.Instance<RedAlien>();
+		node_enemies.AddChild(alien);
+		alien.Position = left ? node_alienSpawnPosition_left.Position : node_alienSpawnPosition_right.Position;
+		float speed = 64;
+		alien.Velocity = left ? Vector2.Right * speed : Vector2.Left * speed;
+
+		alien.Connect(nameof(RedAlien.OnHit), this, nameof(OnRedAlienHit));
 	}
 
 	#endregion // Private methods

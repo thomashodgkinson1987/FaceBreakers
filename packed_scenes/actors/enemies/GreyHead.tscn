@@ -45,7 +45,6 @@ process_mode = 0
 [node name="ProjectileSpawnPosition" type="Position2D" parent="."]
 rotation = 3.14159
 __meta__ = {
-"_edit_lock_": true,
 "_gizmo_extents_": 8.0
 }
 

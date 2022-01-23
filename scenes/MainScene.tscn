@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://packed_scenes/ui/GameHUD.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/SceneControllers/MainSceneController.cs" type="Script" id=2]
@@ -8,6 +8,8 @@
 [ext_resource path="res://packed_scenes/actors/enemies/PinkHead.tscn" type="PackedScene" id=6]
 [ext_resource path="res://sprites/black_pixel.png" type="Texture" id=7]
 [ext_resource path="res://packed_scenes/actors/enemies/GreyHead.tscn" type="PackedScene" id=8]
+[ext_resource path="res://packed_scenes/actors/enemies/RedAlien.tscn" type="PackedScene" id=9]
+[ext_resource path="res://packed_scenes/actors/enemies/PurpleAlien.tscn" type="PackedScene" id=10]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 8, 192 )
@@ -18,8 +20,11 @@ extents = Vector2( 128, 8 )
 [node name="MainScene" type="Node2D"]
 script = ExtResource( 2 )
 __meta__ = {
+"_edit_horizontal_guides_": [  ],
 "_edit_lock_": true
 }
+m_packedScene_redAlien = ExtResource( 9 )
+m_packedScene_purpleAlien = ExtResource( 10 )
 
 [node name="Background" type="Node2D" parent="."]
 __meta__ = {
@@ -236,3 +241,22 @@ __meta__ = {
 [node name="GameHUD" parent="." instance=ExtResource( 1 )]
 margin_right = 256.0
 margin_bottom = 256.0
+
+[node name="AlienSpawnPositionLeft" type="Position2D" parent="."]
+position = Vector2( -16, 32 )
+__meta__ = {
+"_gizmo_extents_": 8.0
+}
+
+[node name="AlienSpawnPositionRight" type="Position2D" parent="."]
+position = Vector2( 272, 32 )
+__meta__ = {
+"_gizmo_extents_": 8.0
+}
+
+[node name="AlienSpawnTimer" type="Timer" parent="."]
+process_mode = 0
+wait_time = 4.0
+autostart = true
+
+[connection signal="timeout" from="AlienSpawnTimer" to="." method="OnAlienSpawnTimerTimeout"]
