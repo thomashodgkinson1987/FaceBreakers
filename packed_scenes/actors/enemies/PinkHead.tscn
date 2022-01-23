@@ -40,6 +40,13 @@ __meta__ = {
 "_edit_lock_": true
 }
 
+[node name="RayCast2D" type="RayCast2D" parent="Hitbox"]
+visible = false
+enabled = true
+cast_to = Vector2( 0, 374 )
+collision_mask = 32
+collide_with_areas = true
+
 [node name="ResetAnimationTimer" type="Timer" parent="."]
 process_mode = 0
 

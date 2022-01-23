@@ -17,6 +17,8 @@ public class PinkHead : Node2D
 
 	private Node node_projectiles;
 
+	private RayCast2D node_rayCast;
+
 	#endregion // Nodes
 
 
@@ -72,6 +74,8 @@ public class PinkHead : Node2D
 		node_resetAnimationTimer = GetNode<Timer>("ResetAnimationTimer");
 
 		node_projectiles = GetNode<Node>("Projectiles");
+
+		node_rayCast = node_hitbox.GetNode<RayCast2D>("RayCast2D");
 	}
 
 	public override void _Ready()
@@ -87,6 +91,11 @@ public class PinkHead : Node2D
 
 	public override void _PhysicsProcess(float delta)
 	{
+		if (!m_isHit && node_rayCast.IsColliding())
+		{
+			node_projectileSpawnTimer.Start();
+		}
+
 		if (m_isHit && !m_wasHit)
 		{
 			m_wasHit = true;
