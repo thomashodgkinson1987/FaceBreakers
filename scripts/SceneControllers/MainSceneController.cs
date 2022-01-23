@@ -81,10 +81,21 @@ public class MainSceneController : Node2D
 
 		node_player.Connect(nameof(Player.OnHit), this, nameof(OnPlayerHit));
 
-		foreach (PinkHead pinkHead in node_enemies.GetChildren())
+		for(int i = 0; i < node_enemies.GetChildCount(); i++)
 		{
-			pinkHead.Connect(nameof(PinkHead.OnHit), this, nameof(OnEnemyHit));
-			m_enemiesLeft++;
+			PinkHead pinkHead = node_enemies.GetChildOrNull<PinkHead>(i);
+			GreyHead greyHead = node_enemies.GetChildOrNull<GreyHead>(i);
+			
+			if (pinkHead != null)
+			{
+				pinkHead.Connect(nameof(PinkHead.OnHit), this, nameof(OnEnemyHit));
+				m_enemiesLeft++;
+			}
+			else if (greyHead != null)
+			{
+				pinkHead.Connect(nameof(PinkHead.OnHit), this, nameof(OnEnemyHit));
+				m_enemiesLeft++;
+			}
 		}
 	}
 

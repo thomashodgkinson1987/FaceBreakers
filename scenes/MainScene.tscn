@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://packed_scenes/ui/GameHUD.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/SceneControllers/MainSceneController.cs" type="Script" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://tileset.tres" type="TileSet" id=5]
 [ext_resource path="res://packed_scenes/actors/enemies/PinkHead.tscn" type="PackedScene" id=6]
 [ext_resource path="res://sprites/black_pixel.png" type="Texture" id=7]
+[ext_resource path="res://packed_scenes/actors/enemies/GreyHead.tscn" type="PackedScene" id=8]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 8, 192 )
@@ -210,13 +211,13 @@ __meta__ = {
 [node name="PinkHead" parent="Actors/Enemies" instance=ExtResource( 6 )]
 position = Vector2( 64, 64 )
 
-[node name="PinkHead2" parent="Actors/Enemies" instance=ExtResource( 6 )]
+[node name="GreyHead" parent="Actors/Enemies" instance=ExtResource( 8 )]
 position = Vector2( 96, 64 )
 
 [node name="PinkHead3" parent="Actors/Enemies" instance=ExtResource( 6 )]
 position = Vector2( 128, 64 )
 
-[node name="PinkHead4" parent="Actors/Enemies" instance=ExtResource( 6 )]
+[node name="GreyHead2" parent="Actors/Enemies" instance=ExtResource( 8 )]
 position = Vector2( 160, 64 )
 
 [node name="PinkHead5" parent="Actors/Enemies" instance=ExtResource( 6 )]

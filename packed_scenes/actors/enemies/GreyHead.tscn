@@ -1,0 +1,61 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scripts/Actors/Enemies/PinkHead/PinkHead.cs" type="Script" id=1]
+[ext_resource path="res://sprite_frames/grey_head_frames_0001.tres" type="SpriteFrames" id=2]
+[ext_resource path="res://packed_scenes/actors/projectiles/GreyHeadProjectile.tscn" type="PackedScene" id=3]
+[ext_resource path="res://packed_scenes/particles/GreyHeadDieParticles.tscn" type="PackedScene" id=4]
+
+[sub_resource type="CapsuleShape2D" id=2]
+radius = 5.5
+height = 3.0
+
+[node name="GreyHead" type="Node2D"]
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
+ProjectilePackedScene = ExtResource( 3 )
+PackedScene_DieParticles = ExtResource( 4 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( -0.5, 0 )
+frames = ExtResource( 2 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 32
+collision_mask = 4
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+visible = false
+shape = SubResource( 2 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="ResetAnimationTimer" type="Timer" parent="."]
+process_mode = 0
+
+[node name="ProjectileSpawnPosition" type="Position2D" parent="."]
+rotation = 3.14159
+__meta__ = {
+"_edit_lock_": true,
+"_gizmo_extents_": 8.0
+}
+
+[node name="ProjectileSpawnTimer" type="Timer" parent="."]
+process_mode = 0
+autostart = true
+
+[node name="Projectiles" type="Node" parent="."]
+
+[connection signal="area_entered" from="Hitbox" to="." method="OnAreaEnteredHitbox"]
+[connection signal="body_entered" from="Hitbox" to="." method="OnBodyEnteredHitbox"]
+[connection signal="timeout" from="ResetAnimationTimer" to="." method="OnResetAnimationTimerTimeout"]
+[connection signal="timeout" from="ProjectileSpawnTimer" to="." method="OnProjectileSpawnTimerTimeout"]
