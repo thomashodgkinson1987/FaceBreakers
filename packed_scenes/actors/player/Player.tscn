@@ -6,7 +6,7 @@
 [ext_resource path="res://sounds/player_death_0001.ogg" type="AudioStream" id=4]
 [ext_resource path="res://sounds/enemy_hit_0001.ogg" type="AudioStream" id=5]
 [ext_resource path="res://packed_scenes/actors/projectiles/PlayerProjectile.tscn" type="PackedScene" id=6]
-[ext_resource path="res://packed_scenes/Explosion_0001.tscn" type="PackedScene" id=7]
+[ext_resource path="res://packed_scenes/particles/PlayerDieParticles.tscn" type="PackedScene" id=7]
 
 [sub_resource type="CircleShape2D" id=2]
 radius = 8.0
@@ -20,6 +20,7 @@ __meta__ = {
 "_edit_group_": true
 }
 PackedScene_Projectile = ExtResource( 6 )
+PackedScene_DieParticles = ExtResource( 7 )
 
 [node name="Sounds" type="Node" parent="."]
 
@@ -37,8 +38,6 @@ frames = ExtResource( 1 )
 __meta__ = {
 "_edit_lock_": true
 }
-
-[node name="ExplosionParticles" parent="." instance=ExtResource( 7 )]
 
 [node name="Hitbox" type="Area2D" parent="."]
 collision_layer = 2

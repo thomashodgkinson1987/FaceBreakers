@@ -30,6 +30,8 @@ public class Projectile : Node2D
 
 	#region Properties
 
+	[Export] public PackedScene PackedScene_DieParticles { get; set; }
+
 	[Export] public float Speed { get; set; } = 128f;
 	public Vector2 Velocity { get; set; } = Vector2.Zero;
 

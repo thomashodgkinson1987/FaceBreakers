@@ -7,8 +7,6 @@ public class PinkHead : Node2D
 
 	private Sprite node_sprite;
 
-	private CPUParticles2D node_explosionParticles;
-
 	private Area2D node_hitbox;
 	private CollisionShape2D node_hitbox_collisionShape;
 
@@ -32,6 +30,7 @@ public class PinkHead : Node2D
 	#region Properties
 
 	[Export] private PackedScene ProjectilePackedScene { get; set; }
+	[Export] public PackedScene PackedScene_DieParticles { get; set; }
 
 	#endregion // Properties
 
@@ -42,11 +41,10 @@ public class PinkHead : Node2D
 	private bool m_wasHit = false;
 	private bool m_isHit = false;
 
-	private bool m_wasFinishedEmitting = false;
-	private bool m_isFinishedEmitting = false;
+	private bool m_wasDie = false;
+	private bool m_isDie = false;
 
-	private Vector2 m_originalPosition = Vector2.Zero;
-	private float m_timer = 0f;
+	private CPUParticles2D m_dieParticles;
 
 	#endregion // Fields
 
@@ -57,8 +55,6 @@ public class PinkHead : Node2D
 	public override void _EnterTree()
 	{
 		node_sprite = GetNode<Sprite>("Sprite");
-
-		node_explosionParticles = GetNode<CPUParticles2D>("ExplosionParticles");
 
 		node_hitbox = GetNode<Area2D>("Hitbox");
 		node_hitbox_collisionShape = node_hitbox.GetNode<CollisionShape2D>("CollisionShape2D");
@@ -72,42 +68,35 @@ public class PinkHead : Node2D
 	public override void _Ready()
 	{
 		node_projectileSpawnTimer.Connect("timeout", this, nameof(SpawnProjectile));
-
-		m_originalPosition = Position;
 	}
 
 	public override void _PhysicsProcess(float delta)
 	{
-		if (!m_isHit)
-		{
-			m_timer += delta;
-			Vector2 position = Position;
-			position.x = m_originalPosition.x + (Mathf.Sin(m_timer * 2) * 10f);
-			Position = position;
-		}
-
 		if (m_isHit && !m_wasHit)
 		{
 			m_wasHit = true;
 			node_sprite.Visible = false;
 			node_hitbox_collisionShape.Disabled = true;
-			node_explosionParticles.Restart();
-			node_explosionParticles.Emitting = true;
 			node_projectileSpawnTimer.Stop();
+			m_dieParticles = PackedScene_DieParticles.Instance<CPUParticles2D>();
+			AddChild(m_dieParticles);
+			m_dieParticles.Emitting = true;
 		}
 
-		if (m_isHit && !m_wasFinishedEmitting)
+		if (m_wasHit && !m_isDie)
 		{
-			if (!node_explosionParticles.Emitting && node_projectiles.GetChildCount() == 0)
+			if (!m_dieParticles.Emitting && node_projectiles.GetChildCount() == 0)
 			{
-				m_isFinishedEmitting = true;
+				m_isDie = true;
 			}
 		}
 
-		if (m_isFinishedEmitting && !m_wasFinishedEmitting)
+		if (m_isDie && !m_wasDie)
 		{
-			m_wasFinishedEmitting = true;
+			m_wasDie = true;
 			EmitSignal(nameof(OnHit));
+			RemoveChild(m_dieParticles);
+			m_dieParticles.QueueFree();
 			QueueFree();
 		}
 	}

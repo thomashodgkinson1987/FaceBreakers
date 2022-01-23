@@ -1,14 +1,13 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://packed_scenes/actors/projectiles/Projectile.tscn" type="PackedScene" id=1]
-[ext_resource path="res://packed_scenes/Explosion_0003.tscn" type="PackedScene" id=2]
+[ext_resource path="res://packed_scenes/particles/PlayerProjectileDieParticles.tscn" type="PackedScene" id=2]
 
 [node name="PlayerProjectile" instance=ExtResource( 1 )]
+PackedScene_DieParticles = ExtResource( 2 )
 Speed = 192.0
 Lifetime = 4.0
 
-[node name="ExplosionParticles" parent="." index="2" instance=ExtResource( 2 )]
-
-[node name="Hitbox" parent="." index="3"]
+[node name="Hitbox" parent="." index="2"]
 collision_layer = 4
 collision_mask = 96

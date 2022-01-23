@@ -5,8 +5,10 @@ public class PlayerState_Hit : PlayerState
 
 	#region Fields
 
-	private bool m_wasFinishedEmitting = false;
-	private bool m_isFinishedEmitting = false;
+	private bool m_wasDie = false;
+	private bool m_isDie = false;
+
+	private CPUParticles2D m_particles;
 
 	#endregion // Fields
 
@@ -26,28 +28,34 @@ public class PlayerState_Hit : PlayerState
 	{
 		m_player.Set_Visible(false);
 		m_player.Set_CollisionEnabled(false);
-		m_player.Set_Emitting(true);
+
+		m_particles = m_player.PackedScene_DieParticles.Instance<CPUParticles2D>();
+		m_player.AddChild(m_particles);
+		m_particles.Emitting = true;
 	}
 
 	public override void OnExit()
 	{
-		m_wasFinishedEmitting = false;
-		m_isFinishedEmitting = false;
+		m_wasDie = false;
+		m_isDie = false;
+
+		m_player.RemoveChild(m_particles);
+		m_particles.QueueFree();
 	}
 
 	public override void OnPhysicsProcess(float delta)
 	{
-		if (!m_isFinishedEmitting)
+		if (!m_isDie)
 		{
-			if (!m_player.Get_Emitting())
+			if (!m_particles.Emitting)
 			{
-				m_isFinishedEmitting = true;
+				m_isDie = true;
 			}
 		}
 
-		if (m_isFinishedEmitting && !m_wasFinishedEmitting)
+		if (m_isDie && !m_wasDie)
 		{
-			m_wasFinishedEmitting = true;
+			m_wasDie = true;
 			m_player.EmitSignal(nameof(Player.OnHit));
 			m_player.Set_State(Player.EState.Init);
 		}

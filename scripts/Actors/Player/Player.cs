@@ -23,8 +23,6 @@ public class Player : Node2D
 
 	private AnimatedSprite node_animatedSprite;
 
-	private CPUParticles2D node_explosionParticles;
-
 	private Area2D node_hitbox;
 	private CollisionShape2D node_hitbox_collisionShape;
 
@@ -50,6 +48,8 @@ public class Player : Node2D
 	#region Properties
 
 	[Export] private PackedScene PackedScene_Projectile { get; set; }
+	[Export] public PackedScene PackedScene_DieParticles { get; set; }
+
 	[Export] public float Speed { get; set; } = 96f;
 	public Vector2 Velocity { get; set; } = Vector2.Zero;
 	public PlayerInputController InputController { get; private set; }
@@ -80,8 +80,6 @@ public class Player : Node2D
 		node_sounds_die = node_sounds.GetNode<AudioStreamPlayer>("Die");
 
 		node_animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
-
-		node_explosionParticles = GetNode<CPUParticles2D>("ExplosionParticles");
 
 		node_body = GetNode<KinematicBody2D>("Body");
 		node_body_collisionShape = node_body.GetNode<CollisionShape2D>("CollisionShape2D");
@@ -194,13 +192,6 @@ public class Player : Node2D
 		{
 			projectile.Set_State(state);
 		}
-	}
-
-	public bool Get_Emitting() => node_explosionParticles.Emitting;
-	public void Set_Emitting(bool emitting)
-	{
-		node_explosionParticles.Restart();
-		node_explosionParticles.Emitting = emitting;
 	}
 
 	#endregion // Public methods

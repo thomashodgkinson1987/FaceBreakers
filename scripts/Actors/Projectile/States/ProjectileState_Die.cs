@@ -32,12 +32,9 @@ public class ProjectileState_Die : ProjectileState
 		m_projectile.Set_Visible(false);
 		m_projectile.Set_CollisionEnabled(false);
 
-		m_particles = m_projectile.GetNode<CPUParticles2D>("ExplosionParticles");
-		if (m_particles != null)
-		{
-			m_particles.Restart();
-			m_particles.Emitting = true;
-		}
+		m_particles = m_projectile.PackedScene_DieParticles.Instance<CPUParticles2D>();
+		m_projectile.AddChild(m_particles);
+		m_particles.Emitting = true;
 	}
 
 	public override void OnExit()
@@ -45,27 +42,18 @@ public class ProjectileState_Die : ProjectileState
 		m_wasFree = false;
 		m_isFree = false;
 
-		if (m_particles != null)
-		{
-			m_particles.Restart();
-			m_particles.Emitting = false;
-		}
+		m_projectile.RemoveChild(m_particles);
+		m_particles.QueueFree();
 	}
 
 	public override void OnPhysicsProcess(float delta)
 	{
 		if (!m_isFree)
 		{
-			if (!m_projectile.Get_Sound_Playing(Projectile.ESound.Die))
+			if (!m_projectile.Get_Sound_Playing(Projectile.ESound.Die)
+					&& !m_particles.Emitting)
 			{
-				if (m_particles != null && !m_particles.Emitting)
-				{
-					m_isFree = true;
-				}
-				else
-				{
-					m_isFree = true;
-				}
+				m_isFree = true;
 			}
 		}
 
