@@ -160,11 +160,11 @@ public class Player : Node2D
 	public void Set_Visible(bool visible) => node_animatedSprite.Visible = visible;
 	public void Toggle_Visible() => node_animatedSprite.Visible = !node_animatedSprite.Visible;
 
-	public void Set_CollisionEnabled(bool enabled)
-	{
-		node_hitbox_collisionShape.Disabled = !enabled;
-		node_body_collisionShape.Disabled = !enabled;
-	}
+	public bool Get_HitboxEnabled() => !node_hitbox_collisionShape.Disabled;
+	public void Set_HitboxEnabled(bool enabled) => node_hitbox_collisionShape.Disabled = !enabled;
+
+	public bool Get_CollisionEnabled() => !node_body_collisionShape.Disabled;
+	public void Set_CollisionEnabled(bool enabled) => node_body_collisionShape.Disabled = !enabled;
 
 	public void OnAreaEnteredHitbox(Area2D area) => m_state.OnAreaEnteredHitbox(area);
 	public void OnBodyEnteredHitbox(PhysicsBody2D body) => m_state.OnBodyEnteredHitbox(body);

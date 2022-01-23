@@ -28,6 +28,7 @@ public class PlayerState_Hit : PlayerState
 	{
 		m_player.Set_Visible(false);
 		m_player.Set_CollisionEnabled(false);
+		m_player.Set_HitboxEnabled(false);
 
 		m_particles = m_player.PackedScene_DieParticles.Instance<CPUParticles2D>();
 		m_player.AddChild(m_particles);

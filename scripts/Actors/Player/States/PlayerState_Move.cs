@@ -9,6 +9,14 @@ public class PlayerState_Move : PlayerState
 	private bool m_wasHit = false;
 	private bool m_isShootQueued = false;
 
+	private bool m_wasFlash = false;
+	private bool m_isFlash = false;
+
+	private float m_flashTime = 3f;
+	private float m_flashTimeTimer = 0f;
+	private float m_flashRate = 0.25f;
+	private float m_flashRateTimer = 0f;
+
 	#endregion // Fields
 
 
@@ -23,17 +31,47 @@ public class PlayerState_Move : PlayerState
 
 	#region PlayerState methods
 
-	public override void OnEnter() { }
+	public override void OnEnter()
+	{
+		m_player.Set_HitboxEnabled(false);
+		m_isFlash = true;
+	}
 
 	public override void OnExit()
 	{
 		m_wasHit = false;
 		m_isHit = false;
 		m_isShootQueued = false;
+		m_flashTimeTimer = 0;
+		m_isFlash = false;
+		m_wasFlash = false;
+		m_flashRateTimer = 0;
 	}
 
 	public override void OnPhysicsProcess(float delta)
 	{
+		if (m_isFlash)
+		{
+			m_flashTimeTimer += delta;
+			
+			if (m_flashTimeTimer < m_flashTime)
+			{
+				m_flashRateTimer += delta;
+				if (m_flashRateTimer > m_flashRate)
+				{
+					m_flashRateTimer = 0;
+					m_player.Set_Visible(!m_player.Get_Visible());
+				}
+			}
+			else
+			{
+				m_isFlash = false;
+				m_flashTimeTimer = 0;
+				m_player.Set_Visible(true);
+				m_player.Set_HitboxEnabled(true);
+			}
+		}
+
 		if (!m_isHit)
 		{
 			Vector2 direction = m_player.InputController.Direction;

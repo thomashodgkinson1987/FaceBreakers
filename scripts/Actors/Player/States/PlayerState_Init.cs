@@ -20,6 +20,7 @@ public class PlayerState_Init : PlayerState
 		m_player.Stop_Sound_All();
 		m_player.SetProjectileStates(Projectile.EState.Free);
 		m_player.Set_Visible(true);
+		m_player.Set_HitboxEnabled(true);
 		m_player.Set_CollisionEnabled(true);
 		m_player.Set_Animation(Player.EAnimation.Default);
 		m_player.Set_State(Player.EState.Move);
