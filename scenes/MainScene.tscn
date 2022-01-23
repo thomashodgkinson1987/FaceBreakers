@@ -33,19 +33,13 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="Groups" type="Node2D" parent="Background"]
+[node name="TileMaps" type="Node2D" parent="Background"]
+modulate = Color( 1, 1, 1, 0.247059 )
 __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="Group1" type="Node2D" parent="Background/Groups"]
-__meta__ = {
-"_edit_group_": true,
-"_edit_lock_": true
-}
-
-[node name="Foreground" type="TileMap" parent="Background/Groups/Group1"]
-modulate = Color( 1, 1, 1, 0.266667 )
+[node name="TileMap1" type="TileMap" parent="Background/TileMaps"]
 tile_set = ExtResource( 5 )
 cell_size = Vector2( 16, 16 )
 format = 1
@@ -54,15 +48,8 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="Group2" type="Node2D" parent="Background/Groups"]
+[node name="TileMap2" type="TileMap" parent="Background/TileMaps"]
 position = Vector2( 256, 0 )
-__meta__ = {
-"_edit_group_": true,
-"_edit_lock_": true
-}
-
-[node name="Foreground" type="TileMap" parent="Background/Groups/Group2"]
-modulate = Color( 1, 1, 1, 0.266667 )
 tile_set = ExtResource( 5 )
 cell_size = Vector2( 16, 16 )
 format = 1
@@ -71,15 +58,8 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="Group3" type="Node2D" parent="Background/Groups"]
+[node name="TileMap3" type="TileMap" parent="Background/TileMaps"]
 position = Vector2( 0, 384 )
-__meta__ = {
-"_edit_group_": true,
-"_edit_lock_": true
-}
-
-[node name="Foreground" type="TileMap" parent="Background/Groups/Group3"]
-modulate = Color( 1, 1, 1, 0.266667 )
 tile_set = ExtResource( 5 )
 cell_size = Vector2( 16, 16 )
 format = 1
@@ -88,15 +68,8 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="Group4" type="Node2D" parent="Background/Groups"]
+[node name="TileMap4" type="TileMap" parent="Background/TileMaps"]
 position = Vector2( 256, 384 )
-__meta__ = {
-"_edit_group_": true,
-"_edit_lock_": true
-}
-
-[node name="Foreground" type="TileMap" parent="Background/Groups/Group4"]
-modulate = Color( 1, 1, 1, 0.266667 )
 tile_set = ExtResource( 5 )
 cell_size = Vector2( 16, 16 )
 format = 1
@@ -106,13 +79,13 @@ __meta__ = {
 }
 
 [node name="Walls" type="Node2D" parent="."]
+modulate = Color( 1, 1, 1, 0 )
 __meta__ = {
-"_edit_group_": true,
 "_edit_lock_": true
 }
 
 [node name="LeftWall" type="Node2D" parent="Walls"]
-position = Vector2( -8, 192 )
+position = Vector2( 8, 192 )
 __meta__ = {
 "_edit_group_": true,
 "_edit_lock_": true
@@ -138,7 +111,7 @@ __meta__ = {
 }
 
 [node name="RightWall" type="Node2D" parent="Walls"]
-position = Vector2( 264, 192 )
+position = Vector2( 248, 192 )
 __meta__ = {
 "_edit_group_": true,
 "_edit_lock_": true
@@ -167,7 +140,7 @@ __meta__ = {
 }
 
 [node name="TopWall" type="Node2D" parent="Walls"]
-position = Vector2( 128, -8 )
+position = Vector2( 128, 8 )
 __meta__ = {
 "_edit_group_": true,
 "_edit_lock_": true
@@ -196,7 +169,7 @@ __meta__ = {
 }
 
 [node name="BottomWall" type="Node2D" parent="Walls"]
-position = Vector2( 128, 392 )
+position = Vector2( 128, 376 )
 __meta__ = {
 "_edit_group_": true,
 "_edit_lock_": true

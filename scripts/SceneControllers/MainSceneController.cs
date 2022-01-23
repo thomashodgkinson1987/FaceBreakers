@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Godot;
 
 public class MainSceneController : Node2D
@@ -24,8 +23,6 @@ public class MainSceneController : Node2D
 	#region Fields
 
 	private int m_enemiesLeft = 0;
-
-	private List<Node2D> m_backgroundGroups;
 
 	#endregion // Fields
 
@@ -89,99 +86,25 @@ public class MainSceneController : Node2D
 			pinkHead.Connect(nameof(PinkHead.OnHit), this, nameof(OnEnemyHit));
 			m_enemiesLeft++;
 		}
-
-		m_backgroundGroups = new List<Node2D>();
-		foreach(Node2D node in node_background.GetChildren())
-		{
-			m_backgroundGroups.Add(node);
-		}
 	}
 
 	public override void _PhysicsProcess(float delta)
 	{
-		Node2D group1 = m_backgroundGroups[0];
-		Node2D group2 = m_backgroundGroups[1];
-		Node2D group3 = m_backgroundGroups[2];
-		Node2D group4 = m_backgroundGroups[3];
+		float relativePositionX = node_player.Position.x - 128;
+		float distancePercentageX = -relativePositionX / 128;
+		float speedModifierX = 16f;
 
-		float posX = node_player.Position.x;
-		posX -= 128;
+		Vector2 speed = new Vector2();
+		speed.x = speedModifierX * distancePercentageX;
+		speed.y = 32f;
 
-		float xMod = -posX / 128;
-		float xSpeed = 16 * xMod;
+		Vector2 position = node_background.Position;
+		position += speed * delta;
 
-		float ySpeed = 32f;
+		position.x = Mathf.Wrap(position.x, -256, 0);
+		position.y = Mathf.Wrap(position.y, -384, 0);
 
-		for(int i = 0; i < m_backgroundGroups.Count; i++)
-		{
-			Node2D node = m_backgroundGroups[i];
-
-			float x = node.Position.x + (xSpeed * delta);
-			float y = node.Position.y + (ySpeed * delta);
-			node.Position = new Vector2(x, y);
-		}
-
-		if (group1.Position.x < -256)
-		{
-			float x1 = group2.Position.x;
-			float y1 = group1.Position.y;
-			group1.Position = new Vector2(x1, y1);
-			float x2 = group2.Position.x + 256;
-			float y2 = group2.Position.y;
-			group2.Position = new Vector2(x2, y2);
-			float x3 = group4.Position.x;
-			float y3 = group3.Position.y;
-			group3.Position = new Vector2(x3, y3);
-			float x4 = group4.Position.x + 256;
-			float y4 = group4.Position.y;
-			group4.Position = new Vector2(x4, y4);
-		}
-		else if (group1.Position.x > 0)
-		{
-			float x1 = group1.Position.x - 256;
-			float y1 = group1.Position.y;
-			group1.Position = new Vector2(x1, y1);
-			float x2 = group1.Position.x + 256;
-			float y2 = group2.Position.y;
-			group2.Position = new Vector2(x2, y2);
-			float x3 = group1.Position.x;
-			float y3 = group3.Position.y;
-			group3.Position = new Vector2(x3, y3);
-			float x4 = group2.Position.x;
-			float y4 = group4.Position.y;
-			group4.Position = new Vector2(x4, y4);
-		}
-
-		if (group1.Position.y < -384)
-		{
-			float x1 = group1.Position.x;
-			float y1 = group3.Position.y;
-			group1.Position = new Vector2(x1, y1);
-			float x2 = group2.Position.x;
-			float y2 = group1.Position.y;
-			group2.Position = new Vector2(x2,y2);
-			float x3 = group3.Position.x;
-			float y3 = group1.Position.y + 384;
-			group3.Position = new Vector2(x3, y3);
-			float x4 = group4.Position.x;
-			float y4 = group3.Position.y;
-			group4.Position = new Vector2(x4, y4);
-		}
-		else if (group1.Position.y > 0)
-		{
-			float x1 = group1.Position.x;
-			float y1 = group1.Position.y - 384;
-			group1.Position = new Vector2(x1, y1);
-			float x2 = group2.Position.x;
-			float y2 = group1.Position.y;
-			group2.Position = new Vector2(x2, y2);
-			float x3 = group3.Position.x;
-			float y3 = group1.Position.y + 384;
-			group3.Position = new Vector2(x3, y3);
-			float x4 = group4.Position.x;
-			float y4 = group3.Position.y;
-			group4.Position = new Vector2(x4, y4);
-		}
+		node_background.Position = position;
 	}
 
 	#endregion // Godot methods
