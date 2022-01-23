@@ -32,6 +32,9 @@ public class PinkHead : Node2D
 	[Export] private PackedScene ProjectilePackedScene { get; set; }
 	[Export] public PackedScene PackedScene_DieParticles { get; set; }
 
+	[Export] public float MinFireWaitTime { get; set; } = 1f;
+	[Export] public float MaxFireWaitTime { get; set; } = 3f;
+
 	#endregion // Properties
 
 
@@ -45,6 +48,8 @@ public class PinkHead : Node2D
 	private bool m_isDie = false;
 
 	private CPUParticles2D m_dieParticles;
+
+	private RandomNumberGenerator m_rng;
 
 	#endregion // Fields
 
@@ -67,7 +72,13 @@ public class PinkHead : Node2D
 
 	public override void _Ready()
 	{
-		node_projectileSpawnTimer.Connect("timeout", this, nameof(SpawnProjectile));
+		m_rng = new RandomNumberGenerator();
+		m_rng.Randomize();
+
+		node_projectileSpawnTimer.Connect("timeout", this, nameof(OnFireTimerTimeout));
+
+		float waitTime = m_rng.RandfRange(MinFireWaitTime, MaxFireWaitTime);
+		node_projectileSpawnTimer.Start(waitTime);
 	}
 
 	public override void _PhysicsProcess(float delta)
@@ -107,12 +118,16 @@ public class PinkHead : Node2D
 
 	#region Private methods
 
-	private void SpawnProjectile()
+	private void OnFireTimerTimeout()
 	{
 		Projectile projectile = ProjectilePackedScene.Instance<Projectile>();
 		projectile.Rotation = node_projectileSpawnPosition.Rotation;
 		node_projectiles.AddChild(projectile);
 		projectile.GlobalPosition = node_projectileSpawnPosition.GlobalPosition;
+
+		m_rng.Randomize();
+		float waitTime = m_rng.RandfRange(MinFireWaitTime, MaxFireWaitTime);
+		node_projectileSpawnTimer.Start(waitTime);
 	}
 
 	private void OnAreaEnteredHitbox(Area2D area)
