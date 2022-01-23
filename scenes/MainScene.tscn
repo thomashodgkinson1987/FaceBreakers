@@ -213,26 +213,60 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="PinkHead" parent="Actors/Enemies" instance=ExtResource( 6 )]
-position = Vector2( 64, 64 )
+[node name="Left" type="Position2D" parent="Actors/Enemies"]
+position = Vector2( 32, 144 )
+__meta__ = {
+"_edit_lock_": true,
+"_gizmo_extents_": 8.0
+}
 
-[node name="GreyHead" parent="Actors/Enemies" instance=ExtResource( 8 )]
-position = Vector2( 96, 64 )
+[node name="Right" type="Position2D" parent="Actors/Enemies"]
+position = Vector2( 224, 144 )
+__meta__ = {
+"_edit_lock_": true,
+"_gizmo_extents_": 8.0
+}
+
+[node name="PinkHead" parent="Actors/Enemies" instance=ExtResource( 6 )]
+position = Vector2( 64, 112 )
+
+[node name="PinkHead2" parent="Actors/Enemies" instance=ExtResource( 6 )]
+position = Vector2( 96, 112 )
 
 [node name="PinkHead3" parent="Actors/Enemies" instance=ExtResource( 6 )]
-position = Vector2( 128, 64 )
+position = Vector2( 128, 112 )
 
-[node name="GreyHead2" parent="Actors/Enemies" instance=ExtResource( 8 )]
-position = Vector2( 160, 64 )
+[node name="PinkHead4" parent="Actors/Enemies" instance=ExtResource( 6 )]
+position = Vector2( 160, 112 )
 
 [node name="PinkHead5" parent="Actors/Enemies" instance=ExtResource( 6 )]
-position = Vector2( 192, 64 )
+position = Vector2( 192, 112 )
+
+[node name="GreyHead" parent="Actors/Enemies" instance=ExtResource( 8 )]
+position = Vector2( 64, 80 )
+
+[node name="GreyHead2" parent="Actors/Enemies" instance=ExtResource( 8 )]
+position = Vector2( 96, 80 )
+
+[node name="GreyHead3" parent="Actors/Enemies" instance=ExtResource( 8 )]
+position = Vector2( 128, 80 )
+
+[node name="GreyHead4" parent="Actors/Enemies" instance=ExtResource( 8 )]
+position = Vector2( 160, 80 )
+
+[node name="GreyHead5" parent="Actors/Enemies" instance=ExtResource( 8 )]
+position = Vector2( 192, 80 )
+
+[node name="Aliens" type="Node2D" parent="Actors"]
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Player" parent="Actors" instance=ExtResource( 4 )]
-position = Vector2( 128, 352 )
+position = Vector2( -40, 360 )
 
 [node name="PlayerSpawnPosition" type="Position2D" parent="."]
-position = Vector2( 128, 352 )
+position = Vector2( 128, 360 )
 __meta__ = {
 "_edit_lock_": true,
 "_gizmo_extents_": 8.0
@@ -245,12 +279,14 @@ margin_bottom = 256.0
 [node name="AlienSpawnPositionLeft" type="Position2D" parent="."]
 position = Vector2( -16, 32 )
 __meta__ = {
+"_edit_lock_": true,
 "_gizmo_extents_": 8.0
 }
 
 [node name="AlienSpawnPositionRight" type="Position2D" parent="."]
 position = Vector2( 272, 32 )
 __meta__ = {
+"_edit_lock_": true,
 "_gizmo_extents_": 8.0
 }
 
