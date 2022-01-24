@@ -32,6 +32,9 @@ public class Projectile : Node2D
 
 	[Export] public PackedScene PackedScene_DieParticles { get; set; }
 
+	[Export] public List<string> GroupsToIgnore_Area { get; set; }
+	[Export] public List<string> GroupsToIgnore_Body { get; set; }
+
 	[Export] public float Speed { get; set; } = 128f;
 	public Vector2 Velocity { get; set; } = Vector2.Zero;
 
@@ -81,6 +84,15 @@ public class Projectile : Node2D
 		m_sounds.Add(ESound.Die, node_sounds_die);
 
 		m_state = m_states[EState.Null];
+
+		if (GroupsToIgnore_Area == null)
+		{
+			GroupsToIgnore_Area = new List<string>();
+		}
+		if (GroupsToIgnore_Body == null)
+		{
+			GroupsToIgnore_Body = new List<string>();
+		}
 
 		Set_State(EState.Init);
 	}
@@ -140,8 +152,30 @@ public class Projectile : Node2D
 
 	#region Private methods
 
-	private void OnAreaEnteredHitbox(Area2D area) => m_state.OnAreaEnteredHitbox(area);
-	private void OnBodyEnteredHitbox(PhysicsBody2D body) => m_state.OnBodyEnteredHitbox(body);
+	private void OnAreaEnteredHitbox(Area2D area)
+	{
+		for(int i = 0; i < GroupsToIgnore_Area.Count; i++)
+		{
+			if (area.Owner.IsInGroup(GroupsToIgnore_Area[i]))
+			{
+				return;
+			}
+		}
+
+		m_state.OnAreaEnteredHitbox(area);
+	}
+	private void OnBodyEnteredHitbox(PhysicsBody2D body)
+	{
+		for(int i = 0; i < GroupsToIgnore_Body.Count; i++)
+		{
+			if (body.Owner.IsInGroup(GroupsToIgnore_Body[i]))
+			{
+				return;
+			}
+		}
+
+		m_state.OnBodyEnteredHitbox(body);
+	}
 
 	#endregion // Private methods
 

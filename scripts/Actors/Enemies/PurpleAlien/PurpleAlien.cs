@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Godot;
 
-public class RedAlien : Node2D
+public class PurpleAlien : Node2D
 {
 
 	#region Nodes
@@ -18,8 +18,8 @@ public class RedAlien : Node2D
 
 	#region Signals
 
-	[Signal] public delegate void OnHit(RedAlien redAlien);
-	[Signal] public delegate void OnDie(RedAlien redAlien);
+	[Signal] public delegate void OnHit(PurpleAlien purpleAlien);
+	[Signal] public delegate void OnDie(PurpleAlien purpleAlien);
 
 	#endregion // Signals
 
@@ -160,4 +160,3 @@ public class RedAlien : Node2D
 	#endregion // Private methods
 
 }
-

@@ -10,6 +10,7 @@ amount = 64
 lifetime = 2.0
 one_shot = true
 explosiveness = 1.0
+local_coords = false
 spread = 180.0
 gravity = Vector2( 0, 4 )
 initial_velocity = 16.0

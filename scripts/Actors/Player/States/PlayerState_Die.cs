@@ -15,7 +15,8 @@ public class PlayerState_Die : PlayerState
 
 	public override void OnEnter()
 	{
-		m_player.Set_State(Player.EState.Free);
+		m_player.EmitSignal(nameof(Player.OnDie), m_player);
+		m_player.Set_State(Player.EState.Init);
 	}
 
 	public override void OnExit() { }

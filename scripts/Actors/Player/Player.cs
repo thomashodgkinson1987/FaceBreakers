@@ -39,7 +39,8 @@ public class Player : Node2D
 
 	#region Signals
 
-	[Signal] public delegate void OnHit();
+	[Signal] public delegate void OnHit(Player player);
+	[Signal] public delegate void OnDie(Player player);
 
 	#endregion // Signals
 
@@ -49,6 +50,9 @@ public class Player : Node2D
 
 	[Export] private PackedScene PackedScene_Projectile { get; set; }
 	[Export] public PackedScene PackedScene_DieParticles { get; set; }
+
+	[Export] public List<string> GroupsToIgnore_Area { get; set; }
+	[Export] public List<string> GroupsToIgnore_Body { get; set; }
 
 	[Export] public float Speed { get; set; } = 96f;
 	public Vector2 Velocity { get; set; } = Vector2.Zero;
@@ -117,6 +121,15 @@ public class Player : Node2D
 
 		m_state = m_states[EState.Null];
 
+		if (GroupsToIgnore_Area == null)
+		{
+			GroupsToIgnore_Area = new List<string>();
+		}
+		if (GroupsToIgnore_Body == null)
+		{
+			GroupsToIgnore_Body = new List<string>();
+		}
+
 		Set_State(EState.Init);
 	}
 
@@ -166,8 +179,30 @@ public class Player : Node2D
 	public bool Get_CollisionEnabled() => !node_body_collisionShape.Disabled;
 	public void Set_CollisionEnabled(bool enabled) => node_body_collisionShape.Disabled = !enabled;
 
-	public void OnAreaEnteredHitbox(Area2D area) => m_state.OnAreaEnteredHitbox(area);
-	public void OnBodyEnteredHitbox(PhysicsBody2D body) => m_state.OnBodyEnteredHitbox(body);
+	public void OnAreaEnteredHitbox(Area2D area)
+	{
+		for(int i = 0; i < GroupsToIgnore_Area.Count; i++)
+		{
+			if (area.Owner.IsInGroup(GroupsToIgnore_Area[i]))
+			{
+				return;
+			}
+		}
+
+		m_state.OnAreaEnteredHitbox(area);
+	}
+	public void OnBodyEnteredHitbox(PhysicsBody2D body)
+	{
+		for(int i = 0; i < GroupsToIgnore_Body.Count; i++)
+		{
+			if (body.Owner.IsInGroup(GroupsToIgnore_Body[i]))
+			{
+				return;
+			}
+		}
+
+		m_state.OnBodyEnteredHitbox(body);
+	}
 
 	public void Move(float delta)
 	{

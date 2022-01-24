@@ -1,9 +1,11 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://texture_atlases/purple_alien_0003.tres" type="Texture" id=1]
 [ext_resource path="res://texture_atlases/purple_alien_0001.tres" type="Texture" id=2]
 [ext_resource path="res://texture_atlases/purple_alien_0002.tres" type="Texture" id=3]
 [ext_resource path="res://texture_atlases/purple_alien_0004.tres" type="Texture" id=4]
+[ext_resource path="res://scripts/Actors/Enemies/PurpleAlien/PurpleAlien.cs" type="Script" id=5]
+[ext_resource path="res://packed_scenes/particles/GreyHeadDieParticles.tscn" type="PackedScene" id=6]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -25,37 +27,47 @@ animations = [ {
 extents = Vector2( 16, 8 )
 
 [node name="PurpleAlien" type="Node2D"]
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
+PackedScene_DieParticles = ExtResource( 6 )
+GroupsToIgnore_Area = [ "Player" ]
+GroupsToIgnore_Body = [ "Player" ]
 
-[node name="AnimatedSprite1" type="AnimatedSprite" parent="."]
+[node name="AnimatedSpriteLeft" type="AnimatedSprite" parent="."]
 position = Vector2( -8, 0 )
 frames = SubResource( 1 )
 frame = 1
 speed_scale = 3.7
 playing = true
+__meta__ = {
+"_edit_lock_": true
+}
 
-[node name="AnimatedSprite2" type="AnimatedSprite" parent="."]
+[node name="AnimatedSpriteRight" type="AnimatedSprite" parent="."]
 position = Vector2( 8, 0 )
 frames = SubResource( 2 )
 speed_scale = 5.7
 playing = true
+__meta__ = {
+"_edit_lock_": true
+}
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 32
+collision_mask = 6
+__meta__ = {
+"_edit_lock_": true
+}
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
 visible = false
 shape = SubResource( 3 )
+__meta__ = {
+"_edit_lock_": true
+}
 
-[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
-emitting = false
-amount = 32
-explosiveness = 1.0
-emission_shape = 2
-emission_rect_extents = Vector2( 16, 8 )
-spread = 180.0
-gravity = Vector2( 0, 0 )
-initial_velocity = 20.0
-initial_velocity_random = 0.5
-angular_velocity = 512.0
-angular_velocity_random = 1.0
-scale_amount = 3.0
-scale_amount_random = 1.0
+[connection signal="area_entered" from="Hitbox" to="." method="OnAreaEnteredHitbox"]
+[connection signal="body_entered" from="Hitbox" to="." method="OnBodyEnteredHitbox"]

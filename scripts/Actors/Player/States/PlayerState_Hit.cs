@@ -29,10 +29,13 @@ public class PlayerState_Hit : PlayerState
 		m_player.Set_Visible(false);
 		m_player.Set_CollisionEnabled(false);
 		m_player.Set_HitboxEnabled(false);
+		m_player.Play_Sound(Player.ESound.Die);
 
 		m_particles = m_player.PackedScene_DieParticles.Instance<CPUParticles2D>();
 		m_player.AddChild(m_particles);
 		m_particles.Emitting = true;
+
+		m_player.EmitSignal(nameof(Player.OnHit), m_player);
 	}
 
 	public override void OnExit()
@@ -48,7 +51,7 @@ public class PlayerState_Hit : PlayerState
 	{
 		if (!m_isDie)
 		{
-			if (!m_particles.Emitting)
+			if (!m_particles.Emitting && !m_player.Get_SoundPlaying(Player.ESound.Die))
 			{
 				m_isDie = true;
 			}
@@ -57,8 +60,7 @@ public class PlayerState_Hit : PlayerState
 		if (m_isDie && !m_wasDie)
 		{
 			m_wasDie = true;
-			m_player.EmitSignal(nameof(Player.OnHit));
-			m_player.Set_State(Player.EState.Init);
+			m_player.Set_State(Player.EState.Die);
 		}
 	}
 

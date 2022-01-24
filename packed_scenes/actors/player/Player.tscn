@@ -14,7 +14,7 @@ radius = 8.0
 [sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 8, 8 )
 
-[node name="Player" type="Node2D"]
+[node name="Player" type="Node2D" groups=["Player"]]
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_group_": true

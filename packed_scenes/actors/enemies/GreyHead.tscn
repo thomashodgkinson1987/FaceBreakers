@@ -17,6 +17,8 @@ __meta__ = {
 }
 ProjectilePackedScene = ExtResource( 3 )
 PackedScene_DieParticles = ExtResource( 4 )
+GroupsToIgnore_Area = [ "Player" ]
+GroupsToIgnore_Body = [ "Player" ]
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( -0.5, 0 )

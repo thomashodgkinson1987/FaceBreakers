@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://packed_scenes/ui/GameHUD.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/SceneControllers/MainSceneController.cs" type="Script" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://packed_scenes/actors/enemies/GreyHead.tscn" type="PackedScene" id=8]
 [ext_resource path="res://packed_scenes/actors/enemies/RedAlien.tscn" type="PackedScene" id=9]
 [ext_resource path="res://packed_scenes/actors/enemies/PurpleAlien.tscn" type="PackedScene" id=10]
+[ext_resource path="res://music/level_0001.ogg" type="AudioStream" id=11]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 8, 192 )
@@ -214,48 +215,124 @@ __meta__ = {
 }
 
 [node name="Left" type="Position2D" parent="Actors/Enemies"]
-position = Vector2( 32, 144 )
+position = Vector2( 16, 208 )
 __meta__ = {
-"_edit_lock_": true,
 "_gizmo_extents_": 8.0
 }
 
 [node name="Right" type="Position2D" parent="Actors/Enemies"]
-position = Vector2( 224, 144 )
+position = Vector2( 240, 208 )
 __meta__ = {
-"_edit_lock_": true,
 "_gizmo_extents_": 8.0
 }
 
 [node name="PinkHead" parent="Actors/Enemies" instance=ExtResource( 6 )]
-position = Vector2( 64, 112 )
+position = Vector2( 48, 176 )
 
 [node name="PinkHead2" parent="Actors/Enemies" instance=ExtResource( 6 )]
-position = Vector2( 96, 112 )
+position = Vector2( 80, 176 )
 
 [node name="PinkHead3" parent="Actors/Enemies" instance=ExtResource( 6 )]
-position = Vector2( 128, 112 )
+position = Vector2( 112, 176 )
 
 [node name="PinkHead4" parent="Actors/Enemies" instance=ExtResource( 6 )]
-position = Vector2( 160, 112 )
+position = Vector2( 144, 176 )
 
 [node name="PinkHead5" parent="Actors/Enemies" instance=ExtResource( 6 )]
-position = Vector2( 192, 112 )
+position = Vector2( 176, 176 )
+
+[node name="PinkHead6" parent="Actors/Enemies" instance=ExtResource( 6 )]
+position = Vector2( 208, 176 )
+
+[node name="PinkHead7" parent="Actors/Enemies" instance=ExtResource( 6 )]
+position = Vector2( 48, 152 )
+
+[node name="PinkHead8" parent="Actors/Enemies" instance=ExtResource( 6 )]
+position = Vector2( 80, 152 )
+
+[node name="PinkHead9" parent="Actors/Enemies" instance=ExtResource( 6 )]
+position = Vector2( 112, 152 )
+
+[node name="PinkHead10" parent="Actors/Enemies" instance=ExtResource( 6 )]
+position = Vector2( 144, 152 )
+
+[node name="PinkHead11" parent="Actors/Enemies" instance=ExtResource( 6 )]
+position = Vector2( 176, 152 )
+
+[node name="PinkHead12" parent="Actors/Enemies" instance=ExtResource( 6 )]
+position = Vector2( 208, 152 )
+
+[node name="PinkHead13" parent="Actors/Enemies" instance=ExtResource( 6 )]
+position = Vector2( 48, 128 )
+
+[node name="PinkHead14" parent="Actors/Enemies" instance=ExtResource( 6 )]
+position = Vector2( 80, 128 )
+
+[node name="PinkHead15" parent="Actors/Enemies" instance=ExtResource( 6 )]
+position = Vector2( 112, 128 )
+
+[node name="PinkHead16" parent="Actors/Enemies" instance=ExtResource( 6 )]
+position = Vector2( 144, 128 )
+
+[node name="PinkHead17" parent="Actors/Enemies" instance=ExtResource( 6 )]
+position = Vector2( 176, 128 )
+
+[node name="PinkHead18" parent="Actors/Enemies" instance=ExtResource( 6 )]
+position = Vector2( 208, 128 )
+
+[node name="PinkHead19" parent="Actors/Enemies" instance=ExtResource( 6 )]
+position = Vector2( 48, 104 )
+
+[node name="PinkHead20" parent="Actors/Enemies" instance=ExtResource( 6 )]
+position = Vector2( 80, 104 )
+
+[node name="PinkHead23" parent="Actors/Enemies" instance=ExtResource( 6 )]
+position = Vector2( 176, 104 )
+
+[node name="PinkHead24" parent="Actors/Enemies" instance=ExtResource( 6 )]
+position = Vector2( 208, 104 )
 
 [node name="GreyHead" parent="Actors/Enemies" instance=ExtResource( 8 )]
-position = Vector2( 64, 80 )
+position = Vector2( 48, 56 )
 
 [node name="GreyHead2" parent="Actors/Enemies" instance=ExtResource( 8 )]
-position = Vector2( 96, 80 )
+position = Vector2( 80, 56 )
 
 [node name="GreyHead3" parent="Actors/Enemies" instance=ExtResource( 8 )]
-position = Vector2( 128, 80 )
+position = Vector2( 112, 56 )
 
 [node name="GreyHead4" parent="Actors/Enemies" instance=ExtResource( 8 )]
-position = Vector2( 160, 80 )
+position = Vector2( 144, 56 )
 
 [node name="GreyHead5" parent="Actors/Enemies" instance=ExtResource( 8 )]
-position = Vector2( 192, 80 )
+position = Vector2( 176, 56 )
+
+[node name="GreyHead6" parent="Actors/Enemies" instance=ExtResource( 8 )]
+position = Vector2( 208, 56 )
+
+[node name="GreyHead13" parent="Actors/Enemies" instance=ExtResource( 8 )]
+position = Vector2( 48, 80 )
+
+[node name="GreyHead14" parent="Actors/Enemies" instance=ExtResource( 8 )]
+position = Vector2( 208, 80 )
+
+[node name="GreyHead7" parent="Actors/Enemies" instance=ExtResource( 8 )]
+position = Vector2( 80, 80 )
+
+[node name="GreyHead8" parent="Actors/Enemies" instance=ExtResource( 8 )]
+position = Vector2( 112, 80 )
+
+[node name="GreyHead9" parent="Actors/Enemies" instance=ExtResource( 8 )]
+position = Vector2( 144, 80 )
+
+[node name="GreyHead10" parent="Actors/Enemies" instance=ExtResource( 8 )]
+position = Vector2( 176, 80 )
+
+[node name="GreyHead11" parent="Actors/Enemies" instance=ExtResource( 8 )]
+position = Vector2( 112, 104 )
+
+[node name="GreyHead12" parent="Actors/Enemies" instance=ExtResource( 8 )]
+position = Vector2( 144, 104 )
 
 [node name="Aliens" type="Node2D" parent="Actors"]
 __meta__ = {
@@ -294,5 +371,8 @@ __meta__ = {
 process_mode = 0
 wait_time = 4.0
 autostart = true
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 11 )
 
 [connection signal="timeout" from="AlienSpawnTimer" to="." method="OnAlienSpawnTimerTimeout"]

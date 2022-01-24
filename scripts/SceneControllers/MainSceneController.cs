@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Godot;
 
 public class MainSceneController : Node2D
@@ -67,9 +68,10 @@ public class MainSceneController : Node2D
 	[Export] private PackedScene m_packedScene_redAlien;
 	[Export] private PackedScene m_packedScene_purpleAlien;
 
-	private int m_enemyCount = 0;
-
 	private float m_enemyMoveTimer = 0f;
+
+	private List<string> m_enemiesAlive = new List<string>();
+	private List<string> m_enemiesHit = new List<string>();
 
 	#endregion // Fields
 
@@ -105,6 +107,7 @@ public class MainSceneController : Node2D
 		node_gameHUDController.Score = _score;
 
 		node_player.Connect(nameof(Player.OnHit), this, nameof(OnPlayerHit));
+		node_player.Connect(nameof(Player.OnDie), this, nameof(OnPlayerDie));
 
 		for(int i = 0; i < node_enemies.GetChildCount(); i++)
 		{
@@ -114,21 +117,19 @@ public class MainSceneController : Node2D
 			if (pinkHead != null)
 			{
 				pinkHead.Connect(nameof(PinkHead.OnHit), this, nameof(OnPinkHeadHit));
-				m_enemyCount++;
+				pinkHead.Connect(nameof(PinkHead.OnDie), this, nameof(OnPinkHeadDie));
+				m_enemiesAlive.Add(pinkHead.Name);
 			}
 			else if (greyHead != null)
 			{
 				greyHead.Connect(nameof(GreyHead.OnHit), this, nameof(OnGreyHeadHit));
-				m_enemyCount++;
+				greyHead.Connect(nameof(GreyHead.OnDie), this, nameof(OnGreyHeadDie));
+				m_enemiesAlive.Add(greyHead.Name);
 			}
 		}
 
-		m_previousEnemyCount = m_enemyCount;
-
 		RecalculateEnemyBounds();
 	}
-
-	private int m_previousEnemyCount = 0;
 
 	public override void _PhysicsProcess(float delta)
 	{
@@ -148,13 +149,8 @@ public class MainSceneController : Node2D
 
 		node_background.Position = position;
 
-		if (m_enemyCount > 0)
+		if (m_enemiesAlive.Count > 0)
 		{
-			if (m_previousEnemyCount != m_enemyCount)
-			{
-				RecalculateEnemyBounds();
-			}
-
 			Vector2 left = node_enemiesLeftBounds.GlobalPosition;
 			Vector2 right = node_enemiesRightBounds.GlobalPosition;
 
@@ -182,6 +178,10 @@ public class MainSceneController : Node2D
 					node_enemies.Position += translation;
 				}
 			}
+			if (node_enemiesLeftBounds.GlobalPosition.y >= 360)
+			{
+				GetTree().ReloadCurrentScene();
+			}
 		}
 	}
 
@@ -206,38 +206,42 @@ public class MainSceneController : Node2D
 
 			Node2D node = node_enemies.GetChild<Node2D>(i);
 
+			if (!m_enemiesAlive.Contains(node.Name)) continue;
+
 			if (i == 0)
 			{
 				left = node.GlobalPosition.x;
 				right = node.GlobalPosition.x;
 				bottom = node.GlobalPosition.y;
 			}
-
-			if (node.GlobalPosition.x < left)
+			else
 			{
-				left = node.GlobalPosition.x;
-			}
-			else if (node.GlobalPosition.x > right)
-			{
-				right = node.GlobalPosition.x;
-			}
-
-			if (node.GlobalPosition.y > bottom)
-			{
-				bottom = node.GlobalPosition.y;
+				if (node.GlobalPosition.x < left)
+				{
+					left = node.GlobalPosition.x;
+				}
+				if (node.GlobalPosition.x > right)
+				{
+					right = node.GlobalPosition.x;
+				}
+				if (node.GlobalPosition.y > bottom)
+				{
+					bottom = node.GlobalPosition.y;
+				}
 			}
 		}
 
-		node_enemiesLeftBounds.GlobalPosition = new Vector2(left - 32, bottom + 32);
-		node_enemiesRightBounds.GlobalPosition = new Vector2(right + 32, bottom + 32);
+		node_enemiesLeftBounds.GlobalPosition = new Vector2(left - 16, bottom + 16);
+		node_enemiesRightBounds.GlobalPosition = new Vector2(right + 16, bottom + 16);
 	}
 
-	private void OnPlayerHit()
+	private void OnPlayerHit(Player player) { }
+	private void OnPlayerDie(Player player)
 	{
 		if (Lives > 0)
 		{
 			Lives -= 1;
-			node_player.Position = node_playerSpawnPosition.Position;
+			player.Position = node_playerSpawnPosition.Position;
 		}
 		else
 		{
@@ -245,46 +249,80 @@ public class MainSceneController : Node2D
 		}
 	}
 
-	private void OnPinkHeadHit()
+	private void OnPinkHeadHit(PinkHead pinkHead)
 	{
 		Score += 100;
-		m_previousEnemyCount = m_enemyCount;
-		m_enemyCount--;
-		if (m_enemyCount <= 0)
+		m_enemiesAlive.Remove(pinkHead.Name);
+		m_enemiesHit.Add(pinkHead.Name);
+		RecalculateEnemyBounds();
+	}
+	private void OnPinkHeadDie(PinkHead pinkHead)
+	{
+		m_enemiesHit.Remove(pinkHead.Name);
+		if (m_enemiesAlive.Count == 0 && m_enemiesHit.Count == 0)
 		{
 			GetTree().ReloadCurrentScene();
 		}
 	}
 
-	private void OnGreyHeadHit()
+	private void OnGreyHeadHit(GreyHead greyHead)
 	{
 		Score += 250;
-		m_previousEnemyCount = m_enemyCount;
-		m_enemyCount--;
-		if (m_enemyCount <= 0)
+		m_enemiesAlive.Remove(greyHead.Name);
+		m_enemiesHit.Add(greyHead.Name);
+		RecalculateEnemyBounds();
+	}
+	private void OnGreyHeadDie(GreyHead greyHead)
+	{
+		m_enemiesHit.Remove(greyHead.Name);
+		if (m_enemiesAlive.Count == 0 && m_enemiesHit.Count == 0)
 		{
 			GetTree().ReloadCurrentScene();
 		}
 	}
 
-	private void OnRedAlienHit()
+	private void OnRedAlienHit(RedAlien redAlien)
 	{
 		Score += 500;
 	}
+	private void OnRedAlienDie(RedAlien redAlien) { }
+
+	private void OnPurpleAlienHit(PurpleAlien purpleAlien)
+	{
+		Score += 500;
+	}
+	private void OnPurpleAlienDie(PurpleAlien purpleAlien) { }
 
 	private void OnAlienSpawnTimerTimeout()
 	{
 		RandomNumberGenerator rng = new RandomNumberGenerator();
 		rng.Randomize();
 		bool left = rng.RandiRange(0, 1) == 0 ? false : true;
+		rng.Randomize();
+		bool red = rng.RandiRange(0, 1) == 0 ? false : true;
 
-		RedAlien alien = m_packedScene_redAlien.Instance<RedAlien>();
-		node_aliens.AddChild(alien);
-		alien.Position = left ? node_alienSpawnPosition_left.Position : node_alienSpawnPosition_right.Position;
-		float speed = 64;
-		alien.Velocity = left ? Vector2.Right * speed : Vector2.Left * speed;
+		if (red)
+		{
+			RedAlien alien = m_packedScene_redAlien.Instance<RedAlien>();
+			node_aliens.AddChild(alien);
+			alien.Position = left ? node_alienSpawnPosition_left.Position : node_alienSpawnPosition_right.Position;
+			float speed = 64;
+			alien.Velocity = left ? Vector2.Right * speed : Vector2.Left * speed;
 
-		alien.Connect(nameof(RedAlien.OnHit), this, nameof(OnRedAlienHit));
+			alien.Connect(nameof(RedAlien.OnHit), this, nameof(OnRedAlienHit));
+			alien.Connect(nameof(RedAlien.OnDie), this, nameof(OnRedAlienDie));
+		}
+		else
+		{
+			PurpleAlien alien = m_packedScene_purpleAlien.Instance<PurpleAlien>();
+			node_aliens.AddChild(alien);
+			alien.Position = left ? node_alienSpawnPosition_left.Position : node_alienSpawnPosition_right.Position;
+			float speed = 64;
+			alien.Velocity = left ? Vector2.Right * speed : Vector2.Left * speed;
+
+			alien.Connect(nameof(PurpleAlien.OnHit), this, nameof(OnPurpleAlienHit));
+			alien.Connect(nameof(PurpleAlien.OnDie), this, nameof(OnPurpleAlienDie));
+		}
 	}
 
 	#endregion // Private methods

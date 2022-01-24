@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Godot;
 
 public class GreyHead : Node2D
@@ -25,7 +26,8 @@ public class GreyHead : Node2D
 
 	#region Signals
 
-	[Signal] public delegate void OnHit();
+	[Signal] public delegate void OnHit(GreyHead greyHead);
+	[Signal] public delegate void OnDie(GreyHead greyHead);
 
 	#endregion // Signals
 
@@ -35,6 +37,9 @@ public class GreyHead : Node2D
 
 	[Export] private PackedScene ProjectilePackedScene { get; set; }
 	[Export] public PackedScene PackedScene_DieParticles { get; set; }
+
+	[Export] public List<string> GroupsToIgnore_Area { get; set; }
+	[Export] public List<string> GroupsToIgnore_Body { get; set; }
 
 	[Export] public float MinFireWaitTime { get; set; } = 2f;
 	[Export] public float MaxFireWaitTime { get; set; } = 5f;
@@ -87,6 +92,15 @@ public class GreyHead : Node2D
 		node_projectileSpawnTimer.Start(waitTime);
 
 		node_animatedSprite.Play("idle");
+
+		if (GroupsToIgnore_Area == null)
+		{
+			GroupsToIgnore_Area = new List<string>();
+		}
+		if (GroupsToIgnore_Body == null)
+		{
+			GroupsToIgnore_Body = new List<string>();
+		}
 	}
 
 	public override void _PhysicsProcess(float delta)
@@ -105,6 +119,7 @@ public class GreyHead : Node2D
 			m_dieParticles = PackedScene_DieParticles.Instance<CPUParticles2D>();
 			AddChild(m_dieParticles);
 			m_dieParticles.Emitting = true;
+			EmitSignal(nameof(OnHit), this);
 		}
 
 		if (m_wasHit && !m_isDie)
@@ -118,7 +133,7 @@ public class GreyHead : Node2D
 		if (m_isDie && !m_wasDie)
 		{
 			m_wasDie = true;
-			EmitSignal(nameof(OnHit));
+			EmitSignal(nameof(OnDie), this);
 			RemoveChild(m_dieParticles);
 			m_dieParticles.QueueFree();
 			QueueFree();
@@ -153,11 +168,27 @@ public class GreyHead : Node2D
 
 	private void OnAreaEnteredHitbox(Area2D area)
 	{
+		for(int i = 0; i < GroupsToIgnore_Area.Count; i++)
+		{
+			if (area.Owner.IsInGroup(GroupsToIgnore_Area[i]))
+			{
+				return;
+			}
+		}
+
 		m_isHit = true;
 	}
 
 	private void OnBodyEnteredHitbox(PhysicsBody2D body)
 	{
+		for(int i = 0; i < GroupsToIgnore_Body.Count; i++)
+		{
+			if (body.Owner.IsInGroup(GroupsToIgnore_Body[i]))
+			{
+				return;
+			}
+		}
+
 		m_isHit = true;
 	}
 
