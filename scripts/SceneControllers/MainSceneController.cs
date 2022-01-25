@@ -144,6 +144,18 @@ public class MainSceneController : Node2D
 
 	public override void _PhysicsProcess(float delta)
 	{
+		HandleBackgroundScrolling(delta);
+		HandleEnemyMoving(delta);
+	}
+
+	#endregion // Godot methods
+
+
+
+	#region Private methods
+
+	private void HandleBackgroundScrolling(float delta)
+	{
 		float relativePositionX = node_player.Position.x - 128;
 		float distancePercentageX = -relativePositionX / 128;
 		float speedModifierX = 16f;
@@ -159,7 +171,10 @@ public class MainSceneController : Node2D
 		position.y = Mathf.Wrap(position.y, -384, 0);
 
 		node_background.Position = position;
+	}
 
+	private void HandleEnemyMoving(float delta)
+	{
 		if (m_enemiesAlive.Count > 0)
 		{
 			Vector2 left = node_enemiesLeftBounds.GlobalPosition;
@@ -196,12 +211,6 @@ public class MainSceneController : Node2D
 			}
 		}
 	}
-
-	#endregion // Godot methods
-
-
-
-	#region Private methods
 
 	private void RecalculateEnemyBounds()
 	{
