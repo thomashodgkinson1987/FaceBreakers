@@ -97,6 +97,8 @@ public class PlayerInputController
 		if (Input.IsActionPressed(m_buttons[EButton.Up])) _directionY -= 1;
 		if (Input.IsActionPressed(m_buttons[EButton.Down])) _directionY += 1;
 
+		_directionY = 0;
+
 		IsJustPressed_Shoot = Input.IsActionJustPressed(m_buttons[EButton.Shoot]);
 	}
 

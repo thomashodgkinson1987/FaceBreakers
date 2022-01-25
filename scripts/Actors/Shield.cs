@@ -71,12 +71,25 @@ public class Shield : Node2D
 
 
 
+	#region Public methods
+
+	public void EnableCollision()
+	{
+		node_hitbox_collisionPolygon.Disabled = false;
+	}
+	public void DisableCollision()
+	{
+		node_hitbox_collisionPolygon.Disabled = true;
+	}
+
+	#endregion // Public methods
+
+
+
 	#region Private methods
 
 	private void OnAreaEnteredHitbox(Area2D area)
 	{
-		GD.Print($"Area: {area.Owner.Name}");
-
 		for(int i = 0; i < GroupsToIgnore_Area.Count; i++)
 		{
 			if (area.Owner.IsInGroup(GroupsToIgnore_Area[i]))
@@ -90,8 +103,6 @@ public class Shield : Node2D
 
 	private void OnBodyEnteredHitbox(PhysicsBody2D body)
 	{
-		GD.Print($"Body: {body.Owner.Name}");
-
 		for(int i = 0; i < GroupsToIgnore_Body.Count; i++)
 		{
 			if (body.Owner.IsInGroup(GroupsToIgnore_Body[i]))

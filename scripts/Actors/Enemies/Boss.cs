@@ -9,14 +9,17 @@ public class Boss : Node2D
 	private AnimatedSprite node_animatedSprite;
 
 	private Area2D node_hitbox;
-	private CollisionShape2D node_hitbox_collisionShape;
+	private CollisionPolygon2D node_hitbox_collisionPolygon;
 
 	private Position2D node_projectileSpawnPosition;
 	private Timer node_projectileSpawnTimer;
 
-	private Timer node_resetAnimationTimer;
-
 	private Node node_projectiles;
+
+	private Node node_shields;
+
+	private AnimationPlayer node_animationPlayer1;
+	private AnimationPlayer node_animationPlayer2;
 
 	#endregion // Nodes
 
@@ -71,14 +74,17 @@ public class Boss : Node2D
 		node_animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
 
 		node_hitbox = GetNode<Area2D>("Hitbox");
-		node_hitbox_collisionShape = node_hitbox.GetNode<CollisionShape2D>("CollisionShape2D");
+		node_hitbox_collisionPolygon = node_hitbox.GetNode<CollisionPolygon2D>("CollisionPolygon2D");
 
 		node_projectileSpawnPosition = GetNode<Position2D>("ProjectileSpawnPosition");
 		node_projectileSpawnTimer = GetNode<Timer>("ProjectileSpawnTimer");
 
-		node_resetAnimationTimer = GetNode<Timer>("ResetAnimationTimer");
-
 		node_projectiles = GetNode<Node>("Projectiles");
+
+		node_shields = GetNode<Node>("Shields");
+
+		node_animationPlayer1 = GetNode<AnimationPlayer>("AnimationPlayer");
+		node_animationPlayer2 = node_shields.GetNode<AnimationPlayer>("AnimationPlayer");
 	}
 
 	public override void _Ready()
@@ -107,7 +113,7 @@ public class Boss : Node2D
 		{
 			m_wasHit = true;
 			node_animatedSprite.Visible = false;
-			node_hitbox_collisionShape.Disabled = true;
+			node_hitbox_collisionPolygon.Disabled = true;
 			node_projectileSpawnTimer.Stop();
 			m_dieParticles = PackedScene_DieParticles.Instance<CPUParticles2D>();
 			AddChild(m_dieParticles);
@@ -129,11 +135,54 @@ public class Boss : Node2D
 			EmitSignal(nameof(OnDie), this);
 			RemoveChild(m_dieParticles);
 			m_dieParticles.QueueFree();
-			QueueFree();
 		}
 	}
 
 	#endregion // Godot methods
+
+
+
+	#region Public methods
+
+	public void Play_Intro1()
+	{
+		node_animationPlayer1.Play("boss_intro_0001");
+	}
+	public void Play_Intro2()
+	{
+		node_animationPlayer1.Play("boss_intro_0002");
+	}
+	public void Play_ShowShields()
+	{
+		node_animationPlayer2.Play("show_shields");
+	}
+
+	public void EnableCollision()
+	{
+		node_hitbox_collisionPolygon.Disabled = false;
+
+		for(int i = 0; i < node_shields.GetChildCount(); i++)
+		{
+			Shield shield = node_shields.GetChildOrNull<Shield>(i);
+			if (shield == null) continue;
+
+			shield.EnableCollision();
+		}
+	}
+	public void DisableCollision()
+	{
+		node_hitbox_collisionPolygon.Disabled = true;
+
+		for(int i = 0; i < node_shields.GetChildCount(); i++)
+		{
+			Shield shield = node_shields.GetChildOrNull<Shield>(i);
+			if (shield == null) continue;
+
+			shield.DisableCollision();
+		}
+	}
+
+	#endregion // Public methods
 
 
 
@@ -151,7 +200,6 @@ public class Boss : Node2D
 		node_projectileSpawnTimer.Start(waitTime);
 
 		node_animatedSprite.Play("fire");
-		node_resetAnimationTimer.Start();
 	}
 
 	private void OnResetAnimationTimerTimeout()

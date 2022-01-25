@@ -1,22 +1,422 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://sprite_frames/boss_sprite_frames.tres" type="SpriteFrames" id=1]
-[ext_resource path="res://texture_atlases/shield_0001.tres" type="Texture" id=2]
+[ext_resource path="res://packed_scenes/Shield.tscn" type="PackedScene" id=2]
+[ext_resource path="res://animations/show_shields.tres" type="Animation" id=3]
+[ext_resource path="res://audio/sounds/player_death_0001.ogg" type="AudioStream" id=4]
+[ext_resource path="res://animations/boss_intro_0001_animation.tres" type="Animation" id=5]
+[ext_resource path="res://animations/boss_intro_0002_animation.tres" type="Animation" id=6]
+[ext_resource path="res://scripts/Actors/Enemies/Boss.cs" type="Script" id=7]
+[ext_resource path="res://packed_scenes/actors/projectiles/GreyHeadProjectile.tscn" type="PackedScene" id=8]
+[ext_resource path="res://packed_scenes/particles/GreyHeadDieParticles.tscn" type="PackedScene" id=9]
+
+[sub_resource type="Animation" id=3]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 128, -256 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("AnimatedSprite:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 3, 3 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("AnimatedSprite:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=2]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Shield:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -112, 272 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Shield:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 4, 4 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Shield:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 0 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Shield2:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -48, 272 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Shield2:scale")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 4, 4 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Shield2:modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 0 ) ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("Shield3:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 16, 272 ) ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("Shield3:scale")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 4, 4 ) ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("Shield3:modulate")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 0 ) ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("Shield4:position")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 80, 272 ) ]
+}
+tracks/10/type = "value"
+tracks/10/path = NodePath("Shield4:scale")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 4, 4 ) ]
+}
+tracks/11/type = "value"
+tracks/11/path = NodePath("Shield4:modulate")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 0 ) ]
+}
+tracks/12/type = "value"
+tracks/12/path = NodePath("Shield5:position")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 176, 272 ) ]
+}
+tracks/13/type = "value"
+tracks/13/path = NodePath("Shield5:scale")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 4, 4 ) ]
+}
+tracks/14/type = "value"
+tracks/14/path = NodePath("Shield5:modulate")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 0 ) ]
+}
+tracks/15/type = "value"
+tracks/15/path = NodePath("Shield6:position")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 240, 272 ) ]
+}
+tracks/16/type = "value"
+tracks/16/path = NodePath("Shield6:scale")
+tracks/16/interp = 1
+tracks/16/loop_wrap = true
+tracks/16/imported = false
+tracks/16/enabled = true
+tracks/16/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 4, 4 ) ]
+}
+tracks/17/type = "value"
+tracks/17/path = NodePath("Shield6:modulate")
+tracks/17/interp = 1
+tracks/17/loop_wrap = true
+tracks/17/imported = false
+tracks/17/enabled = true
+tracks/17/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 0 ) ]
+}
+tracks/18/type = "value"
+tracks/18/path = NodePath("Shield7:position")
+tracks/18/interp = 1
+tracks/18/loop_wrap = true
+tracks/18/imported = false
+tracks/18/enabled = true
+tracks/18/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 304, 272 ) ]
+}
+tracks/19/type = "value"
+tracks/19/path = NodePath("Shield7:scale")
+tracks/19/interp = 1
+tracks/19/loop_wrap = true
+tracks/19/imported = false
+tracks/19/enabled = true
+tracks/19/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 4, 4 ) ]
+}
+tracks/20/type = "value"
+tracks/20/path = NodePath("Shield7:modulate")
+tracks/20/interp = 1
+tracks/20/loop_wrap = true
+tracks/20/imported = false
+tracks/20/enabled = true
+tracks/20/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 0 ) ]
+}
+tracks/21/type = "value"
+tracks/21/path = NodePath("Shield8:position")
+tracks/21/interp = 1
+tracks/21/loop_wrap = true
+tracks/21/imported = false
+tracks/21/enabled = true
+tracks/21/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 368, 272 ) ]
+}
+tracks/22/type = "value"
+tracks/22/path = NodePath("Shield8:scale")
+tracks/22/interp = 1
+tracks/22/loop_wrap = true
+tracks/22/imported = false
+tracks/22/enabled = true
+tracks/22/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 4, 4 ) ]
+}
+tracks/23/type = "value"
+tracks/23/path = NodePath("Shield8:modulate")
+tracks/23/interp = 1
+tracks/23/loop_wrap = true
+tracks/23/imported = false
+tracks/23/enabled = true
+tracks/23/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 0 ) ]
+}
+tracks/24/type = "value"
+tracks/24/path = NodePath("AudioStreamPlayer1:playing")
+tracks/24/interp = 1
+tracks/24/loop_wrap = true
+tracks/24/imported = false
+tracks/24/enabled = true
+tracks/24/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/25/type = "value"
+tracks/25/path = NodePath("AudioStreamPlayer2:playing")
+tracks/25/interp = 1
+tracks/25/loop_wrap = true
+tracks/25/imported = false
+tracks/25/enabled = true
+tracks/25/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/26/type = "value"
+tracks/26/path = NodePath("AudioStreamPlayer3:playing")
+tracks/26/interp = 1
+tracks/26/loop_wrap = true
+tracks/26/imported = false
+tracks/26/enabled = true
+tracks/26/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/27/type = "value"
+tracks/27/path = NodePath("AudioStreamPlayer4:playing")
+tracks/27/interp = 1
+tracks/27/loop_wrap = true
+tracks/27/imported = false
+tracks/27/enabled = true
+tracks/27/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
 
 [node name="Boss" type="Node2D"]
+position = Vector2( 128, -256 )
+script = ExtResource( 7 )
 __meta__ = {
 "_edit_group_": true
 }
+PackedScene_Projectile = ExtResource( 8 )
+PackedScene_DieParticles = ExtResource( 9 )
+GroupsToIgnore_Area = [  ]
+GroupsToIgnore_Body = [  ]
+ScoreValue = 10000
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 3 )
+anims/boss_intro_0001 = ExtResource( 5 )
+anims/boss_intro_0002 = ExtResource( 6 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+modulate = Color( 0, 0, 0, 0 )
 position = Vector2( 11, -2 )
-scale = Vector2( 1.5, 1.5 )
+scale = Vector2( 3, 3 )
 frames = ExtResource( 1 )
 __meta__ = {
 "_edit_lock_": true
 }
 
 [node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 8192
+collision_mask = 4
 __meta__ = {
 "_edit_lock_": true
 }
@@ -32,8 +432,71 @@ __meta__ = {
 
 [node name="Shields" type="Node" parent="."]
 
-[node name="Shield0001" type="Sprite" parent="Shields"]
-position = Vector2( -16, 264 )
+[node name="AudioStreamPlayer1" type="AudioStreamPlayer" parent="Shields"]
+stream = ExtResource( 4 )
+
+[node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="Shields"]
+stream = ExtResource( 4 )
+
+[node name="AudioStreamPlayer3" type="AudioStreamPlayer" parent="Shields"]
+stream = ExtResource( 4 )
+
+[node name="AudioStreamPlayer4" type="AudioStreamPlayer" parent="Shields"]
+stream = ExtResource( 4 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Shields"]
+anims/RESET = SubResource( 2 )
+anims/show_shields = ExtResource( 3 )
+
+[node name="Shield" parent="Shields" instance=ExtResource( 2 )]
+modulate = Color( 0, 0, 0, 0 )
+position = Vector2( -112, 272 )
 rotation = -3.14159
-scale = Vector2( 2, 2 )
-texture = ExtResource( 2 )
+scale = Vector2( 4, 4 )
+
+[node name="Shield2" parent="Shields" instance=ExtResource( 2 )]
+modulate = Color( 0, 0, 0, 0 )
+position = Vector2( -48, 272 )
+rotation = -3.14159
+scale = Vector2( 4, 4 )
+
+[node name="Shield3" parent="Shields" instance=ExtResource( 2 )]
+modulate = Color( 0, 0, 0, 0 )
+position = Vector2( 16, 272 )
+rotation = -3.14159
+scale = Vector2( 4, 4 )
+
+[node name="Shield4" parent="Shields" instance=ExtResource( 2 )]
+modulate = Color( 0, 0, 0, 0 )
+position = Vector2( 80, 272 )
+rotation = -3.14159
+scale = Vector2( 4, 4 )
+
+[node name="Shield5" parent="Shields" instance=ExtResource( 2 )]
+modulate = Color( 0, 0, 0, 0 )
+position = Vector2( 176, 272 )
+rotation = -3.14159
+scale = Vector2( 4, 4 )
+
+[node name="Shield6" parent="Shields" instance=ExtResource( 2 )]
+modulate = Color( 0, 0, 0, 0 )
+position = Vector2( 240, 272 )
+rotation = -3.14159
+scale = Vector2( 4, 4 )
+
+[node name="Shield7" parent="Shields" instance=ExtResource( 2 )]
+modulate = Color( 0, 0, 0, 0 )
+position = Vector2( 304, 272 )
+rotation = -3.14159
+scale = Vector2( 4, 4 )
+
+[node name="Shield8" parent="Shields" instance=ExtResource( 2 )]
+modulate = Color( 0, 0, 0, 0 )
+position = Vector2( 368, 272 )
+rotation = -3.14159
+scale = Vector2( 4, 4 )
+
+[node name="ProjectileSpawnPosition" type="Position2D" parent="."]
+position = Vector2( 31, 5 )
+
+[node name="ProjectileSpawnTimer" type="Timer" parent="."]

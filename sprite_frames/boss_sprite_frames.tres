@@ -9,17 +9,17 @@ animations = [ {
 "name": "default",
 "speed": 1.0
 }, {
-"frames": [  ],
+"frames": [ ExtResource( 1 ) ],
 "loop": true,
 "name": "idle",
 "speed": 2.0
 }, {
-"frames": [  ],
+"frames": [ ExtResource( 1 ) ],
 "loop": false,
 "name": "fire",
 "speed": 1.0
 }, {
-"frames": [  ],
+"frames": [ ExtResource( 1 ) ],
 "loop": false,
 "name": "hit",
 "speed": 1.0

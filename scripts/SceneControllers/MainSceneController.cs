@@ -16,9 +16,13 @@ public class MainSceneController : Node2D
 
 	private GameHUDController node_gameHUDController;
 
+	private AudioStreamPlayer node_music;
+	private AudioStreamPlayer node_bossMusic;
+
 	private Node2D node_actors;
 	private Node2D node_enemies;
 	private Node2D node_aliens;
+	private Node2D node_bosses;
 	private Player node_player;
 
 	private Position2D node_playerSpawnPosition;
@@ -27,6 +31,10 @@ public class MainSceneController : Node2D
 	private Position2D node_alienSpawnPosition_right;
 
 	private Node2D node_background;
+
+	private Boss node_boss;
+
+	private AnimationPlayer node_animationPlayer;
 
 	#endregion // Nodes
 
@@ -37,6 +45,9 @@ public class MainSceneController : Node2D
 	[Export] public float EnemyMoveTime { get; set; } = 1f;
 	[Export] public EDirection EnemyMoveDirection { get; set; } = EDirection.Right;
 	[Export] public float EnemyMoveDistance { get; set; } = 8f;
+
+	[Export] public Vector2 BackgroundScrollSpeed { get; set; } = new Vector2(16, 32);
+	[Export] public float BackgroundScollSpeedModX { get; set; } = 16;
 
 	public int Lives
 	{
@@ -69,6 +80,7 @@ public class MainSceneController : Node2D
 
 	[Export] private PackedScene m_packedScene_redAlien;
 	[Export] private PackedScene m_packedScene_purpleAlien;
+	[Export] private PackedScene m_packedScene_boss;
 
 	private float m_enemyMoveTimeTimer = 0f;
 
@@ -94,9 +106,13 @@ public class MainSceneController : Node2D
 	{
 		node_gameHUDController = GetNode<GameHUDController>("GameHUD");
 
+		node_music = GetNode<AudioStreamPlayer>("AudioStreamPlayer_Music");
+		node_bossMusic = GetNode<AudioStreamPlayer>("AudioStreamPlayer_BossMusic");
+
 		node_actors = GetNode<Node2D>("Actors");
 		node_enemies = node_actors.GetNode<Node2D>("Enemies");
 		node_aliens = node_actors.GetNode<Node2D>("Aliens");
+		node_bosses = node_actors.GetNode<Node2D>("Bosses");
 		node_player = node_actors.GetNode<Player>("Player");
 
 		node_playerSpawnPosition = GetNode<Position2D>("PlayerSpawnPosition");
@@ -105,6 +121,8 @@ public class MainSceneController : Node2D
 		node_alienSpawnPosition_right = GetNode<Position2D>("AlienSpawnPositionRight");
 
 		node_background = GetNode<Node2D>("Background");
+
+		node_animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
 	}
 
 	public override void _Ready()
@@ -127,6 +145,8 @@ public class MainSceneController : Node2D
 		}
 
 		RecalculateEnemyPositions();
+
+		node_music.Play();
 	}
 
 	public override void _PhysicsProcess(float delta)
@@ -139,6 +159,7 @@ public class MainSceneController : Node2D
 
 
 
+
 	#region Private methods
 
 	private void HandleBackgroundScrolling(float delta)
@@ -147,8 +168,8 @@ public class MainSceneController : Node2D
 		float distancePercentageX = -relativePositionX / 128;
 
 		Vector2 speed = new Vector2();
-		speed.x = 16 * distancePercentageX;
-		speed.y = 32;
+		speed.x = BackgroundScrollSpeed.x * distancePercentageX;
+		speed.y = BackgroundScrollSpeed.y;
 
 		Vector2 position = node_background.Position;
 		position += speed * delta;
@@ -259,8 +280,17 @@ public class MainSceneController : Node2D
 		m_enemiesHit.Remove(enemy.Name);
 		if (m_enemiesAlive.Count == 0 && m_enemiesHit.Count == 0)
 		{
-			GetTree().ReloadCurrentScene();
+			node_animationPlayer.Play("cross_fade_music_to_boss");
 		}
+	}
+
+	private void OnBossHit(Boss boss)
+	{
+
+	}
+	private void OnBossDie(Boss boss)
+	{
+
 	}
 
 	private void OnAlienHit(Alien alien)
@@ -287,6 +317,16 @@ public class MainSceneController : Node2D
 
 		alien.Connect(nameof(Alien.OnHit), this, nameof(OnAlienHit));
 		alien.Connect(nameof(Alien.OnDie), this, nameof(OnAlienDie));
+	}
+
+	private void SpawnBoss()
+	{
+		node_boss = m_packedScene_boss.Instance<Boss>();
+		node_bosses.AddChild(node_boss);
+		node_boss.Position = new Vector2(128, -128);
+		node_boss.Connect(nameof(Boss.OnHit), this, nameof(OnBossHit));
+		node_boss.Connect(nameof(Boss.OnDie), this, nameof(OnBossDie));
+		node_boss.Play_Intro1();
 	}
 
 	#endregion // Private methods
