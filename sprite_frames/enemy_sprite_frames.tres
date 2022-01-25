@@ -1,0 +1,23 @@
+[gd_resource type="SpriteFrames" load_steps=4 format=2]
+
+[ext_resource path="res://texture_atlases/pink_head_0003.tres" type="Texture" id=1]
+[ext_resource path="res://texture_atlases/pink_head_0001.tres" type="Texture" id=2]
+[ext_resource path="res://texture_atlases/pink_head_0002.tres" type="Texture" id=3]
+
+[resource]
+animations = [ {
+"frames": [ ExtResource( 2 ) ],
+"loop": false,
+"name": "default",
+"speed": 1.0
+}, {
+"frames": [ ExtResource( 2 ), ExtResource( 3 ) ],
+"loop": true,
+"name": "idle",
+"speed": 2.0
+}, {
+"frames": [ ExtResource( 1 ) ],
+"loop": false,
+"name": "fire",
+"speed": 1.0
+} ]

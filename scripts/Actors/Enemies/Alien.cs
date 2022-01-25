@@ -36,6 +36,8 @@ public class Alien : Node2D
 
 	[Export] public Rect2 Bounds { get; set; } = new Rect2(-16, -8, 272, 392);
 
+	[Export] public int ScoreValue { get; set; } = 500;
+
 	#endregion // Properties
 
 

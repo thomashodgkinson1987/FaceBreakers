@@ -1,8 +1,8 @@
 [gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scripts/Actors/Projectile/Projectile.cs" type="Script" id=1]
-[ext_resource path="res://sounds/player_shoot_0001.ogg" type="AudioStream" id=2]
-[ext_resource path="res://sounds/player_death_0001.ogg" type="AudioStream" id=3]
+[ext_resource path="res://audio/sounds/player_shoot_0001.ogg" type="AudioStream" id=2]
+[ext_resource path="res://audio/sounds/player_death_0001.ogg" type="AudioStream" id=3]
 [ext_resource path="res://texture_atlases/green_projectile_0001.tres" type="Texture" id=4]
 [ext_resource path="res://packed_scenes/particles/ProjectileDieParticles.tscn" type="PackedScene" id=5]
 
@@ -15,6 +15,8 @@ __meta__ = {
 "_edit_group_": true
 }
 PackedScene_DieParticles = ExtResource( 5 )
+GroupsToIgnore_Area = [  ]
+GroupsToIgnore_Body = [  ]
 Lifetime = 2.0
 
 [node name="Sounds" type="Node" parent="."]

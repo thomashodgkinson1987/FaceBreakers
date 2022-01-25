@@ -5,7 +5,7 @@ public class MainSceneController : Node2D
 {
 
 	#region Enums
-	
+
 	public enum EDirection { Left, Right }
 
 	#endregion // Enums
@@ -18,18 +18,13 @@ public class MainSceneController : Node2D
 
 	private Node2D node_actors;
 	private Node2D node_enemies;
-
-	private Position2D node_enemiesLeftBounds;
-	private Position2D node_enemiesRightBounds;
-
+	private Node2D node_aliens;
 	private Player node_player;
 
 	private Position2D node_playerSpawnPosition;
 
 	private Position2D node_alienSpawnPosition_left;
 	private Position2D node_alienSpawnPosition_right;
-	private Node2D node_aliens;
-	private Timer node_alienSpawnTimer;
 
 	private Node2D node_background;
 
@@ -80,6 +75,13 @@ public class MainSceneController : Node2D
 	private List<string> m_enemiesAlive = new List<string>();
 	private List<string> m_enemiesHit = new List<string>();
 
+	private float m_enemyLeftPosition = 256;
+	private float m_enemyRightPosition = 0;
+	private float m_enemyBottomPosition = 0;
+
+	private int m_hitCountToSpawnAlien = 6;
+	private int m_hitCountToSpawnAlienCounter = 0;
+
 	private RandomNumberGenerator m_rng = new RandomNumberGenerator();
 
 	#endregion // Fields
@@ -94,18 +96,13 @@ public class MainSceneController : Node2D
 
 		node_actors = GetNode<Node2D>("Actors");
 		node_enemies = node_actors.GetNode<Node2D>("Enemies");
-
-		node_enemiesLeftBounds = node_enemies.GetNode<Position2D>("Left");
-		node_enemiesRightBounds = node_enemies.GetNode<Position2D>("Right");
-
+		node_aliens = node_actors.GetNode<Node2D>("Aliens");
 		node_player = node_actors.GetNode<Player>("Player");
 
 		node_playerSpawnPosition = GetNode<Position2D>("PlayerSpawnPosition");
 
 		node_alienSpawnPosition_left = GetNode<Position2D>("AlienSpawnPositionLeft");
 		node_alienSpawnPosition_right = GetNode<Position2D>("AlienSpawnPositionRight");
-		node_aliens = node_actors.GetNode<Node2D>("Aliens");
-		node_alienSpawnTimer = GetNode<Timer>("AlienSpawnTimer");
 
 		node_background = GetNode<Node2D>("Background");
 	}
@@ -122,24 +119,14 @@ public class MainSceneController : Node2D
 
 		for(int i = 0; i < node_enemies.GetChildCount(); i++)
 		{
-			PinkHead pinkHead = node_enemies.GetChildOrNull<PinkHead>(i);
-			GreyHead greyHead = node_enemies.GetChildOrNull<GreyHead>(i);
+			Enemy enemy = node_enemies.GetChild<Enemy>(i);
 
-			if (pinkHead != null)
-			{
-				pinkHead.Connect(nameof(PinkHead.OnHit), this, nameof(OnPinkHeadHit));
-				pinkHead.Connect(nameof(PinkHead.OnDie), this, nameof(OnPinkHeadDie));
-				m_enemiesAlive.Add(pinkHead.Name);
-			}
-			else if (greyHead != null)
-			{
-				greyHead.Connect(nameof(GreyHead.OnHit), this, nameof(OnGreyHeadHit));
-				greyHead.Connect(nameof(GreyHead.OnDie), this, nameof(OnGreyHeadDie));
-				m_enemiesAlive.Add(greyHead.Name);
-			}
+			enemy.Connect(nameof(Enemy.OnHit), this, nameof(OnEnemyHit));
+			enemy.Connect(nameof(Enemy.OnDie), this, nameof(OnEnemyDie));
+			m_enemiesAlive.Add(enemy.Name);
 		}
 
-		RecalculateEnemyBounds();
+		RecalculateEnemyPositions();
 	}
 
 	public override void _PhysicsProcess(float delta)
@@ -158,11 +145,10 @@ public class MainSceneController : Node2D
 	{
 		float relativePositionX = node_player.Position.x - 128;
 		float distancePercentageX = -relativePositionX / 128;
-		float speedModifierX = 16f;
 
 		Vector2 speed = new Vector2();
-		speed.x = speedModifierX * distancePercentageX;
-		speed.y = 32f;
+		speed.x = 16 * distancePercentageX;
+		speed.y = 32;
 
 		Vector2 position = node_background.Position;
 		position += speed * delta;
@@ -173,87 +159,118 @@ public class MainSceneController : Node2D
 		node_background.Position = position;
 	}
 
+	private float GetLeft()
+	{
+		float left = 256;
+
+		foreach(Enemy enemy in node_enemies.GetChildren())
+		{
+			if (!m_enemiesAlive.Contains(enemy.Name)) continue;
+
+			if (enemy.GlobalPosition.x < left)
+			{
+				left = enemy.GlobalPosition.x;
+			}
+		}
+
+		return left;
+	}
+	private float GetRight()
+	{
+		float right = 0;
+
+		foreach(Enemy enemy in node_enemies.GetChildren())
+		{
+			if (!m_enemiesAlive.Contains(enemy.Name)) continue;
+
+			if (enemy.GlobalPosition.x > right)
+			{
+				right = enemy.GlobalPosition.x;
+			}
+		}
+
+		return right;
+	}
+	private float GetBottom()
+	{
+		float bottom = 0;
+
+		foreach(Enemy enemy in node_enemies.GetChildren())
+		{
+			if (!m_enemiesAlive.Contains(enemy.Name)) continue;
+
+			if (enemy.GlobalPosition.y > bottom)
+			{
+				bottom = enemy.GlobalPosition.y;
+			}
+		}
+
+		return bottom;
+	}
+	private void MoveAllEnemies(Vector2 translation)
+	{
+		foreach(Enemy enemy in node_enemies.GetChildren())
+		{
+			if (!m_enemiesAlive.Contains(enemy.Name)) continue;
+
+			enemy.Translate(translation);
+		}
+	}
+
 	private void HandleEnemyMoving(float delta)
 	{
 		if (m_enemiesAlive.Count > 0)
 		{
-			Vector2 left = node_enemiesLeftBounds.GlobalPosition;
-			Vector2 right = node_enemiesRightBounds.GlobalPosition;
-
 			m_enemyMoveTimeTimer += delta;
+
 			if (m_enemyMoveTimeTimer >= EnemyMoveTime)
 			{
 				m_enemyMoveTimeTimer = 0;
-				if (EnemyMoveDirection == EDirection.Left && left.x <= 0)
+
+				float margin = 16;
+
+				bool isLeft = EnemyMoveDirection == EDirection.Left && m_enemyLeftPosition - margin <= 0;
+				bool isRight = EnemyMoveDirection == EDirection.Right && m_enemyRightPosition + margin >= 256;
+
+				if (isLeft || isRight)
 				{
-					node_enemies.Translate(new Vector2(0, 16));
+					MoveAllEnemies(new Vector2(0, EnemyMoveDistance));
+					m_enemyBottomPosition += EnemyMoveDistance;
 					EnemyMoveTime -= 0.1f;
 					EnemyMoveTime = Mathf.Clamp(EnemyMoveTime, 0.1f, Mathf.Inf);
-					EnemyMoveDirection = EDirection.Right;
-				}
-				else if (EnemyMoveDirection == EDirection.Right && right.x >= 256)
-				{
-					node_enemies.Translate(new Vector2(0, 16));
-					EnemyMoveTime -= 0.1f;
-					EnemyMoveTime = Mathf.Clamp(EnemyMoveTime, 0.1f, Mathf.Inf);
-					EnemyMoveDirection = EDirection.Left;
+					EnemyMoveDirection = EnemyMoveDirection == EDirection.Left ? EDirection.Right : EDirection.Left;
+
+					if (m_enemyBottomPosition + margin >= 360)
+					{
+						GetTree().ReloadCurrentScene();
+					}
 				}
 				else
 				{
 					int direction = EnemyMoveDirection == EDirection.Left ? -1 : 1;
 					Vector2 translation = new Vector2(EnemyMoveDistance * direction, 0);
 					node_enemies.Position += translation;
+					m_enemyLeftPosition += translation.x;
+					m_enemyRightPosition += translation.x;
 				}
-			}
-			if (node_enemiesLeftBounds.GlobalPosition.y >= 360)
-			{
-				GetTree().ReloadCurrentScene();
 			}
 		}
 	}
 
-	private void RecalculateEnemyBounds()
+	private void RecalculateEnemyPositions()
 	{
-		float left = 256;
-		float right = 0;
-		float bottom = 0;
+		m_enemyLeftPosition = 256;
+		m_enemyRightPosition = 0;
+		m_enemyBottomPosition = 0;
 
-		for(int i = 0; i < node_enemies.GetChildCount(); i++)
+		foreach(Enemy enemy in node_enemies.GetChildren())
 		{
-			PinkHead pinkHead = node_enemies.GetChildOrNull<PinkHead>(i);
-			GreyHead greyHead = node_enemies.GetChildOrNull<GreyHead>(i);
+			if (!m_enemiesAlive.Contains(enemy.Name)) continue;
 
-			if (pinkHead == null && greyHead == null) continue;
-
-			Node2D node = node_enemies.GetChild<Node2D>(i);
-
-			if (!m_enemiesAlive.Contains(node.Name)) continue;
-
-			if (i == 0)
-			{
-				left = node.GlobalPosition.x;
-				right = node.GlobalPosition.x;
-				bottom = node.GlobalPosition.y;
-			}
-			else
-			{
-				if (node.GlobalPosition.x < left)
-				{
-					left = node.GlobalPosition.x;
-				}
-				if (node.GlobalPosition.x > right)
-				{
-					right = node.GlobalPosition.x;
-				}
-				if (node.GlobalPosition.y > bottom)
-				{
-					bottom = node.GlobalPosition.y;
-				}
-			}
+			m_enemyLeftPosition = enemy.GlobalPosition.x < m_enemyLeftPosition ? enemy.GlobalPosition.x : m_enemyLeftPosition;
+			m_enemyRightPosition = enemy.GlobalPosition.x > m_enemyRightPosition ? enemy.GlobalPosition.x : m_enemyRightPosition;
+			m_enemyBottomPosition = enemy.GlobalPosition.y > m_enemyBottomPosition ? enemy.GlobalPosition.y : m_enemyBottomPosition;
 		}
-
-		node_enemiesLeftBounds.GlobalPosition = new Vector2(left - 16, bottom + 16);
-		node_enemiesRightBounds.GlobalPosition = new Vector2(right + 16, bottom + 16);
 	}
 
 	private void OnPlayerHit(Player player) { }
@@ -270,32 +287,22 @@ public class MainSceneController : Node2D
 		}
 	}
 
-	private void OnPinkHeadHit(PinkHead pinkHead)
+	private void OnEnemyHit(Enemy enemy)
 	{
-		Score += 100;
-		m_enemiesAlive.Remove(pinkHead.Name);
-		m_enemiesHit.Add(pinkHead.Name);
-		RecalculateEnemyBounds();
-	}
-	private void OnPinkHeadDie(PinkHead pinkHead)
-	{
-		m_enemiesHit.Remove(pinkHead.Name);
-		if (m_enemiesAlive.Count == 0 && m_enemiesHit.Count == 0)
+		Score += enemy.ScoreValue;
+		m_enemiesAlive.Remove(enemy.Name);
+		m_enemiesHit.Add(enemy.Name);
+		RecalculateEnemyPositions();
+		m_hitCountToSpawnAlienCounter++;
+		if (m_hitCountToSpawnAlienCounter == m_hitCountToSpawnAlien)
 		{
-			GetTree().ReloadCurrentScene();
+			m_hitCountToSpawnAlienCounter = 0;
+			SpawnAlien();
 		}
 	}
-
-	private void OnGreyHeadHit(GreyHead greyHead)
+	private void OnEnemyDie(Enemy enemy)
 	{
-		Score += 250;
-		m_enemiesAlive.Remove(greyHead.Name);
-		m_enemiesHit.Add(greyHead.Name);
-		RecalculateEnemyBounds();
-	}
-	private void OnGreyHeadDie(GreyHead greyHead)
-	{
-		m_enemiesHit.Remove(greyHead.Name);
+		m_enemiesHit.Remove(enemy.Name);
 		if (m_enemiesAlive.Count == 0 && m_enemiesHit.Count == 0)
 		{
 			GetTree().ReloadCurrentScene();
@@ -304,11 +311,11 @@ public class MainSceneController : Node2D
 
 	private void OnAlienHit(Alien alien)
 	{
-		Score += 500;
+		Score += alien.ScoreValue;
 	}
 	private void OnAlienDie(Alien alien) { }
 
-	private void OnAlienSpawnTimerTimeout()
+	private void SpawnAlien()
 	{
 		m_rng.Randomize();
 
@@ -322,7 +329,7 @@ public class MainSceneController : Node2D
 		Vector2 rightSpawnPosition = node_alienSpawnPosition_right.Position;
 
 		alien.Position = direction == -1 ? rightSpawnPosition : leftSpawnPosition;
-		alien.Velocity = new Vector2(64 * direction, 0);
+		alien.Velocity = new Vector2(32 * direction, 0);
 
 		alien.Connect(nameof(Alien.OnHit), this, nameof(OnAlienHit));
 		alien.Connect(nameof(Alien.OnDie), this, nameof(OnAlienDie));

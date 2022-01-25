@@ -1,16 +1,24 @@
 using System.Collections.Generic;
 using Godot;
 
-public class RedAlien : Node2D
+public class Enemy : Node2D
 {
 
 	#region Nodes
 
-	private AnimatedSprite node_animatedSprite_left;
-	private AnimatedSprite node_animatedSprite_right;
+	private AnimatedSprite node_animatedSprite;
 
 	private Area2D node_hitbox;
 	private CollisionShape2D node_hitbox_collisionShape;
+
+	private Position2D node_projectileSpawnPosition;
+	private Timer node_projectileSpawnTimer;
+
+	private Timer node_resetAnimationTimer;
+
+	private Node node_projectiles;
+
+	private RayCast2D node_rayCast;
 
 	#endregion // Nodes
 
@@ -18,8 +26,8 @@ public class RedAlien : Node2D
 
 	#region Signals
 
-	[Signal] public delegate void OnHit(RedAlien redAlien);
-	[Signal] public delegate void OnDie(RedAlien redAlien);
+	[Signal] public delegate void OnHit(Enemy enemy);
+	[Signal] public delegate void OnDie(Enemy enemy);
 
 	#endregion // Signals
 
@@ -27,14 +35,16 @@ public class RedAlien : Node2D
 
 	#region Properties
 
+	[Export] private PackedScene PackedScene_Projectile { get; set; }
 	[Export] public PackedScene PackedScene_DieParticles { get; set; }
 
 	[Export] public List<string> GroupsToIgnore_Area { get; set; }
 	[Export] public List<string> GroupsToIgnore_Body { get; set; }
 
-	[Export] public Vector2 Velocity { get; set; } = Vector2.Zero;
+	[Export] public float MinFireWaitTime { get; set; } = 1f;
+	[Export] public float MaxFireWaitTime { get; set; } = 3f;
 
-	[Export] public Rect2 Bounds { get; set; } = new Rect2(-16, -8, 272, 392);
+	[Export] public int ScoreValue { get; set; } = 100;
 
 	#endregion // Properties
 
@@ -48,10 +58,9 @@ public class RedAlien : Node2D
 	private bool m_wasDie = false;
 	private bool m_isDie = false;
 
-	private bool m_wasOutOfBounds = false;
-	private bool m_isOutOfBounds = false;
-
 	private CPUParticles2D m_dieParticles;
+
+	private RandomNumberGenerator m_rng;
 
 	#endregion // Fields
 
@@ -61,15 +70,31 @@ public class RedAlien : Node2D
 
 	public override void _EnterTree()
 	{
-		node_animatedSprite_left = GetNode<AnimatedSprite>("AnimatedSpriteLeft");
-		node_animatedSprite_right = GetNode<AnimatedSprite>("AnimatedSpriteRight");
+		node_animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
 
 		node_hitbox = GetNode<Area2D>("Hitbox");
 		node_hitbox_collisionShape = node_hitbox.GetNode<CollisionShape2D>("CollisionShape2D");
+
+		node_projectileSpawnPosition = GetNode<Position2D>("ProjectileSpawnPosition");
+		node_projectileSpawnTimer = GetNode<Timer>("ProjectileSpawnTimer");
+
+		node_resetAnimationTimer = GetNode<Timer>("ResetAnimationTimer");
+
+		node_projectiles = GetNode<Node>("Projectiles");
+
+		node_rayCast = node_hitbox.GetNode<RayCast2D>("RayCast2D");
 	}
 
 	public override void _Ready()
 	{
+		m_rng = new RandomNumberGenerator();
+		m_rng.Randomize();
+
+		float waitTime = m_rng.RandfRange(MinFireWaitTime, MaxFireWaitTime);
+		node_projectileSpawnTimer.Start(waitTime);
+
+		node_animatedSprite.Play("idle");
+
 		if (GroupsToIgnore_Area == null)
 		{
 			GroupsToIgnore_Area = new List<string>();
@@ -82,25 +107,17 @@ public class RedAlien : Node2D
 
 	public override void _PhysicsProcess(float delta)
 	{
-		if (!m_isHit && !m_isOutOfBounds)
+		if (!m_isHit && node_rayCast.IsColliding())
 		{
-			Translate(Velocity * delta);
-
-			Rect2 rect = new Rect2(Position.x - 16, Position.y - 8, 32, 16);
-
-			if (!Bounds.Intersects(rect))
-			{
-				m_isOutOfBounds = true;
-				QueueFree();
-			}
+			node_projectileSpawnTimer.Start();
 		}
 
 		if (m_isHit && !m_wasHit)
 		{
 			m_wasHit = true;
-			node_animatedSprite_left.Visible = false;
-			node_animatedSprite_right.Visible = false;
+			node_animatedSprite.Visible = false;
 			node_hitbox_collisionShape.Disabled = true;
+			node_projectileSpawnTimer.Stop();
 			m_dieParticles = PackedScene_DieParticles.Instance<CPUParticles2D>();
 			AddChild(m_dieParticles);
 			m_dieParticles.Emitting = true;
@@ -109,7 +126,7 @@ public class RedAlien : Node2D
 
 		if (m_wasHit && !m_isDie)
 		{
-			if (!m_dieParticles.Emitting)
+			if (!m_dieParticles.Emitting && node_projectiles.GetChildCount() == 0)
 			{
 				m_isDie = true;
 			}
@@ -130,6 +147,26 @@ public class RedAlien : Node2D
 
 
 	#region Private methods
+
+	private void OnProjectileSpawnTimerTimeout()
+	{
+		Projectile projectile = PackedScene_Projectile.Instance<Projectile>();
+		projectile.Rotation = node_projectileSpawnPosition.Rotation;
+		node_projectiles.AddChild(projectile);
+		projectile.GlobalPosition = node_projectileSpawnPosition.GlobalPosition;
+
+		m_rng.Randomize();
+		float waitTime = m_rng.RandfRange(MinFireWaitTime, MaxFireWaitTime);
+		node_projectileSpawnTimer.Start(waitTime);
+
+		node_animatedSprite.Play("fire");
+		node_resetAnimationTimer.Start();
+	}
+
+	private void OnResetAnimationTimerTimeout()
+	{
+		node_animatedSprite.Play("idle");
+	}
 
 	private void OnAreaEnteredHitbox(Area2D area)
 	{

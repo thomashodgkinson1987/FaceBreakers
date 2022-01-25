@@ -7,7 +7,7 @@
 
 [node name="AnimatedSpriteLeft" parent="." index="0"]
 frames = ExtResource( 1 )
-frame = 0
 
 [node name="AnimatedSpriteRight" parent="." index="1"]
 frames = ExtResource( 1 )
+frame = 1
