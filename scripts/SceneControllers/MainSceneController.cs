@@ -4,6 +4,14 @@ using Godot;
 public class MainSceneController : Node2D
 {
 
+	#region Enums
+	
+	public enum EDirection { Left, Right }
+
+	#endregion // Enums
+
+
+
 	#region Nodes
 
 	private GameHUDController node_gameHUDController;
@@ -31,11 +39,9 @@ public class MainSceneController : Node2D
 
 	#region Properties
 
-	[Export] public float EnemyMoveSpeed { get; set; } = 1f;
-	[Export] public int EnemyMoveDirection { get; set; } = 1;
+	[Export] public float EnemyMoveTime { get; set; } = 1f;
+	[Export] public EDirection EnemyMoveDirection { get; set; } = EDirection.Right;
 	[Export] public float EnemyMoveDistance { get; set; } = 8f;
-
-	private int _lives = 3;
 
 	public int Lives
 	{
@@ -46,8 +52,6 @@ public class MainSceneController : Node2D
 			node_gameHUDController.Lives = value;
 		}
 	}
-
-	private int _score = 0;
 
 	public int Score
 	{
@@ -65,13 +69,18 @@ public class MainSceneController : Node2D
 
 	#region Fields
 
+	private int _lives = 3;
+	private int _score = 0;
+
 	[Export] private PackedScene m_packedScene_redAlien;
 	[Export] private PackedScene m_packedScene_purpleAlien;
 
-	private float m_enemyMoveTimer = 0f;
+	private float m_enemyMoveTimeTimer = 0f;
 
 	private List<string> m_enemiesAlive = new List<string>();
 	private List<string> m_enemiesHit = new List<string>();
+
+	private RandomNumberGenerator m_rng = new RandomNumberGenerator();
 
 	#endregion // Fields
 
@@ -103,6 +112,8 @@ public class MainSceneController : Node2D
 
 	public override void _Ready()
 	{
+		m_rng.Randomize();
+
 		node_gameHUDController.Lives = _lives;
 		node_gameHUDController.Score = _score;
 
@@ -154,27 +165,28 @@ public class MainSceneController : Node2D
 			Vector2 left = node_enemiesLeftBounds.GlobalPosition;
 			Vector2 right = node_enemiesRightBounds.GlobalPosition;
 
-			m_enemyMoveTimer += delta;
-			if (m_enemyMoveTimer >= EnemyMoveSpeed)
+			m_enemyMoveTimeTimer += delta;
+			if (m_enemyMoveTimeTimer >= EnemyMoveTime)
 			{
-				m_enemyMoveTimer = 0;
-				if (EnemyMoveDirection == -1 && left.x <= 0)
+				m_enemyMoveTimeTimer = 0;
+				if (EnemyMoveDirection == EDirection.Left && left.x <= 0)
 				{
 					node_enemies.Translate(new Vector2(0, 16));
-					EnemyMoveSpeed -= 0.1f;
-					EnemyMoveSpeed = Mathf.Clamp(EnemyMoveSpeed, 0.1f, Mathf.Inf);
-					EnemyMoveDirection = 1;
+					EnemyMoveTime -= 0.1f;
+					EnemyMoveTime = Mathf.Clamp(EnemyMoveTime, 0.1f, Mathf.Inf);
+					EnemyMoveDirection = EDirection.Right;
 				}
-				else if (EnemyMoveDirection == 1 && right.x >= 256)
+				else if (EnemyMoveDirection == EDirection.Right && right.x >= 256)
 				{
 					node_enemies.Translate(new Vector2(0, 16));
-					EnemyMoveSpeed -= 0.1f;
-					EnemyMoveSpeed = Mathf.Clamp(EnemyMoveSpeed, 0.1f, Mathf.Inf);
-					EnemyMoveDirection = -1;
+					EnemyMoveTime -= 0.1f;
+					EnemyMoveTime = Mathf.Clamp(EnemyMoveTime, 0.1f, Mathf.Inf);
+					EnemyMoveDirection = EDirection.Left;
 				}
 				else
 				{
-					Vector2 translation = new Vector2(EnemyMoveDistance * EnemyMoveDirection, 0);
+					int direction = EnemyMoveDirection == EDirection.Left ? -1 : 1;
+					Vector2 translation = new Vector2(EnemyMoveDistance * direction, 0);
 					node_enemies.Position += translation;
 				}
 			}
@@ -281,48 +293,30 @@ public class MainSceneController : Node2D
 		}
 	}
 
-	private void OnRedAlienHit(RedAlien redAlien)
+	private void OnAlienHit(Alien alien)
 	{
 		Score += 500;
 	}
-	private void OnRedAlienDie(RedAlien redAlien) { }
-
-	private void OnPurpleAlienHit(PurpleAlien purpleAlien)
-	{
-		Score += 500;
-	}
-	private void OnPurpleAlienDie(PurpleAlien purpleAlien) { }
+	private void OnAlienDie(Alien alien) { }
 
 	private void OnAlienSpawnTimerTimeout()
 	{
-		RandomNumberGenerator rng = new RandomNumberGenerator();
-		rng.Randomize();
-		bool left = rng.RandiRange(0, 1) == 0 ? false : true;
-		rng.Randomize();
-		bool red = rng.RandiRange(0, 1) == 0 ? false : true;
+		m_rng.Randomize();
 
-		if (red)
-		{
-			RedAlien alien = m_packedScene_redAlien.Instance<RedAlien>();
-			node_aliens.AddChild(alien);
-			alien.Position = left ? node_alienSpawnPosition_left.Position : node_alienSpawnPosition_right.Position;
-			float speed = 64;
-			alien.Velocity = left ? Vector2.Right * speed : Vector2.Left * speed;
+		int direction = m_rng.RandiRange(0, 1) == 0 ? -1 : 1;
+		PackedScene packedScene = m_rng.RandiRange(0, 1) == 0 ? m_packedScene_redAlien : m_packedScene_purpleAlien;
 
-			alien.Connect(nameof(RedAlien.OnHit), this, nameof(OnRedAlienHit));
-			alien.Connect(nameof(RedAlien.OnDie), this, nameof(OnRedAlienDie));
-		}
-		else
-		{
-			PurpleAlien alien = m_packedScene_purpleAlien.Instance<PurpleAlien>();
-			node_aliens.AddChild(alien);
-			alien.Position = left ? node_alienSpawnPosition_left.Position : node_alienSpawnPosition_right.Position;
-			float speed = 64;
-			alien.Velocity = left ? Vector2.Right * speed : Vector2.Left * speed;
+		Alien alien = packedScene.Instance<Alien>();
+		node_aliens.AddChild(alien);
 
-			alien.Connect(nameof(PurpleAlien.OnHit), this, nameof(OnPurpleAlienHit));
-			alien.Connect(nameof(PurpleAlien.OnDie), this, nameof(OnPurpleAlienDie));
-		}
+		Vector2 leftSpawnPosition = node_alienSpawnPosition_left.Position;
+		Vector2 rightSpawnPosition = node_alienSpawnPosition_right.Position;
+
+		alien.Position = direction == -1 ? rightSpawnPosition : leftSpawnPosition;
+		alien.Velocity = new Vector2(64 * direction, 0);
+
+		alien.Connect(nameof(Alien.OnHit), this, nameof(OnAlienHit));
+		alien.Connect(nameof(Alien.OnDie), this, nameof(OnAlienDie));
 	}
 
 	#endregion // Private methods

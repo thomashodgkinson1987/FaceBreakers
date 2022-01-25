@@ -4,12 +4,12 @@
 [ext_resource path="res://scripts/SceneControllers/MainSceneController.cs" type="Script" id=2]
 [ext_resource path="res://sprites/white_pixel.png" type="Texture" id=3]
 [ext_resource path="res://packed_scenes/actors/player/Player.tscn" type="PackedScene" id=4]
-[ext_resource path="res://tileset.tres" type="TileSet" id=5]
+[ext_resource path="res://tile_sets/main_tile_set.tres" type="TileSet" id=5]
 [ext_resource path="res://packed_scenes/actors/enemies/PinkHead.tscn" type="PackedScene" id=6]
 [ext_resource path="res://sprites/black_pixel.png" type="Texture" id=7]
 [ext_resource path="res://packed_scenes/actors/enemies/GreyHead.tscn" type="PackedScene" id=8]
-[ext_resource path="res://packed_scenes/actors/enemies/RedAlien.tscn" type="PackedScene" id=9]
-[ext_resource path="res://packed_scenes/actors/enemies/PurpleAlien.tscn" type="PackedScene" id=10]
+[ext_resource path="res://packed_scenes/actors/enemies/aliens/RedAlien.tscn" type="PackedScene" id=9]
+[ext_resource path="res://packed_scenes/actors/enemies/aliens/PurpleAlien.tscn" type="PackedScene" id=10]
 [ext_resource path="res://music/level_0001.ogg" type="AudioStream" id=11]
 
 [sub_resource type="RectangleShape2D" id=1]
@@ -349,10 +349,6 @@ __meta__ = {
 "_gizmo_extents_": 8.0
 }
 
-[node name="GameHUD" parent="." instance=ExtResource( 1 )]
-margin_right = 256.0
-margin_bottom = 256.0
-
 [node name="AlienSpawnPositionLeft" type="Position2D" parent="."]
 position = Vector2( -16, 32 )
 __meta__ = {
@@ -374,5 +370,9 @@ autostart = true
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 11 )
+
+[node name="GameHUD" parent="." instance=ExtResource( 1 )]
+margin_right = 256.0
+margin_bottom = 256.0
 
 [connection signal="timeout" from="AlienSpawnTimer" to="." method="OnAlienSpawnTimerTimeout"]

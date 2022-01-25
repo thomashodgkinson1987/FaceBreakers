@@ -1,33 +1,14 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://texture_atlases/purple_alien_0003.tres" type="Texture" id=1]
-[ext_resource path="res://texture_atlases/purple_alien_0001.tres" type="Texture" id=2]
-[ext_resource path="res://texture_atlases/purple_alien_0002.tres" type="Texture" id=3]
-[ext_resource path="res://texture_atlases/purple_alien_0004.tres" type="Texture" id=4]
-[ext_resource path="res://scripts/Actors/Enemies/PurpleAlien/PurpleAlien.cs" type="Script" id=5]
-[ext_resource path="res://packed_scenes/particles/GreyHeadDieParticles.tscn" type="PackedScene" id=6]
-
-[sub_resource type="SpriteFrames" id=1]
-animations = [ {
-"frames": [ ExtResource( 2 ), ExtResource( 1 ) ],
-"loop": true,
-"name": "default",
-"speed": 1.0
-} ]
-
-[sub_resource type="SpriteFrames" id=2]
-animations = [ {
-"frames": [ ExtResource( 3 ), ExtResource( 4 ) ],
-"loop": true,
-"name": "default",
-"speed": 1.0
-} ]
+[ext_resource path="res://sprite_frames/aliens/base_alien_sprite_frames.tres" type="SpriteFrames" id=1]
+[ext_resource path="res://scripts/Actors/Enemies/Aliens/Alien.cs" type="Script" id=2]
+[ext_resource path="res://packed_scenes/particles/AlienDieParticles.tscn" type="PackedScene" id=6]
 
 [sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 16, 8 )
 
-[node name="PurpleAlien" type="Node2D"]
-script = ExtResource( 5 )
+[node name="Alien" type="Node2D"]
+script = ExtResource( 2 )
 __meta__ = {
 "_edit_group_": true,
 "_edit_lock_": true
@@ -38,7 +19,8 @@ GroupsToIgnore_Body = [ "Player" ]
 
 [node name="AnimatedSpriteLeft" type="AnimatedSprite" parent="."]
 position = Vector2( -8, 0 )
-frames = SubResource( 1 )
+frames = ExtResource( 1 )
+animation = "left"
 frame = 1
 speed_scale = 3.7
 playing = true
@@ -48,7 +30,8 @@ __meta__ = {
 
 [node name="AnimatedSpriteRight" type="AnimatedSprite" parent="."]
 position = Vector2( 8, 0 )
-frames = SubResource( 2 )
+frames = ExtResource( 1 )
+animation = "right"
 speed_scale = 5.7
 playing = true
 __meta__ = {
