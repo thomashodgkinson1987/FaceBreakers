@@ -155,6 +155,8 @@ player_shoot={
 2d_physics/layer_4="PlayerBoundary"
 2d_physics/layer_6="EnemyHitbox"
 2d_physics/layer_7="EnemyProjectileHitbox"
+2d_physics/layer_9="ShieldBody"
+2d_physics/layer_10="ShieldHitbox"
 
 [physics]
 

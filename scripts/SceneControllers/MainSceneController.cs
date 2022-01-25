@@ -167,6 +167,10 @@ public class MainSceneController : Node2D
 
 			enemy.Translate(translation);
 		}
+
+		m_enemyLeftPosition += translation.x;
+		m_enemyRightPosition += translation.x;
+		m_enemyBottomPosition += translation.y;
 	}
 
 	private void HandleEnemyMoving(float delta)
@@ -175,9 +179,9 @@ public class MainSceneController : Node2D
 		{
 			m_enemyMoveTimeTimer += delta;
 
-			while (m_enemyMoveTimeTimer >= EnemyMoveTime)
+			if (m_enemyMoveTimeTimer >= EnemyMoveTime)
 			{
-				m_enemyMoveTimeTimer -= EnemyMoveTime;
+				m_enemyMoveTimeTimer = 0;
 
 				float margin = 16;
 
@@ -186,24 +190,22 @@ public class MainSceneController : Node2D
 
 				if (isLeft || isRight)
 				{
+					if (m_enemyBottomPosition + margin + EnemyMoveDistance > 256)
+					{
+						GetTree().ReloadCurrentScene();
+						return;
+					}
+
 					MoveAllEnemies(new Vector2(0, EnemyMoveDistance));
-					m_enemyBottomPosition += EnemyMoveDistance;
 					EnemyMoveTime -= 0.1f;
 					EnemyMoveTime = Mathf.Clamp(EnemyMoveTime, 0.1f, Mathf.Inf);
 					EnemyMoveDirection = EnemyMoveDirection == EDirection.Left ? EDirection.Right : EDirection.Left;
-
-					if (m_enemyBottomPosition + margin >= 360)
-					{
-						GetTree().ReloadCurrentScene();
-					}
 				}
 				else
 				{
 					int direction = EnemyMoveDirection == EDirection.Left ? -1 : 1;
 					Vector2 translation = new Vector2(EnemyMoveDistance * direction, 0);
-					node_enemies.Position += translation;
-					m_enemyLeftPosition += translation.x;
-					m_enemyRightPosition += translation.x;
+					MoveAllEnemies(translation);
 				}
 			}
 		}
@@ -244,7 +246,7 @@ public class MainSceneController : Node2D
 		Score += enemy.ScoreValue;
 		m_enemiesAlive.Remove(enemy.Name);
 		m_enemiesHit.Add(enemy.Name);
-		//RecalculateEnemyPositions();
+		RecalculateEnemyPositions();
 		m_hitCountToSpawnAlienCounter++;
 		if (m_hitCountToSpawnAlienCounter == m_hitCountToSpawnAlien)
 		{

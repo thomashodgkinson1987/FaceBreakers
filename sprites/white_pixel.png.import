@@ -14,7 +14,7 @@ dest_files=[ "res://.import/white_pixel.png-a44e2e4eb11f9b91067da16e8ffe1cee.ste
 
 [params]
 
-compress/mode=0
+compress/mode=3
 compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0

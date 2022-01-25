@@ -1,0 +1,39 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://sprite_frames/boss_sprite_frames.tres" type="SpriteFrames" id=1]
+[ext_resource path="res://texture_atlases/shield_0001.tres" type="Texture" id=2]
+
+[node name="Boss" type="Node2D"]
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( 11, -2 )
+scale = Vector2( 1.5, 1.5 )
+frames = ExtResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Hitbox" type="Area2D" parent="."]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Hitbox"]
+visible = false
+polygon = PoolVector2Array( -56, -24, -56, -64, -48, -104, 0, -104, 48, -80, 64, -40, 64, 0, 72, 0, 64, 32, 56, 48, 48, 80, 16, 112, -16, 112, -24, 104, -40, 80, -48, 56, -56, 32, -72, 8, -72, -8, -56, -16 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Projectiles" type="Node" parent="."]
+
+[node name="Shields" type="Node" parent="."]
+
+[node name="Shield0001" type="Sprite" parent="Shields"]
+position = Vector2( -16, 264 )
+rotation = -3.14159
+scale = Vector2( 2, 2 )
+texture = ExtResource( 2 )

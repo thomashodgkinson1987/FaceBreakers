@@ -14,7 +14,7 @@ dest_files=[ "res://.import/transparent_pixel.png-d7e2777cbf1d3dbb1dca0dd79afc81
 
 [params]
 
-compress/mode=0
+compress/mode=3
 compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0

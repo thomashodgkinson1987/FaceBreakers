@@ -54,7 +54,7 @@ __meta__ = {
 }
 
 [node name="Body" type="KinematicBody2D" parent="."]
-collision_mask = 8
+collision_mask = 264
 __meta__ = {
 "_edit_lock_": true
 }
