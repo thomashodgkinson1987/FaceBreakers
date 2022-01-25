@@ -33,6 +33,7 @@ public class Alien : Node2D
 	[Export] public List<string> GroupsToIgnore_Body { get; set; }
 
 	[Export] public Vector2 Velocity { get; set; } = Vector2.Zero;
+	[Export] public float Speed { get; set; } = 32;
 
 	[Export] public Rect2 Bounds { get; set; } = new Rect2(-16, -8, 272, 392);
 
@@ -54,6 +55,8 @@ public class Alien : Node2D
 	private bool m_isOutOfBounds = false;
 
 	private CPUParticles2D m_dieParticles;
+	
+	private RectangleShape2D m_rectShape;
 
 	#endregion // Fields
 
@@ -68,6 +71,7 @@ public class Alien : Node2D
 
 		node_hitbox = GetNode<Area2D>("Hitbox");
 		node_hitbox_collisionShape = node_hitbox.GetNode<CollisionShape2D>("CollisionShape2D");
+		m_rectShape = node_hitbox_collisionShape.Shape as RectangleShape2D;
 	}
 
 	public override void _Ready()
@@ -88,7 +92,12 @@ public class Alien : Node2D
 		{
 			Translate(Velocity * delta);
 
-			Rect2 rect = new Rect2(Position.x - 16, Position.y - 8, 32, 16);
+			Rect2 rect = new Rect2(
+				Position.x - m_rectShape.Extents.x,
+				Position.y - m_rectShape.Extents.y,
+				m_rectShape.Extents.x * 2,
+				m_rectShape.Extents.y * 2
+			);
 
 			if (!Bounds.Intersects(rect))
 			{

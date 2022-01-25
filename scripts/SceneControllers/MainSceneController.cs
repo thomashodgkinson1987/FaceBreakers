@@ -159,54 +159,6 @@ public class MainSceneController : Node2D
 		node_background.Position = position;
 	}
 
-	private float GetLeft()
-	{
-		float left = 256;
-
-		foreach(Enemy enemy in node_enemies.GetChildren())
-		{
-			if (!m_enemiesAlive.Contains(enemy.Name)) continue;
-
-			if (enemy.GlobalPosition.x < left)
-			{
-				left = enemy.GlobalPosition.x;
-			}
-		}
-
-		return left;
-	}
-	private float GetRight()
-	{
-		float right = 0;
-
-		foreach(Enemy enemy in node_enemies.GetChildren())
-		{
-			if (!m_enemiesAlive.Contains(enemy.Name)) continue;
-
-			if (enemy.GlobalPosition.x > right)
-			{
-				right = enemy.GlobalPosition.x;
-			}
-		}
-
-		return right;
-	}
-	private float GetBottom()
-	{
-		float bottom = 0;
-
-		foreach(Enemy enemy in node_enemies.GetChildren())
-		{
-			if (!m_enemiesAlive.Contains(enemy.Name)) continue;
-
-			if (enemy.GlobalPosition.y > bottom)
-			{
-				bottom = enemy.GlobalPosition.y;
-			}
-		}
-
-		return bottom;
-	}
 	private void MoveAllEnemies(Vector2 translation)
 	{
 		foreach(Enemy enemy in node_enemies.GetChildren())
@@ -223,9 +175,9 @@ public class MainSceneController : Node2D
 		{
 			m_enemyMoveTimeTimer += delta;
 
-			if (m_enemyMoveTimeTimer >= EnemyMoveTime)
+			while (m_enemyMoveTimeTimer >= EnemyMoveTime)
 			{
-				m_enemyMoveTimeTimer = 0;
+				m_enemyMoveTimeTimer -= EnemyMoveTime;
 
 				float margin = 16;
 
@@ -292,7 +244,7 @@ public class MainSceneController : Node2D
 		Score += enemy.ScoreValue;
 		m_enemiesAlive.Remove(enemy.Name);
 		m_enemiesHit.Add(enemy.Name);
-		RecalculateEnemyPositions();
+		//RecalculateEnemyPositions();
 		m_hitCountToSpawnAlienCounter++;
 		if (m_hitCountToSpawnAlienCounter == m_hitCountToSpawnAlien)
 		{
@@ -329,7 +281,7 @@ public class MainSceneController : Node2D
 		Vector2 rightSpawnPosition = node_alienSpawnPosition_right.Position;
 
 		alien.Position = direction == -1 ? rightSpawnPosition : leftSpawnPosition;
-		alien.Velocity = new Vector2(32 * direction, 0);
+		alien.Velocity = new Vector2(alien.Speed * direction, 0);
 
 		alien.Connect(nameof(Alien.OnHit), this, nameof(OnAlienHit));
 		alien.Connect(nameof(Alien.OnDie), this, nameof(OnAlienDie));

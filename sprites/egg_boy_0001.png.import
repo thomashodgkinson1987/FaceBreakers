@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/EggBoi_1.png-c113c94b8e962fe98a98ab1145256141.stex"
+path="res://.import/egg_boy_0001.png-9a979deb8d2e03e969c8e76eacfe0563.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/EggBoi_1.png"
-dest_files=[ "res://.import/EggBoi_1.png-c113c94b8e962fe98a98ab1145256141.stex" ]
+source_file="res://sprites/egg_boy_0001.png"
+dest_files=[ "res://.import/egg_boy_0001.png-9a979deb8d2e03e969c8e76eacfe0563.stex" ]
 
 [params]
 
