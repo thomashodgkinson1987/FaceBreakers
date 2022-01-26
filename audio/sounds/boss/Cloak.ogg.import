@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Cloak.ogg-fa9fa0b62c8474bdcd8ee7aad92b6b15.oggstr"
+
+[deps]
+
+source_file="res://audio/sounds/boss/Cloak.ogg"
+dest_files=[ "res://.import/Cloak.ogg-fa9fa0b62c8474bdcd8ee7aad92b6b15.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

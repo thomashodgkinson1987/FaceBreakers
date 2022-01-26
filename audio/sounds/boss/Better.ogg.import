@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Better.ogg-e97de922bde38818b2fa8a78f98c5731.oggstr"
+
+[deps]
+
+source_file="res://audio/sounds/boss/Better.ogg"
+dest_files=[ "res://.import/Better.ogg-e97de922bde38818b2fa8a78f98c5731.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

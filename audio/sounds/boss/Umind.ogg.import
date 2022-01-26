@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Umind.ogg-75cf88821009c529c5f57f25d963488c.oggstr"
+
+[deps]
+
+source_file="res://audio/sounds/boss/Umind.ogg"
+dest_files=[ "res://.import/Umind.ogg-75cf88821009c529c5f57f25d963488c.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

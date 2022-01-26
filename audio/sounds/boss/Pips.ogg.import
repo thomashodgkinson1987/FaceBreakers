@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Pips.ogg-666284fa1fbc679889a83a73b2ac87c6.oggstr"
+
+[deps]
+
+source_file="res://audio/sounds/boss/Pips.ogg"
+dest_files=[ "res://.import/Pips.ogg-666284fa1fbc679889a83a73b2ac87c6.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

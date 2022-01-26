@@ -284,20 +284,20 @@ public class MainSceneController : Node2D
 		}
 	}
 
-	private void OnBossHit(Boss boss)
-	{
-
-	}
-	private void OnBossDie(Boss boss)
-	{
-
-	}
-
 	private void OnAlienHit(Alien alien)
 	{
 		Score += alien.ScoreValue;
 	}
 	private void OnAlienDie(Alien alien) { }
+
+	private void OnBossHit(Boss boss)
+	{
+		Score += 100;
+	}
+	private void OnBossDie(Boss boss)
+	{
+
+	}
 
 	private void SpawnAlien()
 	{

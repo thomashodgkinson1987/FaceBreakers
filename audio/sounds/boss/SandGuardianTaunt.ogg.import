@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/SandGuardianTaunt.ogg-339102d49f48e1debc163960b72df3b2.oggstr"
+
+[deps]
+
+source_file="res://audio/sounds/boss/SandGuardianTaunt.ogg"
+dest_files=[ "res://.import/SandGuardianTaunt.ogg-339102d49f48e1debc163960b72df3b2.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

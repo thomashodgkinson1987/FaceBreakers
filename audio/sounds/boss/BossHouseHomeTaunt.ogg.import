@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/BossHouseHomeTaunt.ogg-d65954264d27a75703203a827e81e749.oggstr"
+
+[deps]
+
+source_file="res://audio/sounds/boss/BossHouseHomeTaunt.ogg"
+dest_files=[ "res://.import/BossHouseHomeTaunt.ogg-d65954264d27a75703203a827e81e749.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

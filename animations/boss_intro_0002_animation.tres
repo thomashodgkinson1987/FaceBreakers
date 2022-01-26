@@ -53,3 +53,15 @@ tracks/3/keys = {
 "method": "Play_ShowShields"
 } ]
 }
+tracks/4/type = "value"
+tracks/4/path = NodePath("Sounds/AudioStreamPlayer2:playing")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 7.3, 11.9 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false ]
+}

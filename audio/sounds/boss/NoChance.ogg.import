@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/NoChance.ogg-33b3e8ef575961bce0c58e208b04436f.oggstr"
+
+[deps]
+
+source_file="res://audio/sounds/boss/NoChance.ogg"
+dest_files=[ "res://.import/NoChance.ogg-33b3e8ef575961bce0c58e208b04436f.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=33 format=2]
 
 [ext_resource path="res://sprite_frames/boss_sprite_frames.tres" type="SpriteFrames" id=1]
 [ext_resource path="res://packed_scenes/Shield.tscn" type="PackedScene" id=2]
@@ -7,8 +7,26 @@
 [ext_resource path="res://animations/boss_intro_0001_animation.tres" type="Animation" id=5]
 [ext_resource path="res://animations/boss_intro_0002_animation.tres" type="Animation" id=6]
 [ext_resource path="res://scripts/Actors/Enemies/Boss.cs" type="Script" id=7]
-[ext_resource path="res://packed_scenes/actors/projectiles/GreyHeadProjectile.tscn" type="PackedScene" id=8]
+[ext_resource path="res://packed_scenes/actors/projectiles/BossProjectile.tscn" type="PackedScene" id=8]
 [ext_resource path="res://packed_scenes/particles/GreyHeadDieParticles.tscn" type="PackedScene" id=9]
+[ext_resource path="res://audio/sounds/boss/BossHouseHomeTaunt.ogg" type="AudioStream" id=10]
+[ext_resource path="res://audio/sounds/boss/SandGuardianTaunt.ogg" type="AudioStream" id=11]
+[ext_resource path="res://audio/sounds/boss/NoChance.ogg" type="AudioStream" id=12]
+[ext_resource path="res://packed_scenes/RayParticlesHolder.tscn" type="PackedScene" id=13]
+[ext_resource path="res://packed_scenes/actors/projectiles/PizzaProjectile.tscn" type="PackedScene" id=14]
+[ext_resource path="res://audio/sounds/boss/Cloak.ogg" type="AudioStream" id=15]
+[ext_resource path="res://audio/sounds/boss/ChromeDome.ogg" type="AudioStream" id=16]
+[ext_resource path="res://audio/sounds/boss/PizzaTime.ogg" type="AudioStream" id=17]
+[ext_resource path="res://audio/sounds/boss/Pips.ogg" type="AudioStream" id=18]
+[ext_resource path="res://audio/sounds/boss/Lemons.ogg" type="AudioStream" id=19]
+[ext_resource path="res://audio/sounds/boss/Umind.ogg" type="AudioStream" id=20]
+[ext_resource path="res://audio/sounds/boss/Punk.ogg" type="AudioStream" id=21]
+[ext_resource path="res://audio/sounds/boss/Owie.ogg" type="AudioStream" id=22]
+[ext_resource path="res://audio/sounds/boss/BossHit3.ogg" type="AudioStream" id=23]
+[ext_resource path="res://audio/sounds/boss/BossHit.ogg" type="AudioStream" id=24]
+[ext_resource path="res://audio/sounds/boss/Better.ogg" type="AudioStream" id=25]
+[ext_resource path="res://audio/sounds/boss/BossEntrance.ogg" type="AudioStream" id=26]
+[ext_resource path="res://audio/sounds/boss/BossHit2.ogg" type="AudioStream" id=27]
 
 [sub_resource type="Animation" id=3]
 length = 0.001
@@ -47,6 +65,307 @@ tracks/2/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ Color( 0, 0, 0, 0 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Sounds/AudioStreamPlayer1:playing")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Sounds/AudioStreamPlayer2:playing")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("AnimatedSprite/RayParticlesHolder/CPUParticles2D:emitting")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("AnimatedSprite/RayParticlesHolder:rotation_degrees")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 90.0 ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("AnimatedSprite/RayParticlesHolder/CPUParticles2D:modulate")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ) ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("AnimatedSprite/RayParticlesHolder/Area2D/CollisionShape2D:disabled")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "move_0001"
+length = 10.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimatedSprite/RayParticlesHolder/CPUParticles2D:emitting")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 4, 5, 9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false, true, false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("AnimatedSprite/RayParticlesHolder:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1, 3, 4, 5, 6, 8, 9 ),
+"transitions": PoolRealArray( 1, 0.5, 1, 0.5, 1, 0.5, 1, 1 ),
+"update": 0,
+"values": [ 130.0, 130.0, 90.0, 90.0, 65.0, 65.0, 90.0, 90.0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("AnimatedSprite/RayParticlesHolder/CPUParticles2D:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 1, 3, 4, 5, 6, 8, 9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 0, 0, 0, 0 ), Color( 0, 0, 0, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 0, 0, 0, 0 ) ]
+}
+tracks/3/type = "method"
+tracks/3/path = NodePath(".")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 10 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "PlayRandomMove"
+} ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("AnimatedSprite/RayParticlesHolder/Area2D/CollisionShape2D:disabled")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.1, 4, 5, 9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ true, false, true, false, true ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "move_0002"
+length = 9.0
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1, 2, 6, 7, 8 ),
+"transitions": PoolRealArray( -2, 1, 1, 1, -2, 1 ),
+"update": 0,
+"values": [ Vector2( 128, 128 ), Vector2( -32, 8 ), Vector2( -32, 8 ), Vector2( 216, 8 ), Vector2( 216, 8 ), Vector2( 128, 128 ) ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 2, 3, 4, 5, 6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"values": [ {
+"args": [  ],
+"method": "FireProjectile"
+}, {
+"args": [  ],
+"method": "FireProjectile"
+}, {
+"args": [  ],
+"method": "FireProjectile"
+}, {
+"args": [  ],
+"method": "FireProjectile"
+}, {
+"args": [  ],
+"method": "FireProjectile"
+} ]
+}
+tracks/2/type = "method"
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 9 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "PlayRandomMove"
+} ]
+}
+
+[sub_resource type="Animation" id=6]
+resource_name = "move_0003"
+length = 17.0
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1, 3, 4, 5, 6, 8, 8.1, 8.2, 9, 10, 11, 14, 14.1, 14.2, 16 ),
+"transitions": PoolRealArray( 0.5, 1, 0.5, 1, 1, 0.5, 1, 1, 1, 1, 1, 0.5, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 128, 128 ), Vector2( 128, -120 ), Vector2( 128, -120 ), Vector2( 128, 16 ), Vector2( 128, 16 ), Vector2( 128, 16 ), Vector2( -80, 16 ), Vector2( -80, -120 ), Vector2( 128, -120 ), Vector2( 128, 16 ), Vector2( 128, 16 ), Vector2( 128, 16 ), Vector2( 336, 16 ), Vector2( 336, -112 ), Vector2( 128, -112 ), Vector2( 128, 128 ) ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 16 ),
+"transitions": PoolRealArray( 1, 1 ),
+"values": [ {
+"args": [  ],
+"method": "DisableBossCollision"
+}, {
+"args": [  ],
+"method": "EnableBossCollision"
+} ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("AnimatedSprite:self_modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 1, 3, 4, 14, 16 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 0, 0, 0, 0 ), Color( 0, 0, 0, 0 ), Color( 1, 1, 1, 0.247059 ), Color( 1, 1, 1, 0.247059 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("AnimatedSprite/RayParticlesHolder/CPUParticles2D:emitting")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 5, 8, 10, 14 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false, true, false ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("AnimatedSprite/RayParticlesHolder/CPUParticles2D:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 4.9, 5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("AnimatedSprite/RayParticlesHolder:rotation_degrees")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 90.0 ]
+}
+tracks/6/type = "method"
+tracks/6/path = NodePath(".")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 17 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "PlayRandomMove"
+} ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("AnimatedSprite/RayParticlesHolder/Area2D/CollisionShape2D:disabled")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0, 5, 8, 10, 14 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ true, false, true, false, true ]
 }
 
 [sub_resource type="Animation" id=2]
@@ -387,6 +706,18 @@ tracks/27/keys = {
 "update": 0,
 "values": [ false ]
 }
+tracks/28/type = "value"
+tracks/28/path = NodePath("../Sounds/AudioStreamPlayer3:playing")
+tracks/28/interp = 1
+tracks/28/loop_wrap = true
+tracks/28/imported = false
+tracks/28/enabled = true
+tracks/28/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
 
 [node name="Boss" type="Node2D"]
 position = Vector2( 128, -256 )
@@ -395,6 +726,7 @@ __meta__ = {
 "_edit_group_": true
 }
 PackedScene_Projectile = ExtResource( 8 )
+PackedScene_PizzaProjectile = ExtResource( 14 )
 PackedScene_DieParticles = ExtResource( 9 )
 GroupsToIgnore_Area = [  ]
 GroupsToIgnore_Body = [  ]
@@ -404,33 +736,81 @@ ScoreValue = 10000
 anims/RESET = SubResource( 3 )
 anims/boss_intro_0001 = ExtResource( 5 )
 anims/boss_intro_0002 = ExtResource( 6 )
+anims/move_0001 = SubResource( 4 )
+anims/move_0002 = SubResource( 5 )
+anims/move_0003 = SubResource( 6 )
 
-[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-modulate = Color( 0, 0, 0, 0 )
-position = Vector2( 11, -2 )
-scale = Vector2( 3, 3 )
-frames = ExtResource( 1 )
-__meta__ = {
-"_edit_lock_": true
-}
+[node name="Sounds" type="Node" parent="."]
 
-[node name="Hitbox" type="Area2D" parent="."]
-collision_layer = 8192
-collision_mask = 4
-__meta__ = {
-"_edit_lock_": true
-}
+[node name="AudioStreamPlayer1" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource( 10 )
+volume_db = 5.0
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Hitbox"]
-visible = false
-polygon = PoolVector2Array( -56, -24, -56, -64, -48, -104, 0, -104, 48, -80, 64, -40, 64, 0, 72, 0, 64, 32, 56, 48, 48, 80, 16, 112, -16, 112, -24, 104, -40, 80, -48, 56, -56, 32, -72, 8, -72, -8, -56, -16 )
-__meta__ = {
-"_edit_lock_": true
-}
+[node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource( 11 )
+volume_db = 5.0
 
-[node name="Projectiles" type="Node" parent="."]
+[node name="AudioStreamPlayer3" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource( 12 )
+volume_db = 5.0
+
+[node name="AudioStreamPlayer4" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource( 25 )
+volume_db = 5.0
+
+[node name="AudioStreamPlayer5" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource( 26 )
+volume_db = 5.0
+
+[node name="AudioStreamPlayer6" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource( 27 )
+volume_db = 5.0
+
+[node name="AudioStreamPlayer7" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource( 23 )
+volume_db = 5.0
+
+[node name="AudioStreamPlayer8" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource( 24 )
+volume_db = 5.0
+
+[node name="AudioStreamPlayer9" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource( 16 )
+volume_db = 5.0
+
+[node name="AudioStreamPlayer10" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource( 15 )
+volume_db = 5.0
+
+[node name="AudioStreamPlayer11" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource( 19 )
+volume_db = 5.0
+
+[node name="AudioStreamPlayer12" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource( 22 )
+volume_db = 5.0
+
+[node name="AudioStreamPlayer13" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource( 18 )
+volume_db = 5.0
+
+[node name="AudioStreamPlayer14" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource( 17 )
+volume_db = 5.0
+
+[node name="AudioStreamPlayer15" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource( 21 )
+volume_db = 5.0
+
+[node name="AudioStreamPlayer16" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource( 20 )
+volume_db = 5.0
 
 [node name="Shields" type="Node" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Shields"]
+anims/RESET = SubResource( 2 )
+anims/show_shields = ExtResource( 3 )
 
 [node name="AudioStreamPlayer1" type="AudioStreamPlayer" parent="Shields"]
 stream = ExtResource( 4 )
@@ -443,10 +823,6 @@ stream = ExtResource( 4 )
 
 [node name="AudioStreamPlayer4" type="AudioStreamPlayer" parent="Shields"]
 stream = ExtResource( 4 )
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Shields"]
-anims/RESET = SubResource( 2 )
-anims/show_shields = ExtResource( 3 )
 
 [node name="Shield" parent="Shields" instance=ExtResource( 2 )]
 modulate = Color( 0, 0, 0, 0 )
@@ -496,7 +872,47 @@ position = Vector2( 368, 272 )
 rotation = -3.14159
 scale = Vector2( 4, 4 )
 
+[node name="Projectiles" type="Node" parent="."]
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+modulate = Color( 0, 0, 0, 0 )
+position = Vector2( 11, -2 )
+scale = Vector2( 3, 3 )
+frames = ExtResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="RayParticlesHolder" parent="AnimatedSprite" instance=ExtResource( 13 )]
+position = Vector2( 13.3333, 4.6667 )
+rotation = 1.5708
+
+[node name="CPUParticles2D" parent="AnimatedSprite/RayParticlesHolder" index="0"]
+modulate = Color( 1, 1, 1, 0 )
+emitting = false
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 8192
+collision_mask = 4
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Hitbox"]
+visible = false
+polygon = PoolVector2Array( -56, -24, -56, -64, -48, -104, 0, -104, 48, -80, 64, -40, 64, 0, 72, 0, 64, 32, 56, 48, 48, 80, 16, 112, -16, 112, -24, 104, -40, 80, -48, 56, -56, 32, -72, 8, -72, -8, -56, -16 )
+__meta__ = {
+"_edit_lock_": true
+}
+
 [node name="ProjectileSpawnPosition" type="Position2D" parent="."]
 position = Vector2( 31, 5 )
+rotation = 3.14159
+__meta__ = {
+"_edit_lock_": true
+}
 
-[node name="ProjectileSpawnTimer" type="Timer" parent="."]
+[connection signal="area_entered" from="Hitbox" to="." method="OnAreaEnteredHitbox"]
+[connection signal="body_entered" from="Hitbox" to="." method="OnBodyEnteredHitbox"]
+
+[editable path="AnimatedSprite/RayParticlesHolder"]

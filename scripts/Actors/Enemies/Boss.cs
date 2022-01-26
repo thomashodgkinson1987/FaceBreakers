@@ -12,7 +12,6 @@ public class Boss : Node2D
 	private CollisionPolygon2D node_hitbox_collisionPolygon;
 
 	private Position2D node_projectileSpawnPosition;
-	private Timer node_projectileSpawnTimer;
 
 	private Node node_projectiles;
 
@@ -20,6 +19,25 @@ public class Boss : Node2D
 
 	private AnimationPlayer node_animationPlayer1;
 	private AnimationPlayer node_animationPlayer2;
+
+	private Node node_sounds;
+
+	private AudioStreamPlayer node_audioStreamPlayer1;
+	private AudioStreamPlayer node_audioStreamPlayer2;
+	private AudioStreamPlayer node_audioStreamPlayer3;
+	private AudioStreamPlayer node_audioStreamPlayer4;
+	private AudioStreamPlayer node_audioStreamPlayer5;
+	private AudioStreamPlayer node_audioStreamPlayer6;
+	private AudioStreamPlayer node_audioStreamPlayer7;
+	private AudioStreamPlayer node_audioStreamPlayer8;
+	private AudioStreamPlayer node_audioStreamPlayer9;
+	private AudioStreamPlayer node_audioStreamPlayer10;
+	private AudioStreamPlayer node_audioStreamPlayer11;
+	private AudioStreamPlayer node_audioStreamPlayer12;
+	private AudioStreamPlayer node_audioStreamPlayer13;
+	private AudioStreamPlayer node_audioStreamPlayer14;
+	private AudioStreamPlayer node_audioStreamPlayer15;
+	private AudioStreamPlayer node_audioStreamPlayer16;
 
 	#endregion // Nodes
 
@@ -37,15 +55,19 @@ public class Boss : Node2D
 	#region Properties
 
 	[Export] private PackedScene PackedScene_Projectile { get; set; }
+	[Export] private PackedScene PackedScene_PizzaProjectile { get; set; }
 	[Export] public PackedScene PackedScene_DieParticles { get; set; }
 
 	[Export] public List<string> GroupsToIgnore_Area { get; set; }
 	[Export] public List<string> GroupsToIgnore_Body { get; set; }
 
-	[Export] public float MinFireWaitTime { get; set; } = 1f;
-	[Export] public float MaxFireWaitTime { get; set; } = 3f;
+	[Export] public int ScoreValue { get; set; } = 100000;
 
-	[Export] public int ScoreValue { get; set; } = 100;
+	[Export] public int Health { get; set; } = 100;
+	[Export] public int MaxHealth { get; set; } = 100;
+
+	[Export] public Color MaxHealthColor { get; set; } = Colors.White;
+	[Export] public Color NoHealthColor { get; set; } = Colors.Red;
 
 	#endregion // Properties
 
@@ -63,6 +85,17 @@ public class Boss : Node2D
 
 	private RandomNumberGenerator m_rng;
 
+	private List<AudioStreamPlayer> m_allSounds = new List<AudioStreamPlayer>();
+	private List<AudioStreamPlayer> m_entranceSounds = new List<AudioStreamPlayer>();
+	private List<AudioStreamPlayer> m_notHurtSounds = new List<AudioStreamPlayer>();
+	private List<AudioStreamPlayer> m_minorHurtSounds = new List<AudioStreamPlayer>();
+	private List<AudioStreamPlayer> m_hurtSounds = new List<AudioStreamPlayer>();
+	private List<AudioStreamPlayer> m_majorHurtSounds = new List<AudioStreamPlayer>();
+	private List<AudioStreamPlayer> m_dieSounds = new List<AudioStreamPlayer>();
+	private List<AudioStreamPlayer> m_miscSounds = new List<AudioStreamPlayer>();
+
+	private int m_hitCounter = 0;
+
 	#endregion // Fields
 
 
@@ -77,7 +110,6 @@ public class Boss : Node2D
 		node_hitbox_collisionPolygon = node_hitbox.GetNode<CollisionPolygon2D>("CollisionPolygon2D");
 
 		node_projectileSpawnPosition = GetNode<Position2D>("ProjectileSpawnPosition");
-		node_projectileSpawnTimer = GetNode<Timer>("ProjectileSpawnTimer");
 
 		node_projectiles = GetNode<Node>("Projectiles");
 
@@ -85,15 +117,68 @@ public class Boss : Node2D
 
 		node_animationPlayer1 = GetNode<AnimationPlayer>("AnimationPlayer");
 		node_animationPlayer2 = node_shields.GetNode<AnimationPlayer>("AnimationPlayer");
+
+		node_sounds = GetNode<Node>("Sounds");
+
+		node_audioStreamPlayer1 = node_sounds.GetNode<AudioStreamPlayer>("AudioStreamPlayer1");
+		node_audioStreamPlayer2 = node_sounds.GetNode<AudioStreamPlayer>("AudioStreamPlayer2");
+		node_audioStreamPlayer3 = node_sounds.GetNode<AudioStreamPlayer>("AudioStreamPlayer3");
+		node_audioStreamPlayer4 = node_sounds.GetNode<AudioStreamPlayer>("AudioStreamPlayer4");
+		node_audioStreamPlayer5 = node_sounds.GetNode<AudioStreamPlayer>("AudioStreamPlayer5");
+		node_audioStreamPlayer6 = node_sounds.GetNode<AudioStreamPlayer>("AudioStreamPlayer6");
+		node_audioStreamPlayer7 = node_sounds.GetNode<AudioStreamPlayer>("AudioStreamPlayer7");
+		node_audioStreamPlayer8 = node_sounds.GetNode<AudioStreamPlayer>("AudioStreamPlayer8");
+		node_audioStreamPlayer9 = node_sounds.GetNode<AudioStreamPlayer>("AudioStreamPlayer9");
+		node_audioStreamPlayer10 = node_sounds.GetNode<AudioStreamPlayer>("AudioStreamPlayer10");
+		node_audioStreamPlayer11 = node_sounds.GetNode<AudioStreamPlayer>("AudioStreamPlayer11");
+		node_audioStreamPlayer12 = node_sounds.GetNode<AudioStreamPlayer>("AudioStreamPlayer12");
+		node_audioStreamPlayer13 = node_sounds.GetNode<AudioStreamPlayer>("AudioStreamPlayer13");
+		node_audioStreamPlayer14 = node_sounds.GetNode<AudioStreamPlayer>("AudioStreamPlayer14");
+		node_audioStreamPlayer15 = node_sounds.GetNode<AudioStreamPlayer>("AudioStreamPlayer15");
+		node_audioStreamPlayer16 = node_sounds.GetNode<AudioStreamPlayer>("AudioStreamPlayer16");
+
+		m_allSounds.Add(node_audioStreamPlayer1);
+		m_allSounds.Add(node_audioStreamPlayer2);
+		m_allSounds.Add(node_audioStreamPlayer3);
+		m_allSounds.Add(node_audioStreamPlayer4);
+		m_allSounds.Add(node_audioStreamPlayer5);
+		m_allSounds.Add(node_audioStreamPlayer6);
+		m_allSounds.Add(node_audioStreamPlayer7);
+		m_allSounds.Add(node_audioStreamPlayer8);
+		m_allSounds.Add(node_audioStreamPlayer9);
+		m_allSounds.Add(node_audioStreamPlayer10);
+		m_allSounds.Add(node_audioStreamPlayer11);
+		m_allSounds.Add(node_audioStreamPlayer12);
+		m_allSounds.Add(node_audioStreamPlayer13);
+		m_allSounds.Add(node_audioStreamPlayer14);
+		m_allSounds.Add(node_audioStreamPlayer15);
+		m_allSounds.Add(node_audioStreamPlayer16);
+
+		m_entranceSounds.Add(node_audioStreamPlayer4);
+		m_entranceSounds.Add(node_audioStreamPlayer5);
+
+		m_notHurtSounds.Add(node_audioStreamPlayer13);
+		
+		m_minorHurtSounds.Add(node_audioStreamPlayer12);
+		m_minorHurtSounds.Add(node_audioStreamPlayer15);
+		m_minorHurtSounds.Add(node_audioStreamPlayer16);
+
+		m_hurtSounds.Add(node_audioStreamPlayer6);
+		m_hurtSounds.Add(node_audioStreamPlayer7);
+		m_hurtSounds.Add(node_audioStreamPlayer8);
+		
+		m_majorHurtSounds.Add(node_audioStreamPlayer10);
+		
+		m_dieSounds.Add(node_audioStreamPlayer9);
+		m_dieSounds.Add(node_audioStreamPlayer11);
+		
+		m_miscSounds.Add(node_audioStreamPlayer14);
 	}
 
 	public override void _Ready()
 	{
 		m_rng = new RandomNumberGenerator();
 		m_rng.Randomize();
-
-		float waitTime = m_rng.RandfRange(MinFireWaitTime, MaxFireWaitTime);
-		node_projectileSpawnTimer.Start(waitTime);
 
 		node_animatedSprite.Play("idle");
 
@@ -111,22 +196,64 @@ public class Boss : Node2D
 	{
 		if (m_isHit && !m_wasHit)
 		{
-			m_wasHit = true;
-			node_animatedSprite.Visible = false;
-			node_hitbox_collisionPolygon.Disabled = true;
-			node_projectileSpawnTimer.Stop();
-			m_dieParticles = PackedScene_DieParticles.Instance<CPUParticles2D>();
-			AddChild(m_dieParticles);
-			m_dieParticles.Emitting = true;
-			EmitSignal(nameof(OnHit), this);
-		}
+			m_isHit = false;
 
-		if (m_wasHit && !m_isDie)
-		{
-			if (!m_dieParticles.Emitting && node_projectiles.GetChildCount() == 0)
+			Health--;
+
+			if (Health <= 0)
 			{
-				m_isDie = true;
+				Health = 0;
+				node_animatedSprite.SelfModulate = NoHealthColor;
 			}
+			else
+			{
+				node_animatedSprite.SelfModulate = NoHealthColor.LinearInterpolate(MaxHealthColor, (float)Health / (float)MaxHealth);
+			}
+
+			m_hitCounter++;
+
+			if (m_hitCounter == 10)
+			{
+				m_notHurtSounds[0].Play();
+			}
+			else if (m_hitCounter == 20)
+			{
+				m_minorHurtSounds[0].Play();
+			}
+			else if (m_hitCounter == 30)
+			{
+				m_minorHurtSounds[1].Play();
+			}
+			else if (m_hitCounter == 40)
+			{
+				m_minorHurtSounds[2].Play();
+			}
+			else if (m_hitCounter == 50)
+			{
+				m_hurtSounds[0].Play();
+			}
+			else if (m_hitCounter == 60)
+			{
+				m_hurtSounds[1].Play();
+			}
+			else if (m_hitCounter == 70)
+			{
+				m_hurtSounds[2].Play();
+			}
+			else if (m_hitCounter == 80)
+			{
+				m_majorHurtSounds[0].Play();
+			}
+			else if (m_hitCounter == 90)
+			{
+				m_dieSounds[0].Play();
+			}
+			else if (m_hitCounter == 100)
+			{
+				m_dieSounds[1].Play();
+			}
+
+			EmitSignal(nameof(OnHit), this);
 		}
 
 		if (m_isDie && !m_wasDie)
@@ -157,10 +284,24 @@ public class Boss : Node2D
 		node_animationPlayer2.Play("show_shields");
 	}
 
-	public void EnableCollision()
+	public void PlayRandomMove()
+	{
+		int choice = m_rng.RandiRange(1, 3);
+		node_animationPlayer1.Play($"move_000{choice}");
+	}
+
+	public void EnableBossCollision()
 	{
 		node_hitbox_collisionPolygon.Disabled = false;
+	}
 
+	public void DisableBossCollision()
+	{
+		node_hitbox_collisionPolygon.Disabled = true;
+	}
+
+	public void EnableShieldCollision()
+	{
 		for(int i = 0; i < node_shields.GetChildCount(); i++)
 		{
 			Shield shield = node_shields.GetChildOrNull<Shield>(i);
@@ -169,10 +310,9 @@ public class Boss : Node2D
 			shield.EnableCollision();
 		}
 	}
-	public void DisableCollision()
-	{
-		node_hitbox_collisionPolygon.Disabled = true;
 
+	public void DisableShieldCollision()
+	{
 		for(int i = 0; i < node_shields.GetChildCount(); i++)
 		{
 			Shield shield = node_shields.GetChildOrNull<Shield>(i);
@@ -187,25 +327,6 @@ public class Boss : Node2D
 
 
 	#region Private methods
-
-	private void OnProjectileSpawnTimerTimeout()
-	{
-		Projectile projectile = PackedScene_Projectile.Instance<Projectile>();
-		projectile.Rotation = node_projectileSpawnPosition.Rotation;
-		node_projectiles.AddChild(projectile);
-		projectile.GlobalPosition = node_projectileSpawnPosition.GlobalPosition;
-
-		m_rng.Randomize();
-		float waitTime = m_rng.RandfRange(MinFireWaitTime, MaxFireWaitTime);
-		node_projectileSpawnTimer.Start(waitTime);
-
-		node_animatedSprite.Play("fire");
-	}
-
-	private void OnResetAnimationTimerTimeout()
-	{
-		node_animatedSprite.Play("idle");
-	}
 
 	private void OnAreaEnteredHitbox(Area2D area)
 	{
@@ -231,6 +352,34 @@ public class Boss : Node2D
 		}
 
 		m_isHit = true;
+	}
+
+	private void FireProjectile()
+	{
+		if (m_rng.RandiRange(0, 3) > 0)
+		{
+			FireNormalProjectile();
+		}
+		else
+		{
+			FirePizzaProjectile();
+		}
+	}
+
+	private void FireNormalProjectile()
+	{
+		Projectile projectile = PackedScene_Projectile.Instance<Projectile>();
+		projectile.Rotation = node_projectileSpawnPosition.Rotation;
+		node_projectiles.AddChild(projectile);
+		projectile.GlobalPosition = node_projectileSpawnPosition.GlobalPosition;
+	}
+
+	private void FirePizzaProjectile()
+	{
+		PizzaProjectile projectile = PackedScene_PizzaProjectile.Instance<PizzaProjectile>();
+		projectile.Rotation = node_projectileSpawnPosition.Rotation;
+		node_projectiles.AddChild(projectile);
+		projectile.GlobalPosition = node_projectileSpawnPosition.GlobalPosition;
 	}
 
 	#endregion // Private methods

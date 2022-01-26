@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Punk.ogg-7cfa2487c2b6a5c31facf489e00e8998.oggstr"
+
+[deps]
+
+source_file="res://audio/sounds/boss/Punk.ogg"
+dest_files=[ "res://.import/Punk.ogg-7cfa2487c2b6a5c31facf489e00e8998.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0
