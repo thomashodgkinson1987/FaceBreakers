@@ -75,15 +75,27 @@ public class Boss : Node2D
 
 	#region Fields
 
+	private RandomNumberGenerator m_rng;
+
 	private bool m_wasHit = false;
 	private bool m_isHit = false;
 
 	private bool m_wasDie = false;
 	private bool m_isDie = false;
 
-	private CPUParticles2D m_dieParticles;
+	private bool m_isReturn = false;
+	private bool m_wasReturn = false;
 
-	private RandomNumberGenerator m_rng;
+	private int m_hitCounter = 0;
+
+	private Vector2 m_diePosition = Vector2.Zero;
+
+	private float m_returnTime = 4f;
+	private float m_returnTimeTimer = 0f;
+
+	private int m_lastChoice = 0;
+
+	private CPUParticles2D m_dieParticles;
 
 	private List<AudioStreamPlayer> m_allSounds = new List<AudioStreamPlayer>();
 	private List<AudioStreamPlayer> m_entranceSounds = new List<AudioStreamPlayer>();
@@ -93,8 +105,6 @@ public class Boss : Node2D
 	private List<AudioStreamPlayer> m_majorHurtSounds = new List<AudioStreamPlayer>();
 	private List<AudioStreamPlayer> m_dieSounds = new List<AudioStreamPlayer>();
 	private List<AudioStreamPlayer> m_miscSounds = new List<AudioStreamPlayer>();
-
-	private int m_hitCounter = 0;
 
 	#endregion // Fields
 
@@ -194,7 +204,7 @@ public class Boss : Node2D
 
 	public override void _PhysicsProcess(float delta)
 	{
-		if (m_isHit && !m_wasHit)
+		if (m_isHit)
 		{
 			m_isHit = false;
 
@@ -246,11 +256,18 @@ public class Boss : Node2D
 			}
 			else if (m_hitCounter == 90)
 			{
-				m_dieSounds[0].Play();
+				m_dieSounds[1].Play();
 			}
 			else if (m_hitCounter == 100)
 			{
-				m_dieSounds[1].Play();
+				m_wasHit = true;
+				m_isDie = true;
+				node_animationPlayer1.Stop();
+				GetNode<CPUParticles2D>("AnimatedSprite/RayParticlesHolder/CPUParticles2D").Emitting = false;
+				GetNode<CollisionShape2D>("AnimatedSprite/RayParticlesHolder/Area2D/CollisionShape2D").Disabled = true;
+				DisableBossCollision();
+				DisableShieldCollision();
+				m_diePosition = Position;
 			}
 
 			EmitSignal(nameof(OnHit), this);
@@ -259,9 +276,44 @@ public class Boss : Node2D
 		if (m_isDie && !m_wasDie)
 		{
 			m_wasDie = true;
-			EmitSignal(nameof(OnDie), this);
-			RemoveChild(m_dieParticles);
-			m_dieParticles.QueueFree();
+		}
+
+		if (m_isDie && m_wasDie && !m_isReturn)
+		{
+			if (m_returnTimeTimer < m_returnTime)
+			{
+				m_returnTimeTimer += delta;
+
+				Vector2 centre = new Vector2(128, 128);
+
+				if (m_returnTimeTimer < m_returnTime)
+				{
+					Position = m_diePosition.LinearInterpolate(centre, m_returnTimeTimer / m_returnTime);
+				}
+				else
+				{
+					Position = centre;
+					m_isReturn = true;
+				}
+			}
+		}
+
+		if (m_isReturn && !m_wasReturn)
+		{
+			m_isReturn = false;
+			m_wasReturn = true;
+
+			m_dieSounds[0].Play();
+			node_animationPlayer1.Play("die_0001");
+		}
+
+		if (!m_isReturn && m_wasReturn)
+		{
+			if (!node_animationPlayer1.IsPlaying())
+			{
+				m_isReturn = true;
+				EmitSignal(nameof(OnDie), this);
+			}
 		}
 	}
 
@@ -287,6 +339,14 @@ public class Boss : Node2D
 	public void PlayRandomMove()
 	{
 		int choice = m_rng.RandiRange(1, 3);
+
+		while (choice == m_lastChoice)
+		{
+			choice = m_rng.RandiRange(1, 3);
+		}
+
+		m_lastChoice = choice;
+
 		node_animationPlayer1.Play($"move_000{choice}");
 	}
 

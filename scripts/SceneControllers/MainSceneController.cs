@@ -145,8 +145,6 @@ public class MainSceneController : Node2D
 		}
 
 		RecalculateEnemyPositions();
-
-		node_music.Play();
 	}
 
 	public override void _PhysicsProcess(float delta)
@@ -293,10 +291,13 @@ public class MainSceneController : Node2D
 	private void OnBossHit(Boss boss)
 	{
 		Score += 100;
+		node_gameHUDController.BossHealth = boss.Health;
 	}
 	private void OnBossDie(Boss boss)
 	{
-
+		node_animationPlayer.Play("boss_die_0001");
+		node_gameHUDController.RunCredits();
+		node_gameHUDController.HideBossHealthBar();
 	}
 
 	private void SpawnAlien()
@@ -327,6 +328,7 @@ public class MainSceneController : Node2D
 		node_boss.Connect(nameof(Boss.OnHit), this, nameof(OnBossHit));
 		node_boss.Connect(nameof(Boss.OnDie), this, nameof(OnBossDie));
 		node_boss.Play_Intro1();
+		node_gameHUDController.ShowBossHealthBar();
 	}
 
 	#endregion // Private methods

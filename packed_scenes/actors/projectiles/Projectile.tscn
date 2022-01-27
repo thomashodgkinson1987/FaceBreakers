@@ -23,9 +23,11 @@ Lifetime = 2.0
 
 [node name="Init" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource( 2 )
+volume_db = -10.0
 
 [node name="Die" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource( 3 )
+volume_db = -10.0
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 4 )

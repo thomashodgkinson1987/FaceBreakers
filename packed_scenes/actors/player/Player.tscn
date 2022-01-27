@@ -26,6 +26,7 @@ PackedScene_DieParticles = ExtResource( 7 )
 
 [node name="Shoot" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource( 3 )
+volume_db = -50.0
 
 [node name="Hit" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource( 5 )
