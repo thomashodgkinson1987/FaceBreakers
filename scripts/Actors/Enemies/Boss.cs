@@ -168,7 +168,7 @@ public class Boss : Node2D
 		m_entranceSounds.Add(node_audioStreamPlayer5);
 
 		m_notHurtSounds.Add(node_audioStreamPlayer13);
-		
+
 		m_minorHurtSounds.Add(node_audioStreamPlayer12);
 		m_minorHurtSounds.Add(node_audioStreamPlayer15);
 		m_minorHurtSounds.Add(node_audioStreamPlayer16);
@@ -176,12 +176,12 @@ public class Boss : Node2D
 		m_hurtSounds.Add(node_audioStreamPlayer6);
 		m_hurtSounds.Add(node_audioStreamPlayer7);
 		m_hurtSounds.Add(node_audioStreamPlayer8);
-		
+
 		m_majorHurtSounds.Add(node_audioStreamPlayer10);
-		
+
 		m_dieSounds.Add(node_audioStreamPlayer9);
 		m_dieSounds.Add(node_audioStreamPlayer11);
-		
+
 		m_miscSounds.Add(node_audioStreamPlayer14);
 	}
 
@@ -222,43 +222,43 @@ public class Boss : Node2D
 
 			m_hitCounter++;
 
-			if (m_hitCounter == 10)
+			if (m_hitCounter == 30)
 			{
 				m_notHurtSounds[0].Play();
 			}
-			else if (m_hitCounter == 20)
+			else if (m_hitCounter == 60)
 			{
 				m_minorHurtSounds[0].Play();
 			}
-			else if (m_hitCounter == 30)
+			else if (m_hitCounter == 90)
 			{
 				m_minorHurtSounds[1].Play();
 			}
-			else if (m_hitCounter == 40)
+			else if (m_hitCounter == 120)
 			{
 				m_minorHurtSounds[2].Play();
 			}
-			else if (m_hitCounter == 50)
+			else if (m_hitCounter == 150)
 			{
 				m_hurtSounds[0].Play();
 			}
-			else if (m_hitCounter == 60)
+			else if (m_hitCounter == 180)
 			{
 				m_hurtSounds[1].Play();
 			}
-			else if (m_hitCounter == 70)
+			else if (m_hitCounter == 210)
 			{
 				m_hurtSounds[2].Play();
 			}
-			else if (m_hitCounter == 80)
+			else if (m_hitCounter == 240)
 			{
 				m_majorHurtSounds[0].Play();
 			}
-			else if (m_hitCounter == 90)
+			else if (m_hitCounter == 270)
 			{
 				m_dieSounds[1].Play();
 			}
-			else if (m_hitCounter == 100)
+			else if (m_hitCounter == 300)
 			{
 				m_wasHit = true;
 				m_isDie = true;
@@ -276,6 +276,7 @@ public class Boss : Node2D
 		if (m_isDie && !m_wasDie)
 		{
 			m_wasDie = true;
+			DestroyShields();
 		}
 
 		if (m_isDie && m_wasDie && !m_isReturn)
@@ -379,6 +380,17 @@ public class Boss : Node2D
 			if (shield == null) continue;
 
 			shield.DisableCollision();
+		}
+	}
+
+	public void DestroyShields()
+	{
+		for(int i = 0; i< node_shields.GetChildCount(); i++)
+		{
+			Shield shield = node_shields.GetChildOrNull<Shield>(i);
+			if (shield == null) continue;
+
+			shield.QueueFree();
 		}
 	}
 

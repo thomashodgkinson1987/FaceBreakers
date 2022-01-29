@@ -846,6 +846,8 @@ PackedScene_DieParticles = ExtResource( 9 )
 GroupsToIgnore_Area = [  ]
 GroupsToIgnore_Body = [  ]
 ScoreValue = 10000
+Health = 300
+MaxHealth = 300
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/RESET = SubResource( 3 )

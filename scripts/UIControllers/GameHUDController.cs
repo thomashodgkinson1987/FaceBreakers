@@ -79,6 +79,11 @@ public class GameHUDController : Control
 		node_animationPlayer.Play("credits_0001");
 	}
 
+	private void OnCreditsFinished()
+	{
+		GetTree().ChangeScene("res://scenes/TitleScreen.tscn");
+	}
+
 	#endregion // Public methods
 
 }

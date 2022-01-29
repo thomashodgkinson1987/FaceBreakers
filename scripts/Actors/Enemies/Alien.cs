@@ -55,7 +55,7 @@ public class Alien : Node2D
 	private bool m_isOutOfBounds = false;
 
 	private CPUParticles2D m_dieParticles;
-	
+
 	private RectangleShape2D m_rectShape;
 
 	#endregion // Fields

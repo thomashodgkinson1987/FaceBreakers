@@ -1,0 +1,389 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://fonts/dynamic_fonts/dogicapixel_dynamic_font_0001.tres" type="DynamicFont" id=1]
+[ext_resource path="res://tile_sets/main_tile_set.tres" type="TileSet" id=2]
+[ext_resource path="res://sprites/black_pixel.png" type="Texture" id=3]
+[ext_resource path="res://sprites/egg_boy_0001.png" type="Texture" id=4]
+[ext_resource path="res://sprites/title_logo_0001.png" type="Texture" id=5]
+[ext_resource path="res://audio/music/title_0001.ogg" type="AudioStream" id=6]
+[ext_resource path="res://scripts/SceneControllers/TitleScreenController.cs" type="Script" id=7]
+
+[sub_resource type="Animation" id=1]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("Foreground:modulate:r")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("Foreground:modulate:g")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/2/type = "bezier"
+tracks/2/path = NodePath("Foreground:modulate:b")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/3/type = "bezier"
+tracks/3/path = NodePath("Foreground:modulate:a")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("AudioStreamPlayer:playing")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/5/type = "bezier"
+tracks/5/path = NodePath("AudioStreamPlayer:volume_db")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"points": PoolRealArray( -50, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+
+[sub_resource type="Animation" id=2]
+resource_name = "fade_in"
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("Foreground:modulate:r")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 1 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("Foreground:modulate:g")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 1 )
+}
+tracks/2/type = "bezier"
+tracks/2/path = NodePath("Foreground:modulate:b")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 1 )
+}
+tracks/3/type = "bezier"
+tracks/3/path = NodePath("Foreground:modulate:a")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 1 )
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("AudioStreamPlayer:playing")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/5/type = "bezier"
+tracks/5/path = NodePath("AudioStreamPlayer:volume_db")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"points": PoolRealArray( -50, -0.25, 0, 0.25, 0, 5, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 1 )
+}
+tracks/6/type = "method"
+tracks/6/path = NodePath(".")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"values": [ {
+"args": [  ],
+"method": "OnFadeInStart"
+}, {
+"args": [  ],
+"method": "OnFadeInEnd"
+} ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "fade_out"
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("Foreground:modulate:r")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 1 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("Foreground:modulate:g")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 1 )
+}
+tracks/2/type = "bezier"
+tracks/2/path = NodePath("Foreground:modulate:b")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 1 )
+}
+tracks/3/type = "bezier"
+tracks/3/path = NodePath("Foreground:modulate:a")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 1 )
+}
+tracks/4/type = "bezier"
+tracks/4/path = NodePath("AudioStreamPlayer:volume_db")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"points": PoolRealArray( 5, -0.25, 0, 0.25, 0, -50, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.9 )
+}
+tracks/5/type = "method"
+tracks/5/path = NodePath(".")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"values": [ {
+"args": [  ],
+"method": "OnFadeOutStart"
+}, {
+"args": [  ],
+"method": "OnFadeOutEnd"
+} ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("AudioStreamPlayer:playing")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0.9 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+
+[node name="TitleScreen" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 1 )
+anims/fade_in = SubResource( 2 )
+anims/fade_out = SubResource( 3 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+volume_db = -50.0
+autoplay = true
+
+[node name="Background" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 3 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TileMap" type="TileMap" parent="."]
+modulate = Color( 1, 1, 1, 0.219608 )
+tile_set = ExtResource( 2 )
+cell_size = Vector2( 16, 16 )
+format = 1
+tile_data = PoolIntArray( 1, 13, 0, 4, 5, 0, 7, 9, 0, 65541, 5, 0, 65545, 19, 0, 65547, 9, 0, 65550, 2, 0, 131073, 16, 0, 131075, 20, 0, 131085, 17, 0, 196615, 14, 0, 262144, 5, 0, 262148, 1, 0, 262155, 20, 0, 262157, 11, 0, 327688, 3, 0, 393218, 11, 0, 393228, 11, 0, 458752, 10, 0, 458753, 15, 0, 458765, 13, 0, 524300, 18, 0, 524302, 12, 0, 589828, 9, 0, 589830, 18, 0, 655363, 14, 0, 720897, 3, 0, 720900, 2, 0, 720910, 0, 0, 786444, 11, 0, 851969, 17, 0, 851972, 21, 0, 851979, 7, 0, 851981, 11, 0, 917512, 8, 0, 983045, 11, 0, 983051, 11, 0, 1048577, 19, 0, 1114114, 9, 0, 1114118, 15, 0, 1114125, 18, 0, 1179662, 16, 0, 1245185, 19, 0, 1245188, 14, 0, 1245193, 14, 0, 1310733, 7, 0, 1376257, 2, 0, 1376267, 6, 0, 1376270, 20, 0, 1441797, 8, 0, 1441799, 19, 0 )
+
+[node name="EggHead4" type="TextureRect" parent="."]
+modulate = Color( 1, 1, 1, 0.443137 )
+margin_left = 48.0
+margin_top = 25.0
+margin_right = 176.0
+margin_bottom = 201.0
+rect_rotation = -15.0
+rect_scale = Vector2( 0.2, 0.2 )
+texture = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EggHead5" type="TextureRect" parent="."]
+modulate = Color( 1, 1, 1, 0.443137 )
+margin_left = 8.0
+margin_top = 56.0
+margin_right = 136.0
+margin_bottom = 232.0
+rect_rotation = -44.9999
+rect_scale = Vector2( 0.2, 0.2 )
+texture = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EggHead6" type="TextureRect" parent="."]
+modulate = Color( 1, 1, 1, 0.443137 )
+margin_left = 181.0
+margin_top = 14.0
+margin_right = 309.0
+margin_bottom = 190.0
+rect_rotation = 30.0
+rect_scale = Vector2( 0.2, 0.2 )
+texture = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EggHead7" type="TextureRect" parent="."]
+modulate = Color( 1, 1, 1, 0.443137 )
+margin_left = 218.0
+margin_top = 38.0
+margin_right = 346.0
+margin_bottom = 214.0
+rect_rotation = 44.9999
+rect_scale = Vector2( 0.2, 0.2 )
+texture = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EggHead2" type="TextureRect" parent="."]
+modulate = Color( 1, 1, 1, 0.6 )
+margin_left = -8.0
+margin_top = 116.0
+margin_right = 120.0
+margin_bottom = 292.0
+rect_rotation = -30.0
+rect_scale = Vector2( 0.7, 0.7 )
+texture = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EggHead3" type="TextureRect" parent="."]
+modulate = Color( 1, 1, 1, 0.6 )
+margin_left = 186.0
+margin_top = 65.0
+margin_right = 314.0
+margin_bottom = 241.0
+rect_rotation = 30.0
+rect_scale = Vector2( 0.7, 0.7 )
+texture = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EggHead1" type="TextureRect" parent="."]
+margin_left = 64.0
+margin_top = 40.0
+margin_right = 192.0
+margin_bottom = 216.0
+texture = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TitleLogo" type="TextureRect" parent="."]
+margin_left = 8.0
+margin_top = 232.0
+margin_right = 609.0
+margin_bottom = 378.0
+rect_scale = Vector2( 0.4, 0.4 )
+texture = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_top = 328.0
+margin_right = 256.0
+margin_bottom = 366.0
+custom_fonts/font = ExtResource( 1 )
+text = "Press any button to start"
+align = 1
+valign = 1
+
+[node name="Foreground" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 3 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
