@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://fonts/dynamic_fonts/dogicapixel_dynamic_font_0001.tres" type="DynamicFont" id=1]
 [ext_resource path="res://tile_sets/main_tile_set.tres" type="TileSet" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://sprites/title_logo_0001.png" type="Texture" id=5]
 [ext_resource path="res://audio/music/title_0001.ogg" type="AudioStream" id=6]
 [ext_resource path="res://scripts/SceneControllers/TitleScreenController.cs" type="Script" id=7]
+[ext_resource path="res://audio/sounds/pizza_projectile_init.ogg" type="AudioStream" id=8]
 
 [sub_resource type="Animation" id=1]
 length = 0.001
@@ -51,7 +52,7 @@ tracks/3/keys = {
 "times": PoolRealArray( 0 )
 }
 tracks/4/type = "value"
-tracks/4/path = NodePath("AudioStreamPlayer:playing")
+tracks/4/path = NodePath("AudioStreamPlayer_Music:playing")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/imported = false
@@ -63,7 +64,7 @@ tracks/4/keys = {
 "values": [ false ]
 }
 tracks/5/type = "bezier"
-tracks/5/path = NodePath("AudioStreamPlayer:volume_db")
+tracks/5/path = NodePath("AudioStreamPlayer_Music:volume_db")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/imported = false
@@ -116,7 +117,7 @@ tracks/3/keys = {
 "times": PoolRealArray( 0, 1 )
 }
 tracks/4/type = "value"
-tracks/4/path = NodePath("AudioStreamPlayer:playing")
+tracks/4/path = NodePath("AudioStreamPlayer_Music:playing")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/imported = false
@@ -128,7 +129,7 @@ tracks/4/keys = {
 "values": [ false, true ]
 }
 tracks/5/type = "bezier"
-tracks/5/path = NodePath("AudioStreamPlayer:volume_db")
+tracks/5/path = NodePath("AudioStreamPlayer_Music:volume_db")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/imported = false
@@ -198,7 +199,7 @@ tracks/3/keys = {
 "times": PoolRealArray( 0, 1 )
 }
 tracks/4/type = "bezier"
-tracks/4/path = NodePath("AudioStreamPlayer:volume_db")
+tracks/4/path = NodePath("AudioStreamPlayer_Music:volume_db")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/imported = false
@@ -225,7 +226,7 @@ tracks/5/keys = {
 } ]
 }
 tracks/6/type = "value"
-tracks/6/path = NodePath("AudioStreamPlayer:playing")
+tracks/6/path = NodePath("AudioStreamPlayer_Music:playing")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/imported = false
@@ -250,10 +251,14 @@ anims/RESET = SubResource( 1 )
 anims/fade_in = SubResource( 2 )
 anims/fade_out = SubResource( 3 )
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="AudioStreamPlayer_Music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 6 )
 volume_db = -50.0
 autoplay = true
+
+[node name="AudioStreamPlayer_Sound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
+volume_db = 10.0
 
 [node name="Background" type="TextureRect" parent="."]
 anchor_right = 1.0
@@ -375,7 +380,7 @@ margin_top = 328.0
 margin_right = 256.0
 margin_bottom = 366.0
 custom_fonts/font = ExtResource( 1 )
-text = "Press any button to start"
+text = "Press shoot to start"
 align = 1
 valign = 1
 

@@ -129,11 +129,21 @@ public class MainSceneController : Node2D
 	{
 		m_rng.Randomize();
 
-		node_gameHUDController.Lives = _lives;
-		node_gameHUDController.Score = _score;
+		Lives = (int)ProjectSettings.GetSetting("global/starting_lives");
+		Score = _score;
 
 		node_player.Connect(nameof(Player.OnHit), this, nameof(OnPlayerHit));
 		node_player.Connect(nameof(Player.OnDie), this, nameof(OnPlayerDie));
+
+		if ((bool)ProjectSettings.GetSetting("global/invincible"))
+		{
+			node_player.Set_HitboxEnabled(false);
+		}
+
+		if ((bool)ProjectSettings.GetSetting("global/no_clip"))
+		{
+			node_player.Set_CollisionEnabled(false);
+		}
 
 		for(int i = 0; i < node_enemies.GetChildCount(); i++)
 		{

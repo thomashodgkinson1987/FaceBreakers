@@ -30,6 +30,12 @@ window/stretch/aspect="keep"
 
 enabled=PoolStringArray( "res://addons/codeandweb.texturepacker/plugin.cfg" )
 
+[global]
+
+starting_lives=3
+invincible=false
+no_clip=false
+
 [importer_defaults]
 
 texture={

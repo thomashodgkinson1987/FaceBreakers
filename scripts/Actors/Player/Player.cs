@@ -174,7 +174,17 @@ public class Player : Node2D
 	public void Toggle_Visible() => node_animatedSprite.Visible = !node_animatedSprite.Visible;
 
 	public bool Get_HitboxEnabled() => !node_hitbox_collisionShape.Disabled;
-	public void Set_HitboxEnabled(bool enabled) => node_hitbox_collisionShape.Disabled = !enabled;
+	public void Set_HitboxEnabled(bool enabled)
+	{
+		if ((bool)ProjectSettings.GetSetting("global/invincible"))
+		{
+			node_hitbox_collisionShape.Disabled = true;
+		}
+		else
+		{
+			node_hitbox_collisionShape.Disabled = !enabled;
+		}
+	}
 
 	public bool Get_CollisionEnabled() => !node_body_collisionShape.Disabled;
 	public void Set_CollisionEnabled(bool enabled) => node_body_collisionShape.Disabled = !enabled;
